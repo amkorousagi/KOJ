@@ -10,7 +10,8 @@ services:
       - ./front/:/app/
     ports:
       - "3001:3001"
-    command: node /app/index.js
+    working_dir: /app
+    command: npm start 
     tty: true
 
   koj:
@@ -21,6 +22,7 @@ services:
       - ./koj/:/app/
     ports:
       - "3002:3002"
+    working_dir: /app
     command: node /app/index.js
     tty: true
 
@@ -45,6 +47,7 @@ services:
       - mongo
     ports:
       - "3000:3000"
+    working_dir: /app
     command: node /app/index.js
     tty: true
     volumes:
