@@ -1,0 +1,16 @@
+{
+  "name": "koj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "0g": "^0.0.9",
+    "express": "^4.18.1",
+    "n": "^9.0.0"
+  }
+}

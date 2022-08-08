@@ -1,21 +1,51 @@
 # Use root/example as user/password credentials
-version: '3.1'
+version: '3.8'
 
 services:
+  front:
+    image: node
+    container_name: front
+    restart: always
+    volumes:
+      - ./front/:/app/
+    ports:
+      - "3001:3001"
+    command: node /app/index.js
+    tty: true
+
+  koj:
+    image: node
+    container_name: koj
+    restart: always
+    volumes:
+      - ./koj/:/app/
+    ports:
+      - "3002:3002"
+    command: node /app/index.js
+    tty: true
 
   mongo:
     image: mongo
+    container_name: mongo
     restart: always
+    ports:
+      -  "3003:3003"
+    command: mongod --port 3003
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./mongo/:/data/db/
+
   back:
     image: node
+    container_name: back
     restart: always
-  front:
-    image: node
-    restart: always
-  koj:
-    image: node
-    restart: always
-
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    command: node /app/index.js
+    tty: true
+    volumes:
+      - ./back/:/app/
