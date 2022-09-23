@@ -32,11 +32,15 @@ const Home = () => {
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Item theme={mtheme}>
-            <Typography style={{}}>나눔</Typography>
+            <Typography
+              style={{ fontFamily: ["나눔고딕", "NanumGothic", "ng"] }}
+            >
+              나눔
+            </Typography>
           </Item>
         </Grid>
         <Grid item xs={2}>
-          <Item theme={mtheme}>ds</Item>
+          <Item theme={mtheme}>나눔2</Item>
         </Grid>
       </Grid>
     </ThemeProvider>

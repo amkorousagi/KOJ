@@ -1,3 +1,13 @@
+/* Recommended */
+@font-face {
+  font-family: ng;
+  src: url("../src/Assets/fonts/NanumGothic.eot"),
+    url("../src/Assets/fonts/NanumGothic.woff") format("woff");
+}
+body {
+  font-family: 나눔고딕, Nanum Gothic, ng;
+}
+/*
 @font-face {
   font-family: "Noto Sans CJK KR";
   font-style: normal;
@@ -34,3 +44,4 @@
   font-weight: lighter;
   src: url("Assets/styles/fonts/NanumBarunGothicLight");
 }
+*/
