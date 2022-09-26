@@ -39,6 +39,15 @@ const Home = () => {
         <br />
         전화 : 053-950-6378
         <br />
+        <div
+          style={{
+            fontFamily: "Nanum Gothic",
+            fontWeight: 800,
+            textAlign: "right",
+          }}
+        >
+          <a href="/admin">관리자 로그인</a>
+        </div>
         <div style={{ textAlign: "center" }}>
           <a
             href="/lang=ko"

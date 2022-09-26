@@ -99,33 +99,22 @@ const Login = () => {
             <TextField id="password" type="password" label="비밀번호" />
           </form>
           <br />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={autoLogin}
-                onChange={onAutoLogin}
-                name="autoLogin"
-              />
-            }
-            label="자동 로그인"
-          />
           <Button variant="contained" color="primary">
             로그인
           </Button>
           <hr />
           <Typography>
-            아직 회원이 아닌가요?
-            <a href="/join">
-              <Typography style={{ fontWeight: 800 }}>회원가입</Typography>
-            </a>
+            아이디는 당신의{" "}
+            <div style={{ fontWeight: 700, display: "inline" }}>학번</div>
+            입니다.
           </Typography>
 
           <br />
           <Typography>
-            아이디나 비밀번호를 잊어버렸나요?
-            <a href="/forget">
+            비밀번호를 잊어버렸나요?
+            <a href="mailto:hasemi5452@gmail.com">
               <Typography style={{ fontWeight: 800 }}>
-                아이디/비밀번호찾기
+                관리자에게 메일 보내기
               </Typography>
             </a>
           </Typography>

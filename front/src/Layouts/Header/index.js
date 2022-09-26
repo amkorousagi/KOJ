@@ -37,29 +37,6 @@ const Home = () => {
                 display: "inline",
               }}
             >
-              회원가입
-            </Typography>
-          </a>
-          <Typography
-            style={{
-              fontFamily: "Nanum Gothic",
-              fontWeight: 700,
-              fontSize: "15px",
-              display: "inline",
-              color: "grey",
-            }}
-          >
-            &nbsp;&nbsp;or&nbsp;&nbsp;
-          </Typography>
-          <a href="/" style={{ display: "inline" }}>
-            <Typography
-              style={{
-                fontFamily: "Nanum Gothic",
-                fontWeight: 800,
-                fontSize: "20px",
-                display: "inline",
-              }}
-            >
               로그인
             </Typography>
           </a>
