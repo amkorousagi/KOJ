@@ -29,12 +29,17 @@ const Item = styled(Paper)(({ theme }) => ({
 const Home = () => {
   return (
     <ThemeProvider theme={mtheme}>
+      <Typography style={{ fontFamily: "Nanum Gothic" }}>나눔</Typography>
+      <Typography style={{ fontFamily: "Nanum Gothic", fontWeight: "bold" }}>
+        나눔 bold
+      </Typography>
+      <Typography style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}>
+        나눔 800
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Item theme={mtheme}>
-            <Typography
-              style={{ fontFamily: ["나눔고딕", "NanumGothic", "ng"] }}
-            >
+            <Typography style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}>
               나눔
             </Typography>
           </Item>
