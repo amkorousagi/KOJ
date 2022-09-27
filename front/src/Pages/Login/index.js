@@ -6,30 +6,33 @@ import {
   Button,
   Card,
   CardContent,
-  Checkbox,
-  Container,
-  createTheme,
   FormControl,
   FormControlLabel,
   FormLabel,
-  Grid,
-  Paper,
   Radio,
   RadioGroup,
   TextField,
-  ThemeProvider,
   Typography,
 } from "@material-ui/core";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
+import { isLoginedState, userTypeState } from "../../atoms.js";
 
 const Login = () => {
-  const autoLoginState = atom({
-    key: "autoLogin",
-    default: false,
-  });
-  const [autoLogin, setAutoLogin] = useRecoilState(autoLoginState);
-  const onAutoLogin = (event) => {
-    setAutoLogin(!autoLogin);
+  const [isLogined, setIsLogined] = useRecoilState(isLoginedState);
+  const [userType, setUserType] = useRecoilState(userTypeState);
+
+  let tempUserType = "student";
+
+  const handlingRadio = (e) => {
+    e.preventDefault();
+    tempUserType = e.target.value;
+  };
+
+  const onLogin = (e) => {
+    localStorage.setItem("isLogined", "true");
+    localStorage.setItem("userType", tempUserType);
+    setUserType(tempUserType);
+    setIsLogined(true);
   };
 
   return (
@@ -51,8 +54,10 @@ const Login = () => {
             <RadioGroup
               row
               aria-label="position"
+              id="userTypeRadio"
               name="userType"
               defaultValue="student"
+              onChange={handlingRadio}
             >
               <FormLabel
                 component="legend"
@@ -99,7 +104,7 @@ const Login = () => {
             <TextField id="password" type="password" label="비밀번호" />
           </form>
           <br />
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={onLogin}>
             로그인
           </Button>
           <hr />
@@ -112,11 +117,12 @@ const Login = () => {
           <br />
           <Typography>
             비밀번호를 잊어버렸나요?
-            <a href="mailto:hasemi5452@gmail.com">
-              <Typography style={{ fontWeight: 800 }}>
-                관리자에게 메일 보내기
-              </Typography>
-            </a>
+            <br />
+            관리자
+            <Typography style={{ fontWeight: 800, display: "inline" }}>
+              (hasmi5452@gmail)
+            </Typography>
+            에게 문의하세요.
           </Typography>
         </CardContent>
       </Card>
