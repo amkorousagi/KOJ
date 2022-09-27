@@ -85,7 +85,7 @@ const Home = () => {
       <Grid container spacing={2} justifyContent="flex-end" alignItems="center">
         <Grid item xs={2}>
           <a href="/">
-            <img src="KOJ.png" height="100" width="200" alt="kog logo" />
+            <img src="/KOJ.png" height="100" width="200" alt="kog logo" />
           </a>
         </Grid>
         <Grid item xs={3} style={{ textAlign: "center" }}>

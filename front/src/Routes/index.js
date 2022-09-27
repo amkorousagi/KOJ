@@ -9,6 +9,7 @@ import About from "../Pages/About/index.js";
 import { useRecoilState } from "recoil";
 import { isLoginedState } from "../atoms.js";
 import Lectures from "../Pages/Lectures/index.js";
+import Lecture from "../Pages/Lecture/index.js";
 const Router = () => {
   const [isLogined, setIsLogined] = useRecoilState(isLoginedState);
   const localIsLogined = localStorage.getItem("isLogined");
@@ -21,6 +22,7 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Lectures />} />
           <Route path="/about" element={<About />} />
+          <Route path="/lecture/:lectureId" element={<Lecture />} />
         </Routes>
       </BrowserRouter>
     );
