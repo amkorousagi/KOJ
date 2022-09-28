@@ -63,18 +63,12 @@ const Login = () => {
                 component="legend"
                 style={{
                   display: "flex",
-                  fontFamily: "Nanum Gothic",
-                  textAlign: "center",
                   alignItems: "center",
                 }}
               >
                 회원 유형&nbsp;&nbsp;
               </FormLabel>
               <FormControlLabel
-                style={{
-                  fontFamily: "Nanum Gothic",
-                  textAlign: "center",
-                }}
                 value="student"
                 control={<Radio color="primary" />}
                 label="학생"
@@ -82,7 +76,6 @@ const Login = () => {
               />
 
               <FormControlLabel
-                style={{ fontFamily: "Nanum Gothic", textAlign: "center" }}
                 value="tutor"
                 control={<Radio color="primary" />}
                 label="튜터"
@@ -90,7 +83,6 @@ const Login = () => {
               />
 
               <FormControlLabel
-                style={{ fontFamily: "Nanum Gothic", textAlign: "center" }}
                 value="professor"
                 control={<Radio color="primary" />}
                 label="교수"

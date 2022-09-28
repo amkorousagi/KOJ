@@ -1,9 +1,9 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 
-const Home = () => {
+const Footer = () => {
   return (
-    <div>
+    <div style={{ display: "block" }}>
       <hr />
       <Typography style={{ fontFamily: "Nanum Gothic" }}>
         &copy; 2022.&nbsp;
@@ -52,4 +52,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default Footer;

@@ -78,55 +78,71 @@ const LoginContol = ({ isLogined, setIsLogined }) => {
   }
 };
 
-const Home = () => {
+const Header = () => {
   const [isLogined, setIsLogined] = useRecoilState(isLoginedState);
   return (
-    <div>
-      <Grid container spacing={2} justifyContent="flex-end" alignItems="center">
-        <Grid item xs={2}>
-          <a href="/">
-            <img src="/KOJ.png" height="100" width="200" alt="kog logo" />
-          </a>
-        </Grid>
-        <Grid item xs={3} style={{ textAlign: "center" }}>
-          <Box justifyContent="flex-end">
+    <>
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          width: "100%",
+          backgroundColor: "white",
+          zIndex: 10,
+        }}
+      >
+        <Grid
+          container
+          spacing={2}
+          justifyContent="flex-end"
+          alignItems="center"
+        >
+          <Grid item xs={2}>
             <a href="/">
-              <Typography
-                style={{
-                  fontFamily: "Nanum Gothic",
-                  fontWeight: 800,
-                  fontSize: "20px",
-                }}
-              >
-                강의목록
-              </Typography>
+              <img src="/KOJ.png" height="100" width="200" alt="kog logo" />
             </a>
-          </Box>
+          </Grid>
+          <Grid item xs={3} style={{ textAlign: "center" }}>
+            <Box justifyContent="flex-end">
+              <a href="/">
+                <Typography
+                  style={{
+                    fontFamily: "Nanum Gothic",
+                    fontWeight: 800,
+                    fontSize: "20px",
+                  }}
+                >
+                  강의목록
+                </Typography>
+              </a>
+            </Box>
+          </Grid>
+          <Grid item xs={3} style={{ textAlign: "center" }}>
+            <Box justifyContent="flex-end">
+              <a href="/">
+                <Typography
+                  style={{
+                    fontFamily: "Nanum Gothic",
+                    fontWeight: 800,
+                    fontSize: "20px",
+                  }}
+                >
+                  최근 채점
+                </Typography>
+              </a>
+            </Box>
+          </Grid>
+          <Grid item xs={2} style={{ textAlign: "center" }}>
+            <LoginContol isLogined={isLogined} setIsLogined={setIsLogined} />
+          </Grid>
+          <Grid item xs={2} style={{ textAlign: "center" }}>
+            <Profile isLogined={isLogined} />
+          </Grid>
         </Grid>
-        <Grid item xs={3} style={{ textAlign: "center" }}>
-          <Box justifyContent="flex-end">
-            <a href="/">
-              <Typography
-                style={{
-                  fontFamily: "Nanum Gothic",
-                  fontWeight: 800,
-                  fontSize: "20px",
-                }}
-              >
-                최근 채점
-              </Typography>
-            </a>
-          </Box>
-        </Grid>
-        <Grid item xs={2} style={{ textAlign: "center" }}>
-          <LoginContol isLogined={isLogined} setIsLogined={setIsLogined} />
-        </Grid>
-        <Grid item xs={2} style={{ textAlign: "center" }}>
-          <Profile isLogined={isLogined} />
-        </Grid>
-      </Grid>
-      <hr />
-    </div>
+        <hr />
+      </div>
+      <div style={{ height: 122, width: "100%" }}></div>
+    </>
   );
 };
-export default Home;
+export default Header;
