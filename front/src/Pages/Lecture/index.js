@@ -13,6 +13,8 @@ import {
   ListItemText,
   Collapse,
   Grid,
+  ImageList,
+  ImageListItem,
 } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -26,157 +28,146 @@ const Lecture = () => {
     o[i] = !o[i];
     setOpen(o);
   };
+  const practiceData = [
+    {
+      practiceName: "실습 1",
+      practiceId: 1,
+      problemList: [
+        { problemName: "문제 1", problemId: 1 },
+        { problemName: "문제 2", problemId: 2 },
+        { problemName: "문제 3", problemId: 3 },
+      ],
+    },
+    {
+      practiceName: "실습 2",
+      practiceId: 2,
+      problemList: [
+        { problemName: "문제 1", problemId: 4 },
+        { problemName: "문제 2", problemId: 5 },
+      ],
+    },
+  ];
+  const practices = practiceData.map((item, index) => {
+    const probelms = item.problemList.map((item) => {
+      return (
+        <ListItem button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <ListItemText primary={item.problemName} />
+        </ListItem>
+      );
+    });
+
+    return (
+      <>
+        <ListItem button onClick={() => handleClick(index)}>
+          <ListItemText primary={item.practiceName} />
+          {open[index] ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={open[index]} timeout="auto" unmountOnExit>
+          <List
+            disablePadding
+            subheader={
+              <ListSubheader>&nbsp;&nbsp;&nbsp;&nbsp;문제</ListSubheader>
+            }
+          >
+            {probelms}
+          </List>
+        </Collapse>
+      </>
+    );
+  });
+
   console.log(lectureId);
   return (
-    <Grid container>
-      <Grid item xs={1}>
-        <div
-          style={{
-            display: "flex",
-            overflow: "auto",
-            width: 300,
-            backgroundColor: "#F0F0F0",
-          }}
-        >
-          <List
-            subheader={<ListSubheader>실습</ListSubheader>}
+    <>
+      <Grid container>
+        <Grid item xs={2} style={{ zIndex: 5 }}>
+          <div
             style={{
+              display: "flex",
+              overflow: "auto",
               width: "100%",
+              backgroundColor: "#F0F0F0",
             }}
           >
-            <ListItem button onClick={() => handleClick(0)}>
-              <ListItemText primary="실습 1" />
-              {open[0] ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={open[0]} timeout="auto" unmountOnExit>
-              <List
-                disablePadding
-                subheader={
-                  <ListSubheader>&nbsp;&nbsp;&nbsp;&nbsp;문제</ListSubheader>
-                }
+            <List
+              subheader={<ListSubheader>실습</ListSubheader>}
+              style={{
+                width: "100%",
+              }}
+            >
+              {practices}
+            </List>
+          </div>
+        </Grid>
+        <Grid item xs={10}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            style={{ margin: 5 }}
+          >
+            <Grid item xs={6} style={{ marginBottom: 15 }}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                style={{ textAlign: "center", fontWeight: 700 }}
               >
-                <ListItem button>
-                  <ListItemText primary="&nbsp;&nbsp;&nbsp;&nbsp;문제 1" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText primary="&nbsp;&nbsp;&nbsp;&nbsp;문제 2" />
-                </ListItem>
-              </List>
-            </Collapse>
-            <ListItem button onClick={() => handleClick(1)}>
-              <ListItemText primary="실습 2" />
-              {open[1] ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={open[1]} timeout="auto" unmountOnExit>
-              <List
-                disablePadding
-                subheader={
-                  <ListSubheader>&nbsp;&nbsp;&nbsp;&nbsp;문제</ListSubheader>
-                }
+                <Card variant="outlined">
+                  <CardHeader
+                    style={{ fontSize: 20 }}
+                    title="문제 점수 | 0/10"
+                  ></CardHeader>
+                </Card>
+                &nbsp;&nbsp;
+                <Card variant="outlined">
+                  <CardContent>남은 시간 | 10:00</CardContent>
+                </Card>
+              </Box>
+            </Grid>
+            <Grid item xs={6} style={{ marginBottom: 15 }}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                style={{ textAlign: "center", fontWeight: 700 }}
               >
-                <ListItem button>
-                  <ListItemText primary="&nbsp;&nbsp;&nbsp;&nbsp;문제 1" />
-                </ListItem>
-                <ListItem button>
-                  <ListItemText primary="&nbsp;&nbsp;&nbsp;&nbsp;문제 2" />
-                </ListItem>
-              </List>
-            </Collapse>
-          </List>
-        </div>
+                <Card variant="outlined">
+                  <CardContent>제출 이력</CardContent>
+                </Card>
+                &nbsp;&nbsp;
+                <Card variant="outlined">
+                  <CardContent>정답 제출</CardContent>
+                </Card>
+              </Box>
+            </Grid>
+            <br />
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                style={{ textAlign: "left" }}
+              >
+                <Card variant="outlined">
+                  <CardContent>
+                    <Typography style={{ fontFamily: "Nanum Gothic" }}>
+                      <div style={{ textAlign: "center", fontWeight: 700 }}>
+                        문제 설명
+                      </div>
+                      <hr />
+                    </Typography>
+                    <img src="/problem1.png" alt="problem" />
+                  </CardContent>
+                </Card>
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item xs={11}>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          style={{ textAlign: "left" }}
-        >
-          <Card variant="outlined">
-            <CardContent>
-              <Typography style={{ fontFamily: "Nanum Gothic" }}>
-                <div style={{ textAlign: "center" }}>연구실 소개</div>
-                <hr />
-                <br />
-                연구실 명 : 임베디드소프트웨어공학 연구실 (이우진 교수님)
-                <br />
-                연구실 관심분야 : SW testing, data science, game AI
-                <br />
-                오시는 길 : 경북대학교 IT-5호관 523호
-                <br />
-                문의용 이메일 : hasmi5452@gmail.com
-                <br />
-                전화 : 053-950-6378
-                <br />
-                연구실 홈페이지 :{" "}
-                <a
-                  href="http://selab.knu.ac.kr/dokuwiki/doku.php"
-                  style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
-                >
-                  selab
-                </a>
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
-      </Grid>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-    </Grid>
+    </>
   );
 };
 export default Lecture;
