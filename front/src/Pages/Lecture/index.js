@@ -19,10 +19,20 @@ import {
 import React from "react";
 import { useParams } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import Submit from "./Submit.js";
+import Score from "./Score.js";
 
 const Lecture = () => {
   const { lectureId } = useParams();
   const [open, setOpen] = React.useState([false, false]);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [openModal2, setOpenModal2] = React.useState(false);
+  const handleOpenModal2 = () => {
+    setOpenModal2(!openModal2);
+  };
+  const handleOpenModal = () => {
+    setOpenModal(!openModal);
+  };
   const handleClick = (i) => {
     const o = { ...open };
     o[i] = !o[i];
@@ -77,9 +87,10 @@ const Lecture = () => {
     );
   });
 
-  console.log(lectureId);
   return (
     <>
+      <Score open={openModal2} handleClose={handleOpenModal2} />
+      <Submit open={openModal} handleClose={handleOpenModal} />
       <Grid container>
         <Grid item xs={2} style={{ zIndex: 5 }}>
           <div
@@ -116,14 +127,20 @@ const Lecture = () => {
                 style={{ textAlign: "center", fontWeight: 700 }}
               >
                 <Card variant="outlined">
-                  <CardHeader
-                    style={{ fontSize: 20 }}
-                    title="문제 점수 | 0/10"
-                  ></CardHeader>
+                  <CardContent>
+                    <div style={{ marginTop: 5 }}>문제 점수 | 0/10</div>
+                  </CardContent>
                 </Card>
                 &nbsp;&nbsp;
-                <Card variant="outlined">
-                  <CardContent>남은 시간 | 10:00</CardContent>
+                <Card
+                  display="flex"
+                  variant="outlined"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <CardContent>
+                    <div style={{ marginTop: 5 }}>남은 시간 | 10:00</div>
+                  </CardContent>
                 </Card>
               </Box>
             </Grid>
@@ -134,13 +151,39 @@ const Lecture = () => {
                 alignItems="center"
                 style={{ textAlign: "center", fontWeight: 700 }}
               >
-                <Card variant="outlined">
-                  <CardContent>제출 이력</CardContent>
-                </Card>
+                <Button onClick={handleOpenModal2}>
+                  <Card variant="outlined">
+                    <CardContent>
+                      <div
+                        style={{
+                          marginTop: 5,
+                          fontFamily: "Nanum Gothic",
+                          fontWeight: 800,
+                          fontSize: 18,
+                        }}
+                      >
+                        채점 기록
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Button>
                 &nbsp;&nbsp;
-                <Card variant="outlined">
-                  <CardContent>정답 제출</CardContent>
-                </Card>
+                <Button onClick={handleOpenModal}>
+                  <Card variant="outlined">
+                    <CardContent>
+                      <div
+                        style={{
+                          marginTop: 5,
+                          fontFamily: "Nanum Gothic",
+                          fontWeight: 800,
+                          fontSize: 18,
+                        }}
+                      >
+                        정답 제출
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Button>
               </Box>
             </Grid>
             <br />
@@ -159,7 +202,12 @@ const Lecture = () => {
                       </div>
                       <hr />
                     </Typography>
-                    <img src="/problem1.png" alt="problem" />
+                    <img
+                      src="/problem1.png"
+                      alt="problem"
+                      width="100%"
+                      height="auto"
+                    />
                   </CardContent>
                 </Card>
               </Box>
