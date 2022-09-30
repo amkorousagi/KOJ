@@ -8,11 +8,30 @@ import {
   Modal,
   IconButton,
   Grid,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@material-ui/core";
 import { Cancel } from "@mui/icons-material";
 import React from "react";
 
 const Score = ({ open, handleClose }) => {
+  const rows = [
+    {
+      result: "맞았습니다",
+      scoreId: 1,
+      createDate: new Date("2022-09-17T03:24:00"),
+    },
+    {
+      result: "틀렸습니다",
+      scoreId: 2,
+      createDate: new Date("2022-09-17T00:24:00"),
+    },
+  ];
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -29,28 +48,48 @@ const Score = ({ open, handleClose }) => {
       >
         <Card variant="outlined">
           <CardContent>
-            <Typography style={{ fontFamily: "Nanum Gothic" }}>
-              <div style={{ textAlign: "center" }}>채점 기록</div>
-              <hr />
-              <br />
-              연구실 명 : 임베디드소프트웨어공학 연구실 (이우진 교수님)
-              <br />
-              연구실 관심분야 : SW testing, data science, game AI
-              <br />
-              오시는 길 : 경북대학교 IT-5호관 523호
-              <br />
-              문의용 이메일 : hasmi5452@gmail.com
-              <br />
-              전화 : 053-950-6378
-              <br />
-              연구실 홈페이지 :{" "}
-              <a
-                href="http://selab.knu.ac.kr/dokuwiki/doku.php"
-                style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
-              >
-                selab
-              </a>
-            </Typography>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>결과</TableCell>
+                    <TableCell>소스코드 보기</TableCell>
+                    <TableCell>채점결과 상세 보기</TableCell>
+                    <TableCell>제출한 시간</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => {
+                    return (
+                      <TableRow>
+                        <TableCell>{row.result}</TableCell>
+                        <TableCell>
+                          <Button
+                            onClick={() => {
+                              window.location.href = "/code/" + row.scoreId;
+                            }}
+                            style={{ fontWeight: 800 }}
+                          >
+                            소스코드
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            onClick={() => {
+                              window.location.href = "/score/" + row.scoreId;
+                            }}
+                            style={{ fontWeight: 800 }}
+                          >
+                            채점결과
+                          </Button>
+                        </TableCell>
+                        <TableCell>5분 전</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </CardContent>
         </Card>
       </Box>

@@ -27,6 +27,10 @@ const Lecture = () => {
   const [open, setOpen] = React.useState([false, false]);
   const [openModal, setOpenModal] = React.useState(false);
   const [openModal2, setOpenModal2] = React.useState(false);
+  const openOnlyModal2 = () => {
+    setOpenModal(false);
+    setOpenModal2(true);
+  };
   const handleOpenModal2 = () => {
     setOpenModal2(!openModal2);
   };
@@ -90,7 +94,11 @@ const Lecture = () => {
   return (
     <>
       <Score open={openModal2} handleClose={handleOpenModal2} />
-      <Submit open={openModal} handleClose={handleOpenModal} />
+      <Submit
+        open={openModal}
+        openScore={openOnlyModal2}
+        handleClose={handleOpenModal}
+      />
       <Grid container>
         <Grid item xs={2} style={{ zIndex: 5 }}>
           <div

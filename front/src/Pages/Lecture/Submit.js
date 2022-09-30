@@ -9,17 +9,16 @@ import {
   IconButton,
   Grid,
 } from "@material-ui/core";
-import { Cancel } from "@mui/icons-material";
 import React from "react";
 
-const Submit = ({ open, handleClose }) => {
+const Submit = ({ open, handleClose, openScore }) => {
   const dropHandler = (ev) => {
     console.log("File(s) dropped");
 
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault();
     const dz = document.getElementById("myDropZone");
-    dz.textContent = "uploading";
+    dz.textContent = "";
     if (ev.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
       [...ev.dataTransfer.items].forEach((item, i) => {
@@ -37,13 +36,24 @@ const Submit = ({ open, handleClose }) => {
       });
     }
     const files = ev.dataTransfer.files;
-    files.map((f) => {});
   };
   const dragOverHandler = (ev) => {
     console.log("File(s) in drop zone");
 
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault();
+  };
+  const changeChooseFile = async (e) => {
+    console.log(e.target);
+    e.preventDefault();
+    const dz = document.getElementById("myDropZone");
+    dz.textContent = "";
+    const files = e.target.files;
+    console.log(files);
+    for (const file of files) {
+      console.log(file);
+      dz.textContent += `...${file.name}\n`;
+    }
   };
 
   return (
@@ -53,7 +63,7 @@ const Submit = ({ open, handleClose }) => {
         justifyContent="center"
         alignItems="center"
         style={{
-          textAlign: "left",
+          textAlign: "center",
           position: "absolute",
           top: "50%",
           left: "50%",
@@ -71,26 +81,33 @@ const Submit = ({ open, handleClose }) => {
                 onDragOver={dragOverHandler}
                 style={{
                   border: "5px solid blue",
-                  width: "200px",
-                  height: "100px",
+                  width: "400px",
+                  height: "200px",
                 }}
               >
                 <p
                   id="myDropZone"
                   style={{ whiteSpace: "pre-line", textAlign: "center" }}
                 >
-                  <Button>Choose a file</Button>
-                  {"\n"}
-                  or Drag&Drop file
+                  <Button component="label" variant="contained">
+                    Choose file(s)
+                    <input
+                      type="file"
+                      hidden
+                      multiple
+                      id="myChooseFile"
+                      onChange={changeChooseFile}
+                    />
+                  </Button>
+                  {"\n\n"}
+                  or Drag&Drop file(s)
                 </p>
               </div>
-              연구실 홈페이지 :{" "}
-              <a
-                href="http://selab.knu.ac.kr/dokuwiki/doku.php"
-                style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
-              >
-                selab
-              </a>
+              <br />
+              <Button variant="contained" onClick={openScore}>
+                {" "}
+                제출하기
+              </Button>
             </Typography>
           </CardContent>
         </Card>
