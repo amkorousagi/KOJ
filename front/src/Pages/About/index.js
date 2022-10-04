@@ -1,11 +1,4 @@
-import {
-  Card,
-  Typography,
-  Box,
-  CardContent,
-  CardHeader,
-  Button,
-} from "@material-ui/core";
+import { Card, Typography, Box, CardContent } from "@material-ui/core";
 import React from "react";
 
 const About = () => {

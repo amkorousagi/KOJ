@@ -3,18 +3,13 @@ import {
   Typography,
   Box,
   CardContent,
-  CardHeader,
   Button,
-  Paper,
-  MenuList,
   ListSubheader,
   List,
   ListItem,
   ListItemText,
   Collapse,
   Grid,
-  ImageList,
-  ImageListItem,
 } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -24,6 +19,7 @@ import Score from "./Score.js";
 
 const Lecture = () => {
   const { lectureId } = useParams();
+  console.log(lectureId);
   const [open, setOpen] = React.useState([false, false]);
   const [openModal, setOpenModal] = React.useState(false);
   const [openModal2, setOpenModal2] = React.useState(false);

@@ -3,11 +3,8 @@ import {
   Typography,
   Box,
   CardContent,
-  CardHeader,
   Button,
   Modal,
-  IconButton,
-  Grid,
 } from "@material-ui/core";
 import React from "react";
 
@@ -36,6 +33,7 @@ const Submit = ({ open, handleClose, openScore }) => {
       });
     }
     const files = ev.dataTransfer.files;
+    console.log(files);
   };
   const dragOverHandler = (ev) => {
     console.log("File(s) in drop zone");

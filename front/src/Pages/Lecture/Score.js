@@ -1,13 +1,9 @@
 import {
   Card,
-  Typography,
   Box,
   CardContent,
-  CardHeader,
   Button,
   Modal,
-  IconButton,
-  Grid,
   TableContainer,
   Paper,
   Table,
@@ -16,7 +12,6 @@ import {
   TableCell,
   TableBody,
 } from "@material-ui/core";
-import { Cancel } from "@mui/icons-material";
 import React from "react";
 
 const Score = ({ open, handleClose }) => {

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { styled } from "@mui/system";
 
 import {
   Box,
@@ -20,7 +19,7 @@ import { isLoginedState, userTypeState } from "../../atoms.js";
 const Login = () => {
   const [isLogined, setIsLogined] = useRecoilState(isLoginedState);
   const [userType, setUserType] = useRecoilState(userTypeState);
-
+  console.log(isLogined, " ", userType);
   let tempUserType = "student";
 
   const handlingRadio = (e) => {
