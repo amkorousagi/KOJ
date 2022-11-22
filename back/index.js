@@ -5,34 +5,29 @@ import jwt from "jsonwebtoken";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
-import Test from "./model/test.js";
-import { id, pwd, dbName, ip, port } from "./config.js";
+import Test from "./model/test";
+import { connect_db } from "./db";
+import { handlingError, notFoundRouterError } from "./middleware/error_handler";
+import logger from "./lib/logger";
+import { morganMiddleware } from "./middleware/morgan_middleware";
+import apiRouter from "./api";
+
+const port = 3012;
+connect_db();
+
 const app = express();
 
-async function main() {
-  try {
-    await mongoose.connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`);
-  } catch (err) {
-    console.log(err);
-  }
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  const apple = new Test({ name: "apple" });
-  console.log(apple);
-  apple.speak();
+app.use(morganMiddleware);
 
-  try {
-    //await apple.save();
-    apple.speak();
-  } catch (err) {
-    console.log(err);
-  }
-}
-main();
+app.use("/api", apiRouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use(handlingError);
+app.all("*", notFoundRouterError);
 
-app.listen(3012, () => {
+app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
