@@ -1,33 +1,26 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import jwt from "jsonwebtoken";
-import fetch from "node-fetch";
-import bcrypt from "bcrypt";
-import mongoose from "mongoose";
-import Test from "./model/test";
+import app from "./server";
 import { connect_db } from "./db";
-import { handlingError, notFoundRouterError } from "./middleware/error_handler";
 import logger from "./lib/logger";
-import { morganMiddleware } from "./middleware/morgan_middleware";
-import apiRouter from "./api";
+import { exceptions } from "winston";
 
-const port = 3012;
-connect_db();
+logger.info("before db");
+connect_db().then(() => {
+  logger.info("after db");
+  app.listen(3012, "0.0.0.0", (err) => {
+    if (err) {
+      logger.error(err);
+    } else {
+      logger.info(`Example app listening on port ${3012}`);
+    }
+  });
+});
 
-const app = express();
-
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(morganMiddleware);
-
-app.use("/api", apiRouter);
-
-app.use(handlingError);
-app.all("*", notFoundRouterError);
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+// 에러메세지없는 listen 실패 포스팅하기
+process.on("uncaughtException", (exception) => {
+  logger.error(exception.stack);
+});
+process.once("SIGUSR2", function () {
+  gracefulShutdown(function () {
+    process.kill(process.pid, "SIGUSR2");
+  });
 });

@@ -9,12 +9,26 @@ export function errorHandler(cb) {
 
 export function responseHandler(service) {
   return errorHandler(async (req, res, next) => {
-    res.status(StatusCodes.OK).json({
-      success: true,
-      data: (await service(req, res, next)) ?? {},
-      error: "",
-      errorDetails: [],
-      message: "",
-    });
+    const result = await service(req, res, next);
+    if (req.sendErrorWithoutLog != true) {
+      res.status(StatusCodes.OK).json({
+        success: true,
+        data: result ?? {},
+        error: "",
+        errorDetails: [],
+        message: "",
+      });
+    }
+  });
+}
+
+export function sendErrorWithoutLog({ req, res, error, message }) {
+  req.sendErrorWithoutLog = true;
+  res.status(400).json({
+    success: false,
+    data: {},
+    error: error ?? "",
+    errorDetails: [],
+    message: message ?? "",
   });
 }

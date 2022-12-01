@@ -10,10 +10,10 @@ const problemSchema = mongoose.Schema({
   blank_answer: String,
   execution_time_limit: Number,
   problem_type: String,
-  input_text: Boolean,
-  output_text: Boolean,
-  input_file: Boolean,
-  output_file: Boolean,
+  input_text: String,
+  output_text: String,
+  input_file: String,
+  output_file: String,
 });
 
 const Problem = mongoose.model("Problem", problemSchema);

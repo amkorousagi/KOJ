@@ -15,5 +15,13 @@ export const handlingError = (err, req, res, next) => {
 };
 
 export const notFoundRouterError = (req, res) => {
-  res.status(StatusCodes.NOT_FOUND).json({ error: "invalid url" });
+  res
+    .status(StatusCodes.NOT_FOUND)
+    .json({
+      success: false,
+      data: {},
+      error: "invalid url",
+      message: "",
+      detail: "",
+    });
 };

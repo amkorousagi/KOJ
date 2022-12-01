@@ -7,8 +7,10 @@ import {
   Modal,
 } from "@material-ui/core";
 import React from "react";
+import { FILE_URL } from "../../config.js";
 
 const Submit = ({ open, handleClose, openScore }) => {
+  const [files, setFiles] = React.useState([]);
   const dropHandler = (ev) => {
     console.log("File(s) dropped");
 
@@ -33,6 +35,7 @@ const Submit = ({ open, handleClose, openScore }) => {
       });
     }
     const files = ev.dataTransfer.files;
+    setFiles(files);
     console.log(files);
   };
   const dragOverHandler = (ev) => {
@@ -47,11 +50,40 @@ const Submit = ({ open, handleClose, openScore }) => {
     const dz = document.getElementById("myDropZone");
     dz.textContent = "";
     const files = e.target.files;
+    setFiles(files);
     console.log(files);
     for (const file of files) {
       console.log(file);
       dz.textContent += `...${file.name}\n`;
     }
+  };
+  const submitFile = () => {
+    const formData = new FormData();
+
+    for (const item of files) {
+      formData.append(item.name, item.name);
+    }
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+
+    console.log(files);
+    fetch(FILE_URL, {
+      method: "post",
+      headers: {
+        //"Content-Type":""
+      },
+      body: formData,
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -102,7 +134,7 @@ const Submit = ({ open, handleClose, openScore }) => {
                 </p>
               </div>
               <br />
-              <Button variant="contained" onClick={openScore}>
+              <Button variant="contained" onClick={submitFile}>
                 {" "}
                 제출하기
               </Button>
