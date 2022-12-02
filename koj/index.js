@@ -69,7 +69,7 @@ app.post(
   "/testcase_text",
   upload_testcase_text.array("files"),
   async (req, res) => {
-    res.status(200).json({ success: true  n});
+    res.status(200).json({ success: true });
   }
 );
 

@@ -1,5 +1,5 @@
 import User from "../model/user";
-import { USER_TYPE } from "../user_type";
+import { USER_TYPE } from "../type";
 /*
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";

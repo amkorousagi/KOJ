@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const practiceSchema = mongoose.Schema({
-  lecture: [{ type: Schema.Types.ObjectId, ref: "Lecture" }],
+  lecture: { type: Schema.Types.ObjectId, ref: "Lecture" },
   title: String,
   start_date: Date,
   end_date: Date,

@@ -3,9 +3,9 @@ import { insertManyUser } from "../controller/user";
 import { responseHandler } from "../lib/common";
 import bcrypt from "bcrypt";
 
-const router = express();
+const createUsersRoute = express();
 
-router.post(
+createUsersRoute.post(
   "/",
   responseHandler(async (req) => {
     const { users } = req.body;
@@ -19,4 +19,4 @@ router.post(
   })
 );
 
-export default router;
+export default createUsersRoute;

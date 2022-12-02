@@ -6,9 +6,9 @@ import { responseHandler, sendErrorWithoutLog } from "../lib/common";
 import { secret } from "../secret";
 import logger from "../lib/logger";
 
-const router = express();
+const loginRoute = express();
 
-router.post(
+loginRoute.post(
   "/",
   responseHandler(async (req, res) => {
     const { id, password, user_type } = req.body;
@@ -34,4 +34,4 @@ router.post(
   })
 );
 
-export default router;
+export default loginRoute;

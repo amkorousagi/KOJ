@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const lectureSchema = mongoose.Schema({
-  lecturer: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  lecturer: { type: Schema.Types.ObjectId, ref: "User" },
   title: String,
   semester: String,
 });

@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const problem_scoreSchema = mongoose.Schema({
-  practice: [{ type: Schema.Types.ObjectId, ref: "Practice" }],
-  problem: [{ type: Schema.Types.ObjectId, ref: "Problem" }],
-  student: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  practice: { type: Schema.Types.ObjectId, ref: "Practice" },
+  problem: { type: Schema.Types.ObjectId, ref: "Problem" },
+  student: { type: Schema.Types.ObjectId, ref: "User" },
   score: Number,
 });
 

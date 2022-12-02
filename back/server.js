@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { handlingError, notFoundRouterError } from "./middleware/error_handler";
 import { morganMiddleware } from "./middleware/morgan_middleware";
-import apiRouter from "./api";
+import apiRoute from "./api";
 import { authorization_handler } from "./middleware/authorization_handler";
 import { responseHandler } from "./lib/common";
 
@@ -21,7 +21,7 @@ app.use(
     return req.user;
   })
 );
-app.use("/api", apiRouter);
+app.use("/api", apiRoute);
 
 app.use(handlingError);
 app.all("*", notFoundRouterError);
