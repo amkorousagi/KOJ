@@ -14,10 +14,15 @@ export async function createEnrollments({ lecture, students }) {
 
 export async function checkIsRealStudent({ practice, student }) {
   const p = await Practice.findById(practice);
-  const enrollment = Enrollment.find({ lecture: p.lecture, student });
-  if (enrollment.length == 0) {
-    return false;
+  if (p) {
+    const enrollment = Enrollment.find({ lecture: p.lecture, student });
+
+    if (enrollment.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
   } else {
-    return true;
+    return false;
   }
 }

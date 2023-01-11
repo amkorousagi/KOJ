@@ -34,11 +34,12 @@ const Score = ({ open, handleClose }) => {
         justifyContent="center"
         alignItems="center"
         style={{
-          textAlign: "left",
+          textAlign: "center",
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
+          backfaceVisibility: "hidden",
         }}
       >
         <Card variant="outlined">

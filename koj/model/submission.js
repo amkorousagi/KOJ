@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const submissionSchema = mongoose.Schema({
-  problem: [{ type: Schema.Types.ObjectId, ref: "Problem" }],
-  student: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  problem: [{ type: mongoose.Schema.Types.ObjectId, ref: "Problem" }],
+  student: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   created_date: Date,
   code: String,
   log: String,

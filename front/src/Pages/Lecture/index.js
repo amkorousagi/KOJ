@@ -11,18 +11,41 @@ import {
   Collapse,
   Grid,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import {
+  Add,
+  DisabledByDefault,
+  ExpandLess,
+  ExpandMore,
+} from "@mui/icons-material";
 import Submit from "./Submit.js";
 import Score from "./Score.js";
+import { BASE_URL, FILE_URL } from "../../config.js";
+import CreatePractice from "./CreatePractice.js";
+import CreateProblem from "./CreateProblem.js";
+import CreateTestcase from "./CreateTestcase.js";
+import Testcase from "./Testcase.js";
 
-const Lecture = () => {
-  const { lectureId } = useParams();
+const Lecture = ({ userType }) => {
+  const { lectureId, lectureTitle } = useParams();
   console.log(lectureId);
-  const [open, setOpen] = React.useState([false, false]);
+  const [open, setOpen] = React.useState({});
   const [openModal, setOpenModal] = React.useState(false);
   const [openModal2, setOpenModal2] = React.useState(false);
+  const [openModal3, setOpenModal3] = React.useState(false);
+  const [openModal4, setOpenModal4] = React.useState(false);
+  const [openModal5, setOpenModal5] = React.useState(false);
+  const [openModal6, setOpenModal6] = React.useState(false);
+  const [practiceData, setPracticeData] = React.useState([]);
+  const [currentProblem, setCurrentProblem] = React.useState({});
+  const [currentPDF, setCurrentPDF] = React.useState([]);
+  const [curPracId, setCurPracId] = React.useState("");
+  const [curPracTitle, setCurPracTitle] = React.useState("");
+  const [problemData, setProblemData] = React.useState({});
+  const [testcaseData, setTestcaseData] = React.useState({});
+  const [openTest, setOpenTest] = React.useState({});
+  const [curTestcase, setCurTestcase] = React.useState({});
   const openOnlyModal2 = () => {
     setOpenModal(false);
     setOpenModal2(true);
@@ -38,39 +61,160 @@ const Lecture = () => {
     o[i] = !o[i];
     setOpen(o);
   };
-  const practiceData = [
-    {
-      practiceName: "실습 1",
-      practiceId: 1,
-      problemList: [
-        { problemName: "문제 1", problemId: 1 },
-        { problemName: "문제 2", problemId: 2 },
-        { problemName: "문제 3", problemId: 3 },
-      ],
-    },
-    {
-      practiceName: "실습 2",
-      practiceId: 2,
-      problemList: [
-        { problemName: "문제 1", problemId: 4 },
-        { problemName: "문제 2", problemId: 5 },
-      ],
-    },
-  ];
+  // lecutre 없는 practice 만들어짐
+  // 제대로 read하는지 확인
+  useEffect(() => {
+    fetch(BASE_URL + "/api/readPractice", {
+      method: "POST",
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        lecture: lectureId,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setPracticeData(data.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   const practices = practiceData.map((item, index) => {
-    const probelms = item.problemList.map((item) => {
-      return (
-        <ListItem button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <ListItemText primary={item.problemName} />
-        </ListItem>
-      );
-    });
+    console.log(item);
 
+    let problems;
+    if (problemData[item._id] === undefined) {
+      problems = <></>;
+    } else {
+      problems = problemData[item._id].map((p) => {
+        console.log(p);
+        let testcases;
+        if (testcaseData[p._id] === undefined) {
+          testcases = <></>;
+        } else {
+          testcases = testcaseData[p._id].map((t) => {
+            console.log(t);
+            return (
+              <ListItem
+                button
+                onClick={() => {
+                  setCurTestcase(t);
+                  setOpenModal6(true);
+                }}
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <ListItemText primary={t.title} />
+                {}
+              </ListItem>
+            );
+          });
+        }
+        return (
+          <>
+            <ListItem
+              button
+              onClick={() => {
+                setCurrentProblem(p);
+                setCurrentPDF(p.pdf);
+
+                fetch(BASE_URL + "/api/readTestcase", {
+                  method: "POST",
+                  headers: {
+                    Authorization: "bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    problem: p._id,
+                  }),
+                })
+                  .then((res) => {
+                    return res.json();
+                  })
+                  .then((data) => {
+                    console.log(data);
+                    const dd = {};
+                    dd[p._id] = data.data;
+                    setTestcaseData({ ...testcaseData, ...dd });
+                  })
+                  .catch((err) => console.log(err));
+
+                const o = { ...openTest };
+                if (o[p._id] === undefined) {
+                  o[p._id] = true;
+                } else {
+                  o[p._id] = !o[p._id];
+                }
+
+                setOpenTest(o);
+              }}
+            >
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <ListItemText primary={p.title} />
+              {openTest[p._id] ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openTest[p._id]} timeout="auto" unmountOnExit>
+              <List
+                disablePadding
+                subheader={
+                  <ListSubheader>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;테스트케이스
+                  </ListSubheader>
+                }
+              >
+                {testcases}
+                <ListItem>
+                  <Button
+                    variant="contained"
+                    style={{ margin: "5px" }}
+                    startIcon={<Add />}
+                    onClick={() => {
+                      setCurrentProblem(p);
+                      setOpenModal5(true);
+                    }}
+                  >
+                    테스트케이스 생성
+                  </Button>
+                </ListItem>
+              </List>
+            </Collapse>
+          </>
+        );
+      });
+    }
     return (
       <>
-        <ListItem button onClick={() => handleClick(index)}>
-          <ListItemText primary={item.practiceName} />
+        <ListItem
+          button
+          onClick={() => {
+            fetch(BASE_URL + "/api/readProblem", {
+              method: "POST",
+              headers: {
+                Authorization: "bearer " + localStorage.getItem("token"),
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                practice: item._id,
+              }),
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((data) => {
+                console.log(data);
+                const cc = {};
+                cc[item._id] = data.data;
+                setProblemData({ ...problemData, ...cc });
+              })
+              .catch((err) => console.log(err));
+
+            handleClick(index);
+          }}
+        >
+          <ListItemText primary={item.title} />
           {open[index] ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open[index]} timeout="auto" unmountOnExit>
@@ -80,7 +224,22 @@ const Lecture = () => {
               <ListSubheader>&nbsp;&nbsp;&nbsp;&nbsp;문제</ListSubheader>
             }
           >
-            {probelms}
+            {problems}
+
+            <ListItem style={{ alignItems: "right" }}>
+              <Button
+                variant="contained"
+                style={{ margin: "5px" }}
+                startIcon={<Add />}
+                onClick={() => {
+                  setCurPracId(item._id);
+                  setCurPracTitle(item.title);
+                  setOpenModal4(true);
+                }}
+              >
+                문제 생성
+              </Button>
+            </ListItem>
           </List>
         </Collapse>
       </>
@@ -89,14 +248,44 @@ const Lecture = () => {
 
   return (
     <>
-      <Score open={openModal2} handleClose={handleOpenModal2} />
+      <Testcase
+        open={openModal6}
+        handleClose={() => {
+          setOpenModal6(false);
+        }}
+        testcase={curTestcase}
+      />
       <Submit
         open={openModal}
         openScore={openOnlyModal2}
         handleClose={handleOpenModal}
       />
+      <Score open={openModal2} handleClose={handleOpenModal2} />
+      <CreatePractice
+        open={openModal3}
+        handleClose={() => {
+          setOpenModal3(false);
+        }}
+        lecture_id={lectureId}
+      />
+      <CreateProblem
+        open={openModal4}
+        handleClose={() => {
+          setOpenModal4(false);
+        }}
+        practiceId={curPracId}
+        practiceTitle={curPracTitle}
+      />
+      <CreateTestcase
+        open={openModal5}
+        handleClose={() => {
+          setOpenModal5(false);
+        }}
+        problemId={currentProblem._id}
+        problemTitle={currentProblem.title}
+      />
       <Grid container>
-        <Grid item xs={2} style={{ zIndex: 5 }}>
+        <Grid item xs={3} style={{ zIndex: 5 }}>
           <div
             style={{
               display: "flex",
@@ -106,16 +295,27 @@ const Lecture = () => {
             }}
           >
             <List
-              subheader={<ListSubheader>실습</ListSubheader>}
+              subheader={<ListSubheader>{lectureTitle}</ListSubheader>}
               style={{
                 width: "100%",
               }}
             >
               {practices}
+              <hr />
+              <ListItem>
+                <Button
+                  variant="contained"
+                  style={{ margin: "5px" }}
+                  startIcon={<Add />}
+                  onClick={() => setOpenModal3(true)}
+                >
+                  실습 생성
+                </Button>
+              </ListItem>
             </List>
           </div>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={9}>
           <Grid
             container
             direction="row"
@@ -132,7 +332,11 @@ const Lecture = () => {
               >
                 <Card variant="outlined">
                   <CardContent>
-                    <div style={{ marginTop: 5 }}>문제 점수 | 0/10</div>
+                    <div style={{ marginTop: 5 }}>
+                      실습 시작 10:00
+                      <hr />
+                      실습 종료 10:00
+                    </div>
                   </CardContent>
                 </Card>
                 &nbsp;&nbsp;
@@ -143,7 +347,10 @@ const Lecture = () => {
                   alignItems="center"
                 >
                   <CardContent>
-                    <div style={{ marginTop: 5 }}>남은 시간 | 10:00</div>
+                    <div style={{ marginTop: 5 }}>
+                      문제 점수
+                      <hr /> 0/10
+                    </div>
                   </CardContent>
                 </Card>
               </Box>
@@ -193,10 +400,9 @@ const Lecture = () => {
             <br />
             <Grid item xs={12}>
               <Box
-                display="flex"
                 justifyContent="center"
                 alignItems="center"
-                style={{ textAlign: "left" }}
+                style={{ textAlign: "left", margin: "5px" }}
               >
                 <Card variant="outlined">
                   <CardContent>
@@ -206,12 +412,23 @@ const Lecture = () => {
                       </div>
                       <hr />
                     </Typography>
-                    <img
-                      src="/problem1.png"
-                      alt="problem"
-                      width="100%"
-                      height="auto"
-                    />
+                    {currentPDF.map((item) => {
+                      return (
+                        <object
+                          data={FILE_URL + "/" + item}
+                          type="application/pdf"
+                          width="100%"
+                          style={{ aspectRatio: 2 / 3 }}
+                        >
+                          <embed
+                            src={FILE_URL + "/" + item}
+                            type="application/pdf"
+                            width="100%"
+                            style={{ aspectRatio: 2 / 3 }}
+                          />
+                        </object>
+                      );
+                    })}
                   </CardContent>
                 </Card>
               </Box>

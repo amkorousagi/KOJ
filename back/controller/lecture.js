@@ -3,22 +3,25 @@ import Enrollment from "../model/enrollment";
 
 export async function createLecture({ lecturer, title, semester }) {
   const lecture = new Lecture({ lecturer, title, semester });
-
+  console.log(lecture);
+  console.log({ lecturer, title, semester });
   return await lecture.save();
 }
 
 export async function readLecture({ lecturer, student }) {
+  let lectures = [];
   if (lecturer) {
     return await Lecture.find({ lecturer });
   } else if (student) {
     const enrollments = await Enrollment.find({ student });
-    const lectures = await Promise.all(
+    lectures = await Promise.all(
       enrollments.map(async (item) => {
-        return await Lecture.findById(item.lecture);
+        return await Lecture.findById(item.lecture).populate("lecturer");
       })
     );
-    return lectures;
   } else {
-    return await Lecture.find({});
+    lectures = await Lecture.find({}).populate("lecturer");
   }
+
+  return lectures;
 }

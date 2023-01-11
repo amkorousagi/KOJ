@@ -14,12 +14,7 @@ createProblemRoute.post(
       description,
       score,
       pdf,
-      blank_answer,
       result_answer,
-      input_text,
-      output_text,
-      input_file,
-      output_file,
     } = req.body;
 
     // 유효성 검증 , id.. problem_type
@@ -31,12 +26,7 @@ createProblemRoute.post(
       description,
       score,
       pdf,
-      blank_answer,
       result_answer,
-      input_text,
-      output_text,
-      input_file,
-      output_file,
     });
   })
 );

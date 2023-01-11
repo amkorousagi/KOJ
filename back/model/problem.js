@@ -7,13 +7,8 @@ const problemSchema = mongoose.Schema({
   description: String, // blank 면 front에서 특정 문자열을 가려주도록
   score: Number,
   pdf: [String],
-  blank_answer: [String],
   result_answer: String,
   execution_time_limit: Number,
-  input_text: String,
-  output_text: String,
-  input_file: [String],
-  output_file: [String],
 });
 
 const Problem = mongoose.model("Problem", problemSchema);

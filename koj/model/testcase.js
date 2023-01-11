@@ -1,7 +1,8 @@
-const mongoose = requrie("mongoose");
+const mongoose = require("mongoose");
 
 const testcaseSchema = mongoose.Schema({
-  problem: [{ type: Schema.Types.ObjectId, ref: "Problem" }],
+  problem: [{ type: mongoose.Schema.Types.ObjectId, ref: "Problem" }],
+  title: String,
   score: Number,
   hidden: Boolean,
   input_text: String,

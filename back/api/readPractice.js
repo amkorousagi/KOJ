@@ -8,9 +8,7 @@ readPracticeRoute.post(
   "/",
   responseHandler(async (req) => {
     const { lecture } = req.body;
-
     // 유효성 검증 , id..
-
     return await readPractice({ lecture });
   })
 );

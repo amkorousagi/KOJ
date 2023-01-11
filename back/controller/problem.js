@@ -8,12 +8,7 @@ export async function createProblem({
   description,
   score,
   pdf,
-  blank_answer,
   result_answer,
-  input_text,
-  output_text,
-  input_file,
-  output_file,
 }) {
   const problem = new Problem({
     practice,
@@ -22,12 +17,7 @@ export async function createProblem({
     description,
     score,
     pdf,
-    blank_answer,
     result_answer,
-    input_text,
-    output_text,
-    input_file,
-    output_file,
   });
   return await problem.save();
 }

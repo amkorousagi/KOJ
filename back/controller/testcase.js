@@ -3,6 +3,7 @@ import { USER_TYPE } from "../type";
 
 export async function createTestcase({
   problem,
+  title,
   score,
   hidden,
   input_text,
@@ -12,6 +13,7 @@ export async function createTestcase({
 }) {
   const testcase = new Testcase({
     problem,
+    title,
     score,
     hidden,
     input_text,

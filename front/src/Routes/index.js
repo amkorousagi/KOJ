@@ -16,6 +16,7 @@ const Router = () => {
   const [isLogined, setIsLogined] = React.useState(false);
   const [userType, setUserType] = React.useState("");
   const [name, setName] = React.useState("");
+  const [userId, setUserId] = React.useState("");
 
   useEffect(() => {
     fetch(BASE_URL + "/token", {
@@ -34,6 +35,7 @@ const Router = () => {
           setName(data.data.name);
           setUserType(data.data.user_type);
           setIsLogined(true);
+          setUserId(data.data._id);
         } else {
           setIsLogined(false);
           console.log(data.error);
@@ -46,6 +48,7 @@ const Router = () => {
   }, []);
 
   if (isLogined) {
+    //userType 별로 다른 페이지 보여주기 : 조건부 렌더링
     return (
       <Layout
         userType={userType}
@@ -55,9 +58,15 @@ const Router = () => {
       >
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Lectures />} />
+            <Route
+              path="/"
+              element={<Lectures userType={userType} userId={userId} />}
+            />
             <Route path="/about" element={<About />} />
-            <Route path="/lecture/:lectureId" element={<Lecture />} />
+            <Route
+              path="/lecture/:lectureId/:lectureTitle"
+              element={<Lecture userType={userType} />}
+            />
             <Route path="/code/:scoreId" element={<Code />} />
             <Route path="/score/:scoreId" element={<Score />} />
             <Route path="/createUser" element={<CreateUser />} />

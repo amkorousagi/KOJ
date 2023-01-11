@@ -2,8 +2,9 @@ const express = require("express");
 const multer = require("multer");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const fetch = require("node-fetch"); // @2
 const { File } = require("./model/file.js");
-const { id, pwd, dbName, ip, port } = require("./config");
+const { id, pwd, dbName, ip, port, KOJ_URL } = require("./config");
 
 const fs = require("fs");
 const path = require("path");
@@ -20,6 +21,7 @@ const upload = multer({
       const ex = file.originalname.split(".").pop();
       const f = new File({
         description: req.body[file.originalname],
+        name: file.originalname,
         extension: ex ? "." + ex : "",
         mimetype: file.mimetype,
       });
@@ -45,17 +47,41 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/file/:filename", async (req, res) => {
+app.post("/file/:filename", async (req, res) => {
   const file = await File.findById(req.params.filename);
   let filePath = __dirname + "/file/" + req.params.filename + file.extension;
-
+  // to form data
+  const formData = new FormData();
+  formData.append("files", fs.createReadStream(filePath));
+  formData.append("testcased_id", req.body.testcase_id);
+  formData.append("filename", file.originalname);
+  await fetch(KOJ_URL + "/upload_file", { method: "POST", body: formData });
   res.status(200).sendFile(filePath);
 });
+//code
+app.post("/code/:filename", async (req, res) => {
+  const file = await File.findById(req.params.filename);
+  let filePath = __dirname + "/file/" + req.params.filename + file.extension;
+  // to form data
+  const formData = new FormData();
+  formData.append("files", fs.createReadStream(filePath));
+  formData.append("submission_id", req.body.submission_id);
+  formData.append("filename", file.originalname);
+  await fetch(KOJ_URL + "/upload_code", { method: "POST", body: formData });
+  res.status(200).sendFile(filePath);
+});
+
 app.get("/download/:filename", async (req, res) => {
   const file = await File.findById(req.params.filename);
   let filePath = __dirname + "/file/" + req.params.filename + file.extension;
 
   res.status(200).download(filePath);
+});
+app.get("/file/:filename", async (req, res) => {
+  const file = await File.findById(req.params.filename);
+  let filePath = __dirname + "/file/" + req.params.filename + file.extension;
+
+  res.status(200).sendFile(filePath);
 });
 app.post("/file", upload.array("files"), async (req, res) => {
   console.log(req.get("Content-Type"));

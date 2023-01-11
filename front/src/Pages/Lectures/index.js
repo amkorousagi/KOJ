@@ -9,55 +9,51 @@ import {
   ListItem,
   ListItemText,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
+import LectureList from "../../Components/LectureList.js";
+import { BASE_URL } from "../../config.js";
 
-const LectureList = ({ title, lectureList }) => {
-  const lectures = lectureList.map((item) => (
-    <ListItem>
-      <Button
-        style={{
-          width: "100%",
-          textAlign: "left",
-        }}
-        onClick={() => {
-          window.location.href = "/lecture/" + item.id;
-        }}
-      >
-        <ListItemText primary={item.title} secondary={item.professor} />
-      </Button>
-    </ListItem>
-  ));
-  return (
-    <Card variant="outlined">
-      <CardContent style={{ minWidth: 500 }}>
-        <Typography style={{ fontFamily: "Nanum Gothic" }}>
-          <div style={{ textAlign: "center", fontWeight: 700, fontSize: 20 }}>
-            {title}
-          </div>
-          <hr />
-        </Typography>
-        <List
-          style={{
-            width: "100%",
-            backgroundColor: "#F0F0F0",
-          }}
-        >
-          {lectures}
-        </List>
-      </CardContent>
-    </Card>
-  );
-};
+const Lectures = ({ userType, userId }) => {
+  const [cur, setCur] = React.useState([]);
+  const [pre, setPre] = React.useState([]);
 
-const Lectures = () => {
-  const curLectureList = [
-    { title: "기초 프로그래밍 강의", professor: "이우진 교수님", id: 1 },
-    { title: "고급 문제해결 강의", professor: "이시형 교수님", id: 2 },
-  ];
-  const preLectureList = [
-    { title: "자바 프로그래밍 강의", professor: "정숙영 교수님", id: 1 },
-    { title: "알고리즘2 강의", professor: "유관우 교수님", id: 2 },
-  ];
+  useEffect(() => {
+    const body = {};
+    if (userType === "professor") {
+      body["lecturer"] = userId;
+    } else if (userType === "tutor") {
+      body["student"] = userId;
+    } else if (userType === "student") {
+      body["student"] = userId;
+    } else {
+      console.log("userType Error " + userType);
+    }
+    fetch(BASE_URL + "/api/readLecture", {
+      method: "POST",
+      headers: { Authorization: "bearer " + localStorage.getItem("token") },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        const c = [];
+        const p = [];
+        const y = new Date(Date.now()).getFullYear();
+        for (const l of data.data) {
+          if (Number(l.semester.substr(0, 4)) < Number(y)) {
+            p.push(l);
+          } else {
+            c.push(l);
+          }
+        }
+        setCur(c);
+        setPre(p);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <Box
@@ -66,7 +62,13 @@ const Lectures = () => {
         alignItems="center"
         style={{ textAlign: "left" }}
       >
-        <LectureList title="이번 학기 강의목록" lectureList={curLectureList} />
+        <LectureList
+          title="이번 학기 강의목록"
+          lectureList={cur}
+          userType={userType}
+          userId={userId}
+          isCur={true}
+        />
       </Box>
       <br />
       <Box
@@ -75,7 +77,13 @@ const Lectures = () => {
         alignItems="center"
         style={{ textAlign: "left" }}
       >
-        <LectureList title="지난 학기 강의목록" lectureList={preLectureList} />
+        <LectureList
+          title="지난 학기 강의목록"
+          lectureList={pre}
+          userType={userType}
+          userId={userId}
+          isCur={false}
+        />
       </Box>
     </>
   );
