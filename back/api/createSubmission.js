@@ -11,7 +11,8 @@ createSubmissionRoute.post(
   "/",
   responseHandler(async (req) => {
     const { problem, code, language } = req.body;
-
+    console.log("problem ", problem);
+    console.log(code);
     const submission = await initSubmission({
       problem,
       student: req.user._id,
@@ -32,8 +33,8 @@ createSubmissionRoute.post(
         console.log(err);
       });
 
-    const { log, success, fail, result, output, feedback } = judge;
-
+    const { log, success, fail, result, output, feedback } = {}; // = judge;
+    /*
     return await updateSubmission({
       submission_id: submission._id,
       log,
@@ -43,6 +44,7 @@ createSubmissionRoute.post(
       output,
       feedback,
     });
+    */
   })
 );
 

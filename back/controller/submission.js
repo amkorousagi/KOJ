@@ -4,8 +4,19 @@ export async function initSubmission({ problem, student, code, language }) {
   const submission = new Submission({
     problem,
     student,
+    state: "to_do",
     code,
     language,
+    success: [],
+    stdout: [],
+    stderr: [],
+    exit_code: [],
+    error_type: [],
+    cpu_usage: [],
+    memory_usage: [],
+    signal: [],
+    error: [],
+    feedback: [],
   });
   return await submission.save();
 }

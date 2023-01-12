@@ -259,6 +259,7 @@ const Lecture = ({ userType }) => {
         open={openModal}
         openScore={openOnlyModal2}
         handleClose={handleOpenModal}
+        problem_id={currentProblem._id}
       />
       <Score open={openModal2} handleClose={handleOpenModal2} />
       <CreatePractice

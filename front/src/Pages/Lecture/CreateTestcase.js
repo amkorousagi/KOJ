@@ -53,6 +53,7 @@ const CreateTestcase = ({ open, handleClose, problemId, problemTitle }) => {
       })
       .then((data) => {
         console.log(data);
+        return data.files;
       })
       .catch((err) => {
         console.log(err);
@@ -78,6 +79,7 @@ const CreateTestcase = ({ open, handleClose, problemId, problemTitle }) => {
       })
       .then((data) => {
         console.log(data);
+        return data.files;
       })
       .catch((err) => {
         console.log(err);
@@ -272,7 +274,7 @@ const CreateTestcase = ({ open, handleClose, problemId, problemTitle }) => {
             <br />
             <RadioGroup
               row
-              defaultValue={"private"}
+              defaultValue={hidden}
               onChange={(e) => {
                 e.preventDefault();
                 setHidden(e.target.value);

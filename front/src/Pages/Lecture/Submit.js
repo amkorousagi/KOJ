@@ -5,11 +5,16 @@ import {
   CardContent,
   Button,
   Modal,
+  RadioGroup,
+  FormLabel,
+  FormControlLabel,
+  Radio,
 } from "@material-ui/core";
 import React from "react";
-import { FILE_URL } from "../../config.js";
+import { BASE_URL, FILE_URL } from "../../config.js";
 
-const Submit = ({ open, handleClose, openScore }) => {
+const Submit = ({ open, handleClose, openScore, problem_id }) => {
+  const [language, setLanguage] = React.useState("c");
   const [files, setFiles] = React.useState([]);
   const dropHandler = (ev) => {
     console.log("File(s) dropped");
@@ -57,7 +62,7 @@ const Submit = ({ open, handleClose, openScore }) => {
       dz.textContent += `...${file.name}\n`;
     }
   };
-  const submitFile = () => {
+  const submitFile = async () => {
     const formData = new FormData();
 
     for (const item of files) {
@@ -68,7 +73,7 @@ const Submit = ({ open, handleClose, openScore }) => {
     }
 
     console.log(files);
-    fetch(FILE_URL, {
+    const codes = await fetch(FILE_URL, {
       method: "post",
       headers: {
         //"Content-Type":""
@@ -80,6 +85,34 @@ const Submit = ({ open, handleClose, openScore }) => {
       })
       .then((data) => {
         console.log(data);
+        return data.files;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log({ problem_id });
+    await fetch(BASE_URL + "/api/createSubmission", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        problem: problem_id,
+        code: codes,
+        language,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          // handleClose();
+        } else {
+          console.log("err");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -102,9 +135,62 @@ const Submit = ({ open, handleClose, openScore }) => {
       >
         <Card variant="outlined">
           <CardContent>
+            <FormLabel
+              style={{
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              언어
+            </FormLabel>
+            <br />
+            <br />
+            <RadioGroup
+              row
+              defaultValue={language}
+              onChange={(e) => {
+                e.preventDefault();
+                setLanguage(e.target.value);
+              }}
+            >
+              <FormControlLabel
+                value="c"
+                label="C"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="cpp"
+                label="C++"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="java"
+                label="Java"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="python"
+                label="Pyton"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+            </RadioGroup>
+            <br />
+            <br />
+            <FormLabel
+              style={{
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              소스 코드
+            </FormLabel>
+            <br />
+            <br />
             <Typography style={{ fontFamily: "Nanum Gothic" }}>
-              <div style={{ textAlign: "center" }}>정답 제출</div>
-              <hr />
               <div
                 id="drop_zone"
                 onDrop={dropHandler}
