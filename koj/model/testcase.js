@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const testcaseSchema = mongoose.Schema({
-  problem: [{ type: mongoose.Schema.Types.ObjectId, ref: "Problem" }],
+  problem: { type: mongoose.Schema.Types.ObjectId, ref: "Problem" },
   title: String,
   score: Number,
   hidden: Boolean,
@@ -12,4 +12,4 @@ const testcaseSchema = mongoose.Schema({
 });
 
 const Testcase = mongoose.model("Testcase", testcaseSchema);
-module.exports = { Testcase };
+export default Testcase;

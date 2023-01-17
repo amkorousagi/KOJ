@@ -1,18 +1,21 @@
-const express = require("express");
-const multer = require("multer");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const fetch = require("node-fetch");
-
-const { Submission } = require("./model/submission.js");
-const { Testcase } = require("./model/testcase.js");
-const { id, pwd, dbName, ip, port, MEDIA_URL } = require("./config.js");
-const { c, cpp, node, python, java } = require("compile-run");
-const fs = require("fs");
-const path = require("path");
-const { Problem } = require("./model/problem.js");
+import express from "express";
+import multer from "multer";
+import mongoose from "mongoose";
+import cors from "cors";
+import fetch from "node-fetch";
+import { c, cpp, node, python, java } from "compile-run";
+import fs from "fs";
+import path from "path";
 import { copyFile } from "cp-file";
-const { File } = require("./model/file.js");
+
+import Submission from "./model/submission.js";
+import Testcase from "./model/testcase.js";
+import { id, pwd, dbName, ip, port, MEDIA_URL } from "./config.js";
+import Problem from "./model/problem.js";
+import File from "./model/file.js";
+import { exec, spawn, spawnSync } from "child_process";
+
+const __dirname = path.resolve();
 
 const upload_testcase_file = multer({
   storage: multer.diskStorage({
@@ -117,6 +120,16 @@ app.get("/build_judge_environment/:testcase_id", async (req, res) => {
 
 //일단 큐 없이 해보자.
 app.get("/request_judge/:submission_id", async (req, res) => {
+  const success = [],
+    stdout = [],
+    stderr = [],
+    exit_code = [],
+    error_type = [],
+    cpu_usage = [],
+    memory_usage = [],
+    signal = [],
+    feedback = [],
+    error = [];
   try {
     const submission = await Submission.findById(req.params.submission_id);
     //submission 디렉터리 만들고
@@ -146,105 +159,152 @@ app.get("/request_judge/:submission_id", async (req, res) => {
     }
     const problem = await Problem.findById(submission.problem);
     const testcases = await Testcase.find({ problem: problem._id });
-    const success = [],
-      stdout = [],
-      stderr = [],
-      exit_code = [],
-      error_type = [],
-      cpu_usage = [],
-      memory_usage = [],
-      signal = [],
-      feedback = [],
-      error = [];
-
+    //console.log(problem);
     let agent;
-    if (language == "c") {
+    if (submission.language == "c") {
       agent = c;
-    } else if (language == "cpp") {
+    } else if (submission.language == "cpp") {
       agent = cpp;
-    } else if (language == "java") {
+    } else if (submission.language == "java") {
       agent = java;
-    } else if (language == "python") {
+    } else if (submission.language == "python") {
       agent = python;
-    } else if (language == "node") {
+    } else if (submission.language == "node") {
       agent = node;
     } else {
       console.log("wrong language");
       return res.json({});
     }
-    for (t of testcases) {
+    console.log("start testcase");
+    for (const t of testcases) {
       try {
         const input_file = await File.findById(t.input_file[0]);
+        console.log(input_file);
         await copyFile(
-          __dirname +
-            "/testcase/" +
-            req.params.testcase_id +
-            "/input/" +
-            input_file.name,
-          __dirname +
-            "/submission/" +
-            req.params.submission_id +
-            "/" +
-            input_file.name
-        );
-        const resultPromise = agent.runFile(
-          __dirname +
-            "/submission/" +
-            req.params.submission_id +
-            "/" +
-            code_name,
-          { stdin: t.input_text, timeout: 1000 }
-        );
-        const result = await resultPromise;
-        console.log(result);
-        if (t.output_file.length != 0) {
-          const output_file = await File.findById(t.output_file[0]);
-          const answer = fs.readFileSync(
-            __dirname +
-              "/testcase/" +
-              req.params.testcase_id +
-              "/output/" +
-              output_file.name
-          );
-          const makedFile = fs.readFileSync(
+          path.join(
+            __dirname + "/testcase/" + t._id + "/input/" + input_file.name
+          ),
+          path.join(
             __dirname +
               "/submission/" +
               req.params.submission_id +
               "/" +
-              output_file.name
+              input_file.name
+          )
+        );
+        console.log("copy");
+
+        const compile = exec("gcc -o code " + code_name, {
+          cwd: path.join(__dirname + "/submission/" + req.params.submission_id),
+        });
+
+        await new Promise((resolve, reject) => {
+          compile.on("close", (c) => {
+            console.log("close with " + c);
+            resolve();
+          });
+          compile.on("error", (c) => {
+            console.log("error with " + c);
+            reject();
+          });
+        });
+
+        const cod = spawn(path.join("./code"), {
+          cwd: path.join(__dirname + "/submission/" + req.params.submission_id),
+          timeout: 1000,
+        });
+        cod.stdin.write(t.input_text);
+        let result_output = "";
+        cod.stdout.on("data", function (data) {
+          data = data.toString();
+          result_output += data;
+        });
+        let result_error = "";
+        cod.stderr.on("data", function (data) {
+          data = data.toString();
+          result_error += data;
+        });
+        let result_exit_code = "";
+        await new Promise((resolve, reject) => {
+          cod.on("close", (c) => {
+            result_exit_code = c;
+            resolve();
+          });
+        });
+        console.log({ result_output, result_error, result_exit_code });
+        /*
+        const resultPromise = agent.runFile(
+          path.join(
+            __dirname +
+              "/submission/" +
+              req.params.submission_id +
+              "/" +
+              code_name
+          ),
+          {
+            stdin: t.input_text,
+            timeout: 1000,
+            cwd: path.join(
+              __dirname + "/submission/" + req.params.submission_id
+            ),
+          }
+        );
+        */
+        const result = {
+          stdout: result_output,
+          stderr: result_error,
+          exit_code: result_exit_code,
+        };
+        console.log(result);
+        if (t.output_file.length != 0) {
+          const output_file = await File.findById(t.output_file[0]);
+          console.log(output_file);
+          const answer = fs.readFileSync(
+            path.join(
+              __dirname + "/testcase/" + t._id + "/output/" + output_file.name
+            )
+          );
+          const makedFile = fs.readFileSync(
+            path.join(
+              __dirname +
+                "/submission/" +
+                req.params.submission_id +
+                "/" +
+                output_file.name
+            )
           );
           if (answer.equals(makedFile)) {
             if (result.stdout == t.output_text) {
-              success.append(true);
-              feedback.append("good");
+              success.push(true);
+              feedback.push("good");
             } else {
-              success.append(false);
-              feedback.append("bad");
+              success.push(false);
+              feedback.push("bad");
             }
           } else {
-            success.append(false);
-            feedback.append("bad");
+            success.push(false);
+            feedback.push("bad");
           }
         } else {
           if (result.stdout == t.output_text) {
-            success.append(true);
-            feedback.append("good");
+            success.push(true);
+            feedback.push("good");
           } else {
-            success.append(false);
-            feedback.append("bad");
+            success.push(false);
+            feedback.push("bad");
           }
         }
 
-        stdout.append(result.stdout);
-        stderr.append(result.stderr);
-        exit_code.append(result.exitCode);
-        error_type.append(result.errortype);
-        cpu_usage.append(result.cpuUsage);
-        memory_usage.append(result.memoryUsage);
-        signal.append(result.signal);
+        stdout.push(result.stdout);
+        stderr.push(result.stderr);
+        exit_code.push(result.exitCode);
+        error_type.push(0);
+        cpu_usage.push(0);
+        memory_usage.push(0);
+        signal.push(0);
       } catch (err) {
         console.log(err);
-        error.append({
+        error.push({
           testcase: t._id,
           testcase_name: t.title,
           error_stack: err.stack,
@@ -261,14 +321,29 @@ app.get("/request_judge/:submission_id", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-
-  return res.json({
-    log,
+  console.log({
     success,
-    fail,
-    result,
-    output,
+    stdout,
+    stderr,
+    exit_code,
+    error_type,
+    cpu_usage,
+    memory_usage,
+    signal,
     feedback,
+    error,
+  });
+  return res.json({
+    success,
+    stdout,
+    stderr,
+    exit_code,
+    error_type,
+    cpu_usage,
+    memory_usage,
+    signal,
+    feedback,
+    error,
   });
 });
 

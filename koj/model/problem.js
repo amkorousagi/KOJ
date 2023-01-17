@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const problemSchema = mongoose.Schema({
   practice: { type: mongoose.Schema.Types.ObjectId, ref: "Practice" },
@@ -12,4 +12,4 @@ const problemSchema = mongoose.Schema({
 });
 
 const Problem = mongoose.model("Problem", problemSchema);
-module.exports = { Problem };
+export default Problem;

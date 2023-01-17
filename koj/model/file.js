@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const fileSchema = mongoose.Schema({
   date: { type: Date, default: Date.now() },
@@ -9,4 +9,4 @@ const fileSchema = mongoose.Schema({
 });
 
 const File = mongoose.model("File", fileSchema);
-module.exports = { File };
+export default File;

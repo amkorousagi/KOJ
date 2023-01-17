@@ -23,21 +23,30 @@ export async function initSubmission({ problem, student, code, language }) {
 
 export async function updateSubmission({
   submission_id,
-  log,
   success,
-  fail,
-  result,
-  output,
+  stdout,
+  stderr,
+  exit_code,
+  error_type,
+  cpu_usage,
+  memory_usage,
+  signal,
+  error,
   feedback,
 }) {
   return await Submission.findByIdAndUpdate(
     submission_id,
     {
-      log,
+      state: "done",
       success,
-      fail,
-      result,
-      output,
+      stdout,
+      stderr,
+      exit_code,
+      error_type,
+      cpu_usage,
+      memory_usage,
+      signal,
+      error,
       feedback,
     },
     { new: true }
