@@ -30,6 +30,7 @@ createSubmissionRoute.post(
 
     let {
       success,
+      stdin,
       stdout,
       stderr,
       exit_code,
@@ -40,14 +41,18 @@ createSubmissionRoute.post(
       feedback,
       error,
     } = {};
-    await fetch(KOJ_URL + "/request_judge/" + submission._id, {
-      method: "GET",
-    })
+    const fetch_result = await fetch(
+      KOJ_URL + "/request_judge/" + submission._id,
+      {
+        method: "GET",
+      }
+    )
       .then((res) => {
         return res.json();
       })
       .then((data) => {
         success = data.success;
+        stdin = data.stdin;
         stdout = data.stdout;
         stderr = data.stderr;
         exit_code = data.exit_code;
@@ -57,15 +62,18 @@ createSubmissionRoute.post(
         signal = data.signal;
         feedback = data.feedback;
         error = data.error;
-        return;
+        return true;
       })
       .catch((err) => {
         console.log(err);
+        return false;
       });
-
+    if (fetch_result == false) {
+    }
     const updated_submission = await updateSubmission({
       submission_id: submission._id,
       success,
+      stdin,
       stdout,
       stderr,
       exit_code,

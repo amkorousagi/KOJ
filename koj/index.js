@@ -121,6 +121,7 @@ app.get("/build_judge_environment/:testcase_id", async (req, res) => {
 //일단 큐 없이 해보자.
 app.get("/request_judge/:submission_id", async (req, res) => {
   const success = [],
+    stdin = [],
     stdout = [],
     stderr = [],
     exit_code = [],
@@ -132,6 +133,9 @@ app.get("/request_judge/:submission_id", async (req, res) => {
     error = [];
   try {
     const submission = await Submission.findById(req.params.submission_id);
+    await Submission.findByIdAndUpdate(req.params.submission_id, {
+      state: "doing (0%)",
+    });
     //submission 디렉터리 만들고
     console.log(submission.code);
     await fs.promises.mkdir(
@@ -176,23 +180,29 @@ app.get("/request_judge/:submission_id", async (req, res) => {
       return res.json({});
     }
     console.log("start testcase");
+    let cnt = 0;
     for (const t of testcases) {
       try {
-        const input_file = await File.findById(t.input_file[0]);
-        console.log(input_file);
-        await copyFile(
-          path.join(
-            __dirname + "/testcase/" + t._id + "/input/" + input_file.name
-          ),
-          path.join(
-            __dirname +
-              "/submission/" +
-              req.params.submission_id +
-              "/" +
-              input_file.name
-          )
-        );
-        console.log("copy");
+        cnt++;
+        await Submission.findByIdAndUpdate(req.params.submission_id, {
+          state: "doing (" + parseInt((cnt / t.length) * 100) + "%)",
+        });
+        if (t.input_file.length != 0) {
+          const input_file = await File.findById(t.input_file[0]);
+          await copyFile(
+            path.join(
+              __dirname + "/testcase/" + t._id + "/input/" + input_file.name
+            ),
+            path.join(
+              __dirname +
+                "/submission/" +
+                req.params.submission_id +
+                "/" +
+                input_file.name
+            )
+          );
+          console.log("copy");
+        }
 
         const compile = exec("gcc -o code " + code_name, {
           cwd: path.join(__dirname + "/submission/" + req.params.submission_id),
@@ -259,31 +269,46 @@ app.get("/request_judge/:submission_id", async (req, res) => {
         if (t.output_file.length != 0) {
           const output_file = await File.findById(t.output_file[0]);
           console.log(output_file);
-          const answer = fs.readFileSync(
-            path.join(
-              __dirname + "/testcase/" + t._id + "/output/" + output_file.name
+          if (
+            fs.existsSync(
+              path.join(
+                __dirname +
+                  "/submission/" +
+                  req.params.submission_id +
+                  "/" +
+                  output_file.name
+              )
             )
-          );
-          const makedFile = fs.readFileSync(
-            path.join(
-              __dirname +
-                "/submission/" +
-                req.params.submission_id +
-                "/" +
-                output_file.name
-            )
-          );
-          if (answer.equals(makedFile)) {
-            if (result.stdout == t.output_text) {
-              success.push(true);
-              feedback.push("good");
+          ) {
+            const answer = fs.readFileSync(
+              path.join(
+                __dirname + "/testcase/" + t._id + "/output/" + output_file.name
+              )
+            );
+            const makedFile = fs.readFileSync(
+              path.join(
+                __dirname +
+                  "/submission/" +
+                  req.params.submission_id +
+                  "/" +
+                  output_file.name
+              )
+            );
+            if (answer.equals(makedFile)) {
+              if (result.stdout == t.output_text) {
+                success.push(true);
+                feedback.push("good");
+              } else {
+                success.push(false);
+                feedback.push("bad");
+              }
             } else {
               success.push(false);
               feedback.push("bad");
             }
           } else {
             success.push(false);
-            feedback.push("bad");
+            feedback.push("no output file");
           }
         } else {
           if (result.stdout == t.output_text) {
@@ -294,7 +319,7 @@ app.get("/request_judge/:submission_id", async (req, res) => {
             feedback.push("bad");
           }
         }
-
+        stdin.push(t.input_text);
         stdout.push(result.stdout);
         stderr.push(result.stderr);
         exit_code.push(result.exitCode);
@@ -302,8 +327,18 @@ app.get("/request_judge/:submission_id", async (req, res) => {
         cpu_usage.push(0);
         memory_usage.push(0);
         signal.push(0);
+        error.push(undefined);
       } catch (err) {
         console.log(err);
+        success.push(false);
+        feedback.push("error");
+        stdout.push("");
+        stderr.push("");
+        exit_code.push("");
+        error_type.push("");
+        cpu_usage.push(0);
+        memory_usage.push(0);
+        signal.push(0);
         error.push({
           testcase: t._id,
           testcase_name: t.title,
@@ -312,6 +347,9 @@ app.get("/request_judge/:submission_id", async (req, res) => {
         });
       }
     }
+    await Submission.findByIdAndUpdate(req.params.submission_id, {
+      state: "done",
+    });
     // 컴파일 하고 저장.
     //testcase 마다
 
@@ -323,6 +361,7 @@ app.get("/request_judge/:submission_id", async (req, res) => {
   }
   console.log({
     success,
+    stdin,
     stdout,
     stderr,
     exit_code,
@@ -335,6 +374,7 @@ app.get("/request_judge/:submission_id", async (req, res) => {
   });
   return res.json({
     success,
+    stdin,
     stdout,
     stderr,
     exit_code,

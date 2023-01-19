@@ -22,8 +22,14 @@ import { Add, Label, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
-const CreateTestcase = ({ open, handleClose, problemId, problemTitle }) => {
-  const [title, setTitle] = React.useState("");
+const CreateTestcase = ({
+  open,
+  handleClose,
+  problemId,
+  problemTitle,
+  nTestcase,
+}) => {
+  const [title, setTitle] = React.useState("테스트케이스 " + (nTestcase + 1));
   const [score, setScore] = React.useState(10);
   const [hidden, setHidden] = React.useState("private");
   const [input_text, setInput_text] = React.useState("");
@@ -118,10 +124,13 @@ const CreateTestcase = ({ open, handleClose, problemId, problemTitle }) => {
         console.log(err);
       });
   };
-
+  useEffect(() => {
+    setTitle("테스트케이스 " + (nTestcase + 1));
+  }, [nTestcase]);
   useEffect(() => {
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
+
     let intervalId;
     intervalId = setInterval(() => {
       //console.log("ss");

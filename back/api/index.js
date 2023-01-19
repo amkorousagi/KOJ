@@ -14,6 +14,10 @@ import readTestcaseRoute from "./readTestcase";
 import readSubmissionRoute from "./readSubmission";
 import { authorization_handler } from "../middleware/authorization_handler";
 import { USER_TYPE } from "../type";
+import readProblemScoreRoute from "./readProblemScore";
+import checkSubmissionRoute from "./checkSubmission";
+import createMaterialRoute from "./createMaterial";
+import readMaterialRoute from "./readMaterial";
 
 const apiRoute = express();
 
@@ -69,4 +73,13 @@ apiRoute.use("/readProblem", authorization_handler(), readProblemRoute);
 apiRoute.use("/readTestcase", authorization_handler(), readTestcaseRoute);
 apiRoute.use("/readSubmission", authorization_handler(), readSubmissionRoute);
 
+apiRoute.use(
+  "/readProblemScore",
+  authorization_handler(),
+  readProblemScoreRoute
+);
+apiRoute.use("/checkSubmission", authorization_handler(), checkSubmissionRoute);
+
+apiRoute.use("/createMaterial", authorization_handler(), createMaterialRoute);
+apiRoute.use("/readMaterial", authorization_handler(), readMaterialRoute);
 export default apiRoute;

@@ -65,10 +65,10 @@ const Router = () => {
             <Route path="/about" element={<About />} />
             <Route
               path="/lecture/:lectureId/:lectureTitle"
-              element={<Lecture userType={userType} />}
+              element={<Lecture userId={userId} userType={userType} />}
             />
-            <Route path="/code/:scoreId" element={<Code />} />
-            <Route path="/score/:scoreId" element={<Score />} />
+            <Route path="/code/:submissionId" element={<Code />} />
+            <Route path="/score/:submissionId" element={<Score />} />
             <Route path="/createUser" element={<CreateUser />} />
           </Routes>
         </BrowserRouter>

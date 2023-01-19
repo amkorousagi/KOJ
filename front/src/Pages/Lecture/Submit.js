@@ -109,7 +109,8 @@ const Submit = ({ open, handleClose, openScore, problem_id }) => {
       .then((data) => {
         console.log(data);
         if (data.success) {
-          // handleClose();
+          handleClose();
+          window.location.reload();
         } else {
           console.log("err");
         }

@@ -8,6 +8,7 @@ export async function initSubmission({ problem, student, code, language }) {
     code,
     language,
     success: [],
+    stdin: [],
     stdout: [],
     stderr: [],
     exit_code: [],
@@ -24,6 +25,7 @@ export async function initSubmission({ problem, student, code, language }) {
 export async function updateSubmission({
   submission_id,
   success,
+  stdin,
   stdout,
   stderr,
   exit_code,
@@ -39,6 +41,7 @@ export async function updateSubmission({
     {
       state: "done",
       success,
+      stdin,
       stdout,
       stderr,
       exit_code,
@@ -62,4 +65,12 @@ export async function readSubmission({ problem, student }) {
     required["student"] = student;
   }
   return await Submission.find(required);
+}
+
+export async function readSubmissionById({ id }) {
+  return await Submission.findById(id);
+}
+
+export async function checkSubmission({ submission_id }) {
+  return await Submission.findById(submission_id);
 }

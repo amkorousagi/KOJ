@@ -14,15 +14,17 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Add, Save } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect } from "react";
 import { BASE_URL } from "../../config.js";
 
-const CreatePractice = ({ open, handleClose, lecture_id }) => {
+const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
   const now = new Date(Date.now());
-  const [name, setName] = React.useState("실습 n");
+  const [name, setName] = React.useState("실습 " + (nPractice + 1));
   const [startDate, setStartDate] = React.useState(now.toLocaleString("en-US"));
   const [endDate, setEndDate] = React.useState(now.toLocaleString("en-US"));
-
+  useEffect(() => {
+    setName("실습 " + (nPractice + 1));
+  }, [nPractice]);
   //lecture id 보내기
   const createPractice = () => {
     fetch(BASE_URL + "/api/createPractice", {

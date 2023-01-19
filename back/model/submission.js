@@ -8,6 +8,7 @@ const submissionSchema = mongoose.Schema({
   code: [String],
   language: String,
   success: [Boolean],
+  stdin: [String],
   stdout: [String],
   stderr: [String],
   exit_code: [Number],

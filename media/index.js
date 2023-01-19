@@ -89,7 +89,17 @@ app.post("/code/:filename", async (req, res) => {
     return res.json({ success: false, err });
   }
 });
-
+app.get("/string/:filename", async (req, res) => {
+  const file = await File.findById(req.params.filename);
+  let filePath = __dirname + "/file/" + req.params.filename + file.extension;
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(400).json({ err });
+    } else {
+      res.status(200).json({ data, file });
+    }
+  });
+});
 app.get("/download/:filename", async (req, res) => {
   const file = await File.findById(req.params.filename);
   let filePath = __dirname + "/file/" + req.params.filename + file.extension;

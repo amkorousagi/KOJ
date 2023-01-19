@@ -22,8 +22,14 @@ import { Add, Label, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
-const CreateProblem = ({ open, handleClose, practiceId, practiceTitle }) => {
-  const [title, setTitle] = React.useState("문제 n");
+const CreateProblem = ({
+  open,
+  handleClose,
+  practiceId,
+  practiceTitle,
+  nProblem,
+}) => {
+  const [title, setTitle] = React.useState("문제 " + (nProblem + 1));
   const [problem_type, setProblem_type] = React.useState("solve");
   const [score, setScore] = React.useState(10);
   const [description, setDescription] = React.useState("");
@@ -87,7 +93,9 @@ const CreateProblem = ({ open, handleClose, practiceId, practiceTitle }) => {
         console.log(err);
       });
   };
-
+  useEffect(() => {
+    setTitle("문제 " + (nProblem + 1));
+  }, [nProblem]);
   useEffect(() => {
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");

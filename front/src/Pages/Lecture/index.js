@@ -27,9 +27,39 @@ import CreateProblem from "./CreateProblem.js";
 import CreateTestcase from "./CreateTestcase.js";
 import Testcase from "./Testcase.js";
 
-const Lecture = ({ userType }) => {
+const LectureDate = ({ pracStart, pracEnd }) => {
+  if (pracStart != "") {
+    return (
+      <div style={{ marginTop: 5 }}>
+        실습 시작 <br />
+        {new Date(pracStart).toLocaleString("ko-KR").split(". 오")[0]}
+        .
+        <br />오{new Date(pracStart).toLocaleString("ko-KR").split(". 오")[1]}
+        <hr />
+        실습 종료 <br />
+        {new Date(pracEnd).toLocaleString("ko-KR").split(". 오")[0]}
+        .
+        <br />오{new Date(pracEnd).toLocaleString("ko-KR").split(". 오")[1]}
+      </div>
+    );
+  } else {
+    return (
+      <div style={{ marginTop: 5 }}>
+        실습 시작 <br />
+        <br />
+        <br />
+        <hr />
+        실습 종료 <br />
+        <br />
+        <br />
+      </div>
+    );
+  }
+};
+
+const Lecture = ({ userId, userType }) => {
   const { lectureId, lectureTitle } = useParams();
-  console.log(lectureId);
+  //console.log(lectureId);
   const [open, setOpen] = React.useState({});
   const [openModal, setOpenModal] = React.useState(false);
   const [openModal2, setOpenModal2] = React.useState(false);
@@ -46,6 +76,13 @@ const Lecture = ({ userType }) => {
   const [testcaseData, setTestcaseData] = React.useState({});
   const [openTest, setOpenTest] = React.useState({});
   const [curTestcase, setCurTestcase] = React.useState({});
+  const [nProblem, setNProblem] = React.useState(0);
+  const [nPractice, setNPractice] = React.useState(0);
+  const [nTestcase, setNTestcase] = React.useState(0);
+  const [pracStart, setPracStart] = React.useState("");
+  const [pracEnd, setPracEnd] = React.useState("");
+  const [currentScore, setCurrentScore] = React.useState(0);
+  const [maxScore, setMaxScore] = React.useState(0);
   const openOnlyModal2 = () => {
     setOpenModal(false);
     setOpenModal2(true);
@@ -78,26 +115,28 @@ const Lecture = ({ userType }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setPracticeData(data.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   const practices = practiceData.map((item, index) => {
-    console.log(item);
+    //console.log(item);
 
     let problems;
     if (problemData[item._id] === undefined) {
       problems = <></>;
     } else {
       problems = problemData[item._id].map((p) => {
-        console.log(p);
+        //console.log(p);
         let testcases;
         if (testcaseData[p._id] === undefined) {
           testcases = <></>;
         } else {
           testcases = testcaseData[p._id].map((t) => {
-            console.log(t);
+            //console.log(t);
             return (
               <ListItem
                 button
@@ -120,7 +159,33 @@ const Lecture = ({ userType }) => {
               onClick={() => {
                 setCurrentProblem(p);
                 setCurrentPDF(p.pdf);
-
+                setCurPracTitle(item.title);
+                setMaxScore(p.score);
+                fetch(BASE_URL + "/api/readProblemScore", {
+                  method: "POST",
+                  headers: {
+                    Authorization: "bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    problem: p._id,
+                    student: userId,
+                  }),
+                })
+                  .then((res) => {
+                    return res.json();
+                  })
+                  .then((data) => {
+                    //console.log("readProblemScore ", data);
+                    if (data.data === undefined || data.data.length === 0) {
+                      setCurrentScore(0);
+                    } else {
+                      setCurrentScore(data.data[0].score);
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
                 fetch(BASE_URL + "/api/readTestcase", {
                   method: "POST",
                   headers: {
@@ -135,7 +200,7 @@ const Lecture = ({ userType }) => {
                     return res.json();
                   })
                   .then((data) => {
-                    console.log(data);
+                    //console.log(data);
                     const dd = {};
                     dd[p._id] = data.data;
                     setTestcaseData({ ...testcaseData, ...dd });
@@ -172,6 +237,7 @@ const Lecture = ({ userType }) => {
                     style={{ margin: "5px" }}
                     startIcon={<Add />}
                     onClick={() => {
+                      setNTestcase(testcases.length);
                       setCurrentProblem(p);
                       setOpenModal5(true);
                     }}
@@ -190,6 +256,8 @@ const Lecture = ({ userType }) => {
         <ListItem
           button
           onClick={() => {
+            setPracStart(item.start_date);
+            setPracEnd(item.end_date);
             fetch(BASE_URL + "/api/readProblem", {
               method: "POST",
               headers: {
@@ -204,7 +272,7 @@ const Lecture = ({ userType }) => {
                 return res.json();
               })
               .then((data) => {
-                console.log(data);
+                //console.log(data);
                 const cc = {};
                 cc[item._id] = data.data;
                 setProblemData({ ...problemData, ...cc });
@@ -232,6 +300,7 @@ const Lecture = ({ userType }) => {
                 style={{ margin: "5px" }}
                 startIcon={<Add />}
                 onClick={() => {
+                  setNProblem(problems.length);
                   setCurPracId(item._id);
                   setCurPracTitle(item.title);
                   setOpenModal4(true);
@@ -261,13 +330,19 @@ const Lecture = ({ userType }) => {
         handleClose={handleOpenModal}
         problem_id={currentProblem._id}
       />
-      <Score open={openModal2} handleClose={handleOpenModal2} />
+      <Score
+        open={openModal2}
+        handleClose={handleOpenModal2}
+        userId={userId}
+        problemId={currentProblem._id}
+      />
       <CreatePractice
         open={openModal3}
         handleClose={() => {
           setOpenModal3(false);
         }}
         lecture_id={lectureId}
+        nPractice={nPractice}
       />
       <CreateProblem
         open={openModal4}
@@ -276,6 +351,7 @@ const Lecture = ({ userType }) => {
         }}
         practiceId={curPracId}
         practiceTitle={curPracTitle}
+        nProblem={nProblem}
       />
       <CreateTestcase
         open={openModal5}
@@ -284,6 +360,7 @@ const Lecture = ({ userType }) => {
         }}
         problemId={currentProblem._id}
         problemTitle={currentProblem.title}
+        nTestcase={nTestcase}
       />
       <Grid container>
         <Grid item xs={3} style={{ zIndex: 5 }}>
@@ -308,7 +385,10 @@ const Lecture = ({ userType }) => {
                   variant="contained"
                   style={{ margin: "5px" }}
                   startIcon={<Add />}
-                  onClick={() => setOpenModal3(true)}
+                  onClick={() => {
+                    setNPractice(practices.length);
+                    setOpenModal3(true);
+                  }}
                 >
                   실습 생성
                 </Button>
@@ -333,11 +413,7 @@ const Lecture = ({ userType }) => {
               >
                 <Card variant="outlined">
                   <CardContent>
-                    <div style={{ marginTop: 5 }}>
-                      실습 시작 10:00
-                      <hr />
-                      실습 종료 10:00
-                    </div>
+                    <LectureDate pracStart={pracStart} pracEnd={pracEnd} />
                   </CardContent>
                 </Card>
                 &nbsp;&nbsp;
@@ -350,7 +426,7 @@ const Lecture = ({ userType }) => {
                   <CardContent>
                     <div style={{ marginTop: 5 }}>
                       문제 점수
-                      <hr /> 0/10
+                      <hr /> {currentScore}/{maxScore}
                     </div>
                   </CardContent>
                 </Card>
@@ -409,7 +485,7 @@ const Lecture = ({ userType }) => {
                   <CardContent>
                     <Typography style={{ fontFamily: "Nanum Gothic" }}>
                       <div style={{ textAlign: "center", fontWeight: 700 }}>
-                        문제 설명
+                        {currentProblem.title} of {curPracTitle}
                       </div>
                       <hr />
                     </Typography>
