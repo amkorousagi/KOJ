@@ -199,7 +199,7 @@ const Menu2 = ({ isLogined, userType }) => {
     } else if (userType === "professor") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/score">
+          <a href="/dashscores">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -253,7 +253,7 @@ const Menu3 = ({ isLogined, userType }) => {
     if (userType === "student") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/judge">
+          <a href="/materials">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -269,7 +269,7 @@ const Menu3 = ({ isLogined, userType }) => {
     } else if (userType === "tutor") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/judge">
+          <a href="/materials">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -285,7 +285,7 @@ const Menu3 = ({ isLogined, userType }) => {
     } else if (userType === "professor") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/score">
+          <a href="/materials">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",

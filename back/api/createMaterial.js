@@ -7,11 +7,11 @@ const createMaterialRoute = express();
 createMaterialRoute.post(
   "/",
   responseHandler(async (req) => {
-    const { lecture, title, body, attachement } = req.body;
+    const { lecture, title, body, attachments } = req.body;
     console.log(req.body);
     // 유효성 검증 , id..
 
-    return await createMaterial({ lecture, title, body, attachement });
+    return await createMaterial({ lecture, title, body, attachments });
   })
 );
 

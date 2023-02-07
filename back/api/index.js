@@ -18,6 +18,10 @@ import readProblemScoreRoute from "./readProblemScore";
 import checkSubmissionRoute from "./checkSubmission";
 import createMaterialRoute from "./createMaterial";
 import readMaterialRoute from "./readMaterial";
+import readDashScoreRoute from "./readDashScore";
+import { readEnrollent } from "../controller/enrollement";
+import readEnrollmentRoute from "./readEnrollment";
+import readUserRoute from "./readUser";
 
 const apiRoute = express();
 
@@ -82,4 +86,7 @@ apiRoute.use("/checkSubmission", authorization_handler(), checkSubmissionRoute);
 
 apiRoute.use("/createMaterial", authorization_handler(), createMaterialRoute);
 apiRoute.use("/readMaterial", authorization_handler(), readMaterialRoute);
+apiRoute.use("/readDashScore", authorization_handler(), readDashScoreRoute);
+apiRoute.use("/readEnrollment", authorization_handler(), readEnrollmentRoute);
+apiRoute.use("/readUser", authorization_handler(), readUserRoute);
 export default apiRoute;

@@ -13,6 +13,7 @@ import {
   Modal,
   TextField,
   Typography,
+  FormLabel,
 } from "@material-ui/core";
 import { maxHeight } from "@mui/system";
 import React, { useEffect } from "react";
@@ -76,7 +77,7 @@ const Score = () => {
     if (item.success !== undefined && testcases.length !== 0) {
       c = item.success.map((s, i) => {
         return (
-          <Paper style={{ padding: "5px", margin: "5px" }}>
+          <Paper style={{ padding: "5px", margin: "15px 0px" }}>
             <Typography style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}>
               {testcases[i].title} :{" "}
               <span style={{ color: s ? "green" : "red" }}>
@@ -85,8 +86,9 @@ const Score = () => {
             </Typography>
             <hr />
             <br />
-            <br />
             <TextField
+              InputLabelProps={{ style: { color: "black" } }}
+              inputProps={{ style: { color: "black" } }}
               disabled
               variant="outlined"
               label="주어진 표준입력"
@@ -100,6 +102,8 @@ const Score = () => {
             <br />
             <br />
             <TextField
+              InputLabelProps={{ style: { color: "black" } }}
+              inputProps={{ style: { color: "black" } }}
               disabled
               variant="outlined"
               label="정답 표준출력"
@@ -113,6 +117,8 @@ const Score = () => {
             <br />
             <br />
             <TextField
+              InputLabelProps={{ style: { color: "black" } }}
+              inputProps={{ style: { color: "black" } }}
               disabled
               variant="outlined"
               label="실제 표준출력"
@@ -123,8 +129,9 @@ const Score = () => {
             <br />
             <br />
             <br />
-            <br />
             <TextField
+              InputLabelProps={{ style: { color: "black" } }}
+              inputProps={{ style: { color: "black" } }}
               disabled
               variant="outlined"
               label="표준오류"
@@ -135,8 +142,9 @@ const Score = () => {
             <br />
             <br />
             <br />
-            <br />
             <TextField
+              InputLabelProps={{ style: { color: "black" } }}
+              inputProps={{ style: { color: "black" } }}
               disabled
               variant="outlined"
               label="오류 코드"
@@ -148,6 +156,8 @@ const Score = () => {
             <br />
             <br />
             <TextField
+              InputLabelProps={{ style: { color: "black" } }}
+              inputProps={{ style: { color: "black" } }}
               disabled
               variant="outlined"
               label="에러"
@@ -159,6 +169,8 @@ const Score = () => {
             <br />
             <br />
             <TextField
+              InputLabelProps={{ style: { color: "black" } }}
+              inputProps={{ style: { color: "black" } }}
               disabled
               variant="outlined"
               label="피드백"
@@ -166,8 +178,6 @@ const Score = () => {
               multiline
               defaultValue={item.feedback[i] ? item.feedback[i] : "없음"}
             />
-            <br />
-            <br />
             <br />
           </Paper>
         );

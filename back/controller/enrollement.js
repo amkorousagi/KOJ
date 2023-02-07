@@ -11,7 +11,16 @@ export async function createEnrollments({ lecture, students }) {
   await session.endSession();
   return result;
 }
-
+export async function readEnrollent({ lecture, student }) {
+  const condition = {};
+  if (lecture) {
+    condition["lecture"] = lecture;
+  }
+  if (student) {
+    condition["student"] = student;
+  }
+  return await Enrollment.find(condition);
+}
 export async function checkIsRealStudent({ practice, student }) {
   const p = await Practice.findById(practice);
   if (p) {

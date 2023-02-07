@@ -6,6 +6,7 @@ const fetch = require("node-fetch"); // @2
 const { File } = require("./model/file.js");
 const { id, pwd, dbName, ip, port, KOJ_URL } = require("./config");
 const FormData = require("form-data");
+const mime = require("mime");
 
 const fs = require("fs");
 const path = require("path");
@@ -104,7 +105,12 @@ app.get("/download/:filename", async (req, res) => {
   const file = await File.findById(req.params.filename);
   let filePath = __dirname + "/file/" + req.params.filename + file.extension;
 
-  res.status(200).download(filePath);
+  const mimetype = mime.getType(filePath);
+  res.setHeader("Content-disposition", "attachment; filename=" + file.name);
+  res.setHeader("Content-type", mimetype);
+  res.setHeader("Pragma", file.name);
+  const filestream = fs.createReadStream(filePath);
+  filestream.pipe(res);
 });
 app.get("/file/:filename", async (req, res) => {
   const file = await File.findById(req.params.filename);

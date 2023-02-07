@@ -10,10 +10,10 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React, { useEffect } from "react";
-import LectureList from "../../Components/LectureList.js";
+import DashScoreList from "../../Components/DashScoreList.js";
 import { BASE_URL } from "../../config.js";
 
-const Lectures = ({ userType, userId }) => {
+const DashScores = ({ userType, userId }) => {
   const [cur, setCur] = React.useState([]);
   const [pre, setPre] = React.useState([]);
 
@@ -62,8 +62,8 @@ const Lectures = ({ userType, userId }) => {
         alignItems="center"
         style={{ textAlign: "left" }}
       >
-        <LectureList
-          title="이번 학기 강의 실습"
+        <DashScoreList
+          title="이번 학기 강의 성적"
           lectureList={cur}
           userType={userType}
           userId={userId}
@@ -77,8 +77,8 @@ const Lectures = ({ userType, userId }) => {
         alignItems="center"
         style={{ textAlign: "left" }}
       >
-        <LectureList
-          title="지난 학기 강의 실습"
+        <DashScoreList
+          title="지난 학기 강의 성적"
           lectureList={pre}
           userType={userType}
           userId={userId}
@@ -88,4 +88,4 @@ const Lectures = ({ userType, userId }) => {
     </>
   );
 };
-export default Lectures;
+export default DashScores;

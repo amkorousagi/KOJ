@@ -5,6 +5,7 @@ const practiceSchema = mongoose.Schema({
   title: String,
   start_date: Date,
   end_date: Date,
+  created_date: { type: Date, required: true, default: () => Date.now() },
 });
 
 const Practice = mongoose.model("Practice", practiceSchema);
