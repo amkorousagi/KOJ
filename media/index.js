@@ -7,6 +7,7 @@ const { File } = require("./model/file.js");
 const { id, pwd, dbName, ip, port, KOJ_URL } = require("./config");
 const FormData = require("form-data");
 const mime = require("mime");
+const process = require("process");
 
 const fs = require("fs");
 const path = require("path");
@@ -128,7 +129,7 @@ app.post("/file", upload.array("files"), async (req, res) => {
 app.use((err, req, res, next) => {
   console.log(err.stack);
   res.status(500).json({
-    success: true,
+    success: false,
     error: err.name,
   });
 });
@@ -150,3 +151,7 @@ mongoose
   .catch((err) => {
     console.log("error connecting to MongoDB:", err.message);
   });
+
+process.on("uncaughtException", (err) => {
+  console.log(err);
+});

@@ -31,3 +31,42 @@ export async function readTestcase({ problem, user_type }) {
     return await Testcase.find({ problem });
   }
 }
+
+export async function updateTestcase({
+  testcase,
+  title,
+  score,
+  hidden,
+  input_text,
+  output_text,
+  input_file,
+  output_file,
+}) {
+  const update = {};
+  if (title) {
+    update.title = title;
+  }
+  if (score) {
+    update.score = score;
+  }
+  if (hidden) {
+    update.hidden = hidden;
+  }
+  if (input_text) {
+    update.input_text = input_text;
+  }
+  if (output_text) {
+    update.output_text = output_text;
+  }
+  if (input_file) {
+    update.input_file = input_file;
+  }
+  if (output_file) {
+    update.output_file = output_file;
+  }
+  return await Testcase.findByIdAndUpdate(testcase, update, { new: true });
+}
+
+export async function deleteTestcase({ testcase }) {
+  return await Testcase.findByIdAndDelete(testcase);
+}

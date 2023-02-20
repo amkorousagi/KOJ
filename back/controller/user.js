@@ -1,4 +1,6 @@
+import { sendErrorWithoutLog } from "../lib/common";
 import User from "../model/user";
+import bcrypt from "bcrypt";
 import { USER_TYPE } from "../type";
 /*
 import bcrypt from "bcrypt";
@@ -42,7 +44,28 @@ export async function readUser({ name, student_id }) {
 export async function insertManyUser(users) {
   const session = await mongoose.startSession();
   const result = await User.insertMany(users);
-
+  //학번 같은 유저 있으면 넣지 말기
   await session.endSession();
   return result;
+}
+
+export async function updateUser({ id, password, newPassword }) {
+  const user = await User.findOne({ id });
+  console.log(user);
+  console.log(password);
+  const result = await bcrypt.compare(password, user.password);
+  if (result) {
+    await User.findOneAndUpdate(
+      { id },
+      { password: newPassword },
+      { new: true }
+    );
+    return { success: true, message: "비밀번호 변경 성공" };
+  } else {
+    return { success: false, message: "현재 비밀번호가 일치하지 않습니다." };
+  }
+}
+
+export async function deleteUser({ id }) {
+  return await User.findOneAndDelete({ id });
 }

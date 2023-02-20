@@ -13,9 +13,51 @@ import {
 import React from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
+const Entry = ({ language, files, setEntry }) => {
+  if (language === "java" && [...files].length > 1) {
+    return (
+      <>
+        <FormLabel
+          style={{
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          엔트리 파일
+        </FormLabel>
+        <br />
+        <br />
+        <RadioGroup
+          row
+          onChange={(e) => {
+            e.preventDefault();
+            setEntry(e.target.value);
+          }}
+        >
+          {[...files].map((item) => {
+            return (
+              <FormControlLabel
+                value={item.name}
+                label={item.name}
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+            );
+          })}
+        </RadioGroup>
+        <br />
+        <br />
+      </>
+    );
+  } else {
+    return <></>;
+  }
+};
+
 const Submit = ({ open, handleClose, openScore, problem_id }) => {
   const [language, setLanguage] = React.useState("c");
   const [files, setFiles] = React.useState([]);
+  const [entry, setEntry] = React.useState("");
   const dropHandler = (ev) => {
     console.log("File(s) dropped");
 
@@ -58,11 +100,20 @@ const Submit = ({ open, handleClose, openScore, problem_id }) => {
     setFiles(files);
     console.log(files);
     for (const file of files) {
-      console.log(file);
+      //console.log(file);
       dz.textContent += `...${file.name}\n`;
     }
   };
   const submitFile = async () => {
+    if (language === "java" && [...files].length > 1) {
+      if (entry === "") {
+        alert("엔트리 파일을 설정하세요.(main()있는 파일)");
+        return;
+      }
+    }
+
+    handleClose();
+    openScore();
     const formData = new FormData();
 
     for (const item of files) {
@@ -101,6 +152,7 @@ const Submit = ({ open, handleClose, openScore, problem_id }) => {
         problem: problem_id,
         code: codes,
         language,
+        entry,
       }),
     })
       .then((res) => {
@@ -109,8 +161,6 @@ const Submit = ({ open, handleClose, openScore, problem_id }) => {
       .then((data) => {
         console.log(data);
         if (data.success) {
-          handleClose();
-          window.location.reload();
         } else {
           console.log("err");
         }
@@ -174,13 +224,20 @@ const Submit = ({ open, handleClose, openScore, problem_id }) => {
               />
               <FormControlLabel
                 value="python"
-                label="Pyton"
+                label="Python"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="node"
+                label="Node"
                 labelPlacement="end"
                 control={<Radio color="primary" />}
               />
             </RadioGroup>
             <br />
             <br />
+            <Entry language={language} files={files} setEntry={setEntry} />
             <FormLabel
               style={{
                 alignItems: "center",

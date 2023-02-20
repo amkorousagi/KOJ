@@ -1,12 +1,18 @@
 import { Button, Grid, Typography } from "@material-ui/core";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
+import UpdateUserPassword from "../../Components/UpdateUserPassword.js";
 
-const Profile = ({ name, userType, isLogined, setIsLogined }) => {
+const Profile = ({
+  name,
+  userType,
+  isLogined,
+  setIsLogined,
+  setOpenUpdateUserPassword,
+}) => {
   const logout = (e) => {
     setIsLogined(false);
     localStorage.removeItem("token");
-    setIsLogined(false);
     window.open("/", "_self");
   };
 
@@ -34,7 +40,7 @@ const Profile = ({ name, userType, isLogined, setIsLogined }) => {
         님
         <br />
         <br />
-        <Button onClick={logout}>
+        <Button variant="outlined" onClick={logout}>
           <Typography
             style={{
               fontFamily: "Nanum Gothic",
@@ -43,6 +49,25 @@ const Profile = ({ name, userType, isLogined, setIsLogined }) => {
             }}
           >
             로그아웃
+          </Typography>
+        </Button>
+        <br />
+        <br />
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setOpenUpdateUserPassword(true);
+            //logout();
+          }}
+        >
+          <Typography
+            style={{
+              fontFamily: "Nanum Gothic",
+              fontWeight: 800,
+              display: "inline",
+            }}
+          >
+            비밀번호 변경
           </Typography>
         </Button>
       </div>
@@ -319,8 +344,15 @@ const Menu3 = ({ isLogined, userType }) => {
 };
 
 const Header = ({ userType, name, isLogined, setIsLogined }) => {
+  const [open, setOpen] = useState(false);
   return (
     <>
+      <UpdateUserPassword
+        open={open}
+        handleClose={() => {
+          setOpen(false);
+        }}
+      />
       <div
         style={{
           position: "fixed",
@@ -354,12 +386,13 @@ const Header = ({ userType, name, isLogined, setIsLogined }) => {
               userType={userType}
               isLogined={isLogined}
               setIsLogined={setIsLogined}
+              setOpenUpdateUserPassword={setOpen}
             />
           </Grid>
         </Grid>
         <hr />
       </div>
-      <div style={{ height: 122, width: "100%" }}></div>
+      <div style={{ height: 160, width: "100%" }}></div>
     </>
   );
 };

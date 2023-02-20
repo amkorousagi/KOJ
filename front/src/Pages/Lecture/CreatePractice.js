@@ -85,6 +85,7 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
         <Card variant="outlined" style={{ minWidth: "500px" }}>
           <CardContent>
             <TextField
+              key={name}
               variant="outlined"
               label="실습명"
               style={{ width: "100%" }}

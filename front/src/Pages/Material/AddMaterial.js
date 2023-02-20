@@ -19,7 +19,13 @@ import { Add, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
-const AddMaterial = ({ open, handleClose, lecture_id }) => {
+const AddMaterial = ({
+  open,
+  handleClose,
+  lecture_id,
+  materials,
+  setMaterials,
+}) => {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
   const [attachments, setAttachments] = React.useState([]);
@@ -125,7 +131,7 @@ const AddMaterial = ({ open, handleClose, lecture_id }) => {
             console.log(data);
             if (data.success) {
               handleClose();
-              window.location.reload();
+              setMaterials([...materials, data.data]);
             } else {
               console.log("error");
             }

@@ -90,8 +90,8 @@ const CreateTestcase = ({
       .catch((err) => {
         console.log(err);
       });
-
-    await fetch(BASE_URL + "/api/createTestcase", {
+    console.log("start create testcase");
+    fetch(BASE_URL + "/api/createTestcase", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,6 +109,7 @@ const CreateTestcase = ({
       }),
     })
       .then((res) => {
+        console.log("got res");
         return res.json();
       })
       .then((data) => {
@@ -271,6 +272,7 @@ const CreateTestcase = ({
           <hr />
           <CardContent>
             <TextField
+              key={title}
               variant="outlined"
               label="테스트케이스명"
               style={{ width: "100%" }}

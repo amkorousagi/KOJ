@@ -25,3 +25,18 @@ export async function readLecture({ lecturer, student }) {
 
   return lectures;
 }
+
+export async function updateLecture({ lecture, title, semester }) {
+  const update = {};
+  if (title) {
+    update.title = title;
+  }
+  if (semester) {
+    update.semester = semester;
+  }
+  return await Lecture.findByIdAndUpdate(lecture, update, { new: true });
+}
+
+export async function deleteLecture({ lecture }) {
+  return await Lecture.findByIdAndDelete(lecture);
+}

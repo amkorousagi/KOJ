@@ -4,9 +4,15 @@ import Practice from "../model/practice";
 
 export async function createEnrollments({ lecture, students }) {
   const session = await mongoose.startSession();
-  const enrollments = students.map((item) => {
-    return { lecture, student: item };
-  });
+  const enrollments = [];
+  await Promise.all(
+    students.map(async (item) => {
+      const existing = await Enrollment.find({ lecture, student: item });
+      if (existing.length == 0) {
+        enrollments.push({ lecture, student: item });
+      }
+    })
+  );
   const result = await Enrollment.insertMany(enrollments);
   await session.endSession();
   return result;

@@ -3,7 +3,7 @@ import logger from "./logger";
 
 export function errorHandler(cb) {
   return function (req, res, next) {
-    cb(req, res, next).catch(next);
+    cb(req, res, next).catch(next); // promise라서 .catch 가능
   };
 }
 

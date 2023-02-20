@@ -137,6 +137,10 @@ const Enrollemnt = ({}) => {
                 })
                 .then((data) => {
                   console.log(data);
+                  window.alert("학생등록 완료");
+                })
+                .catch((err) => {
+                  console.log(err);
                 });
             }}
             startIcon={<Upload />}

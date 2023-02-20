@@ -10,11 +10,14 @@ import {
   ListItemText,
   IconButton,
   ListItemIcon,
+  Grid,
 } from "@material-ui/core";
 import {
   Add,
   AttachEmailOutlined,
   AttachFileOutlined,
+  Delete,
+  Edit,
 } from "@mui/icons-material";
 import { ListItemButton } from "@mui/material";
 import React, { useEffect } from "react";
@@ -24,6 +27,7 @@ import MaterialList from "../../Components/MaterialList.js";
 import { BASE_URL, DOWNLOAD_URL } from "../../config.js";
 import AddMaterial from "./AddMaterial.js";
 import MaterialDetail from "./MaterialDetail.js";
+import UpdateMaterial from "./UpdateMaterial.js";
 const AttachmentsIcon = ({ attachments }) => {
   if (attachments === undefined || attachments.length === 0) {
     return <></>;
@@ -61,6 +65,7 @@ const Material = ({ userType, userId }) => {
   const { lectureId, lectureTitle } = useParams();
   const [materials, setMaterials] = React.useState([]);
   const [openAdd, setOpenAdd] = React.useState(false);
+  const [openUpdate, setOpenUpdate] = React.useState(false);
   const [openMaterial, setOpenMaterial] = React.useState(false);
   const [currentMaterial, setCurrentMaterial] = React.useState({});
   useEffect(() => {
@@ -99,6 +104,17 @@ const Material = ({ userType, userId }) => {
           setOpenAdd(false);
         }}
         lecture_id={lectureId}
+        materials={materials}
+        setMaterials={setMaterials}
+      />
+      <UpdateMaterial
+        open={openUpdate}
+        handleClose={() => {
+          setOpenUpdate(false);
+        }}
+        currentMaterial={currentMaterial}
+        materials={materials}
+        setMaterials={setMaterials}
       />
       <Box
         display="flex"
@@ -135,20 +151,64 @@ const Material = ({ userType, userId }) => {
               <hr />
               {materials.map((item, index) => {
                 return (
-                  <ListItemButton
-                    onClick={() => {
-                      setCurrentMaterial(materials[index]);
-                      setOpenMaterial(true);
-                    }}
-                  >
-                    <ListItemText
-                      primary={item.title}
-                      secondary={new Date(item.created_date).toLocaleString(
-                        "ko-KR"
-                      )}
-                    />
+                  <ListItem>
+                    <Button
+                      style={{
+                        width: "100%",
+                        textAlign: "left",
+                      }}
+                      onClick={() => {
+                        setCurrentMaterial(materials[index]);
+                        setOpenMaterial(true);
+                      }}
+                    >
+                      <ListItemText
+                        primary={item.title}
+                        secondary={new Date(item.created_date).toLocaleString(
+                          "ko-KR"
+                        )}
+                      />
+                    </Button>
+                    <IconButton
+                      onClick={() => {
+                        setCurrentMaterial(materials[index]);
+                        setOpenUpdate(true);
+                      }}
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        if (window.confirm("정말로 삭제하시겠습니까?")) {
+                          fetch(BASE_URL + "/api/deleteMaterial", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                              Authorization:
+                                "bearer " + localStorage.getItem("token"),
+                            },
+                            body: JSON.stringify({
+                              material: item._id,
+                            }),
+                          })
+                            .then((res) => {
+                              return res.json();
+                            })
+                            .then((data) => {
+                              console.log("deleteMaterial ", data);
+                              setMaterials(
+                                materials.filter((it) => it._id !== item._id)
+                              );
+                            })
+                            .catch((err) => console.log(err));
+                        }
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+
                     <AttachmentsIcon attachments={item.attachments} />
-                  </ListItemButton>
+                  </ListItem>
                 );
               })}
             </List>

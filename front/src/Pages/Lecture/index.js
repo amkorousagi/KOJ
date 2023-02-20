@@ -10,12 +10,15 @@ import {
   ListItemText,
   Collapse,
   Grid,
+  IconButton,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Add,
+  Delete,
   DisabledByDefault,
+  Edit,
   ExpandLess,
   ExpandMore,
 } from "@mui/icons-material";
@@ -26,9 +29,12 @@ import CreatePractice from "./CreatePractice.js";
 import CreateProblem from "./CreateProblem.js";
 import CreateTestcase from "./CreateTestcase.js";
 import Testcase from "./Testcase.js";
+import UpdatePractice from "./UpdatePractice.js";
+import UpdateProblem from "./UpdateProblem.js";
+import UpdateTestcase from "./UpdateTestcase.js";
 
 const LectureDate = ({ pracStart, pracEnd }) => {
-  if (pracStart != "") {
+  if (pracStart !== "") {
     return (
       <div style={{ marginTop: 5 }}>
         실습 시작 <br />
@@ -67,6 +73,9 @@ const Lecture = ({ userId, userType }) => {
   const [openModal4, setOpenModal4] = React.useState(false);
   const [openModal5, setOpenModal5] = React.useState(false);
   const [openModal6, setOpenModal6] = React.useState(false);
+  const [openUpdatePractice, setOpenUpdatePractice] = React.useState(false);
+  const [openUpdateProblem, setOpenUpdateProblem] = React.useState(false);
+  const [openUpdateTestcase, setOpenUpdateTestcase] = React.useState(false);
   const [practiceData, setPracticeData] = React.useState([]);
   const [currentProblem, setCurrentProblem] = React.useState({});
   const [currentPDF, setCurrentPDF] = React.useState([]);
@@ -76,6 +85,7 @@ const Lecture = ({ userId, userType }) => {
   const [testcaseData, setTestcaseData] = React.useState({});
   const [openTest, setOpenTest] = React.useState({});
   const [curTestcase, setCurTestcase] = React.useState({});
+  const [curPractice, setCurPractice] = React.useState({});
   const [nProblem, setNProblem] = React.useState(0);
   const [nPractice, setNPractice] = React.useState(0);
   const [nTestcase, setNTestcase] = React.useState(0);
@@ -117,6 +127,7 @@ const Lecture = ({ userId, userType }) => {
       .then((data) => {
         //console.log(data);
         setPracticeData(data.data);
+        setNPractice(data.data.length);
       })
       .catch((err) => {
         console.log(err);
@@ -138,16 +149,51 @@ const Lecture = ({ userId, userType }) => {
           testcases = testcaseData[p._id].map((t) => {
             //console.log(t);
             return (
-              <ListItem
-                button
-                onClick={() => {
-                  setCurTestcase(t);
-                  setOpenModal6(true);
-                }}
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <ListItemText primary={t.title} />
-                {}
+              <ListItem>
+                <Button
+                  style={{ width: "100%", textAlign: "left" }}
+                  onClick={() => {
+                    setCurTestcase(t);
+                    setOpenModal6(true);
+                  }}
+                >
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <ListItemText primary={t.title} />
+                </Button>
+                <IconButton
+                  onClick={() => {
+                    setCurTestcase(t);
+                    setOpenUpdateTestcase(true);
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    fetch(BASE_URL + "/api/deleteTestcase", {
+                      method: "POST",
+                      headers: {
+                        Authorization:
+                          "bearer " + localStorage.getItem("token"),
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        testcase: t._id,
+                      }),
+                    })
+                      .then((res) => {
+                        return res.json();
+                      })
+                      .then((data) => {
+                        window.location.reload();
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }}
+                >
+                  <Delete />
+                </IconButton>
               </ListItem>
             );
           });
@@ -219,6 +265,39 @@ const Lecture = ({ userId, userType }) => {
             >
               &nbsp;&nbsp;&nbsp;&nbsp;
               <ListItemText primary={p.title} />
+              <IconButton
+                onClick={() => {
+                  setCurrentProblem(p);
+                  setOpenUpdateProblem(true);
+                }}
+              >
+                <Edit />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  fetch(BASE_URL + "/api/deleteProblem", {
+                    method: "POST",
+                    headers: {
+                      Authorization: "bearer " + localStorage.getItem("token"),
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      problem: p._id,
+                    }),
+                  })
+                    .then((res) => {
+                      return res.json();
+                    })
+                    .then((data) => {
+                      window.location.reload();
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }}
+              >
+                <Delete />
+              </IconButton>
               {openTest[p._id] ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={openTest[p._id]} timeout="auto" unmountOnExit>
@@ -283,6 +362,39 @@ const Lecture = ({ userId, userType }) => {
           }}
         >
           <ListItemText primary={item.title} />
+          <IconButton
+            onClick={() => {
+              setCurPractice(item);
+              setOpenUpdatePractice(true);
+            }}
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              fetch(BASE_URL + "/api/deletePractice", {
+                method: "POST",
+                headers: {
+                  Authorization: "bearer " + localStorage.getItem("token"),
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  practice: item._id,
+                }),
+              })
+                .then((res) => {
+                  return res.json();
+                })
+                .then((data) => {
+                  window.location.reload();
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }}
+          >
+            <Delete />
+          </IconButton>
           {open[index] ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open[index]} timeout="auto" unmountOnExit>
@@ -332,7 +444,9 @@ const Lecture = ({ userId, userType }) => {
       />
       <Score
         open={openModal2}
-        handleClose={handleOpenModal2}
+        handleClose={() => {
+          setOpenModal2(false);
+        }}
         userId={userId}
         problemId={currentProblem._id}
       />
@@ -362,6 +476,35 @@ const Lecture = ({ userId, userType }) => {
         problemTitle={currentProblem.title}
         nTestcase={nTestcase}
       />
+      <UpdatePractice
+        open={openUpdatePractice}
+        handleClose={() => {
+          setOpenUpdatePractice(false);
+        }}
+        lecture_id={lectureId}
+        nPractice={nPractice}
+        curPractice={curPractice}
+      />
+      <UpdateProblem
+        open={openUpdateProblem}
+        handleClose={() => {
+          setOpenUpdateProblem(false);
+        }}
+        practiceId={curPracId}
+        practiceTitle={curPracTitle}
+        nProblem={nProblem}
+        curProblem={currentProblem}
+      />
+      <UpdateTestcase
+        open={openUpdateTestcase}
+        handleClose={() => {
+          setOpenUpdateTestcase(false);
+        }}
+        problemId={currentProblem._id}
+        problemTitle={currentProblem.title}
+        nTestcase={nTestcase}
+        curTestcase={curTestcase}
+      />
       <Grid container>
         <Grid item xs={3} style={{ zIndex: 5 }}>
           <div
@@ -386,7 +529,6 @@ const Lecture = ({ userId, userType }) => {
                   style={{ margin: "5px" }}
                   startIcon={<Add />}
                   onClick={() => {
-                    setNPractice(practices.length);
                     setOpenModal3(true);
                   }}
                 >

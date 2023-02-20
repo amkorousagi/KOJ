@@ -29,12 +29,17 @@ const CreateProblem = ({
   practiceTitle,
   nProblem,
 }) => {
+  console.log(nProblem);
   const [title, setTitle] = React.useState("문제 " + (nProblem + 1));
   const [problem_type, setProblem_type] = React.useState("solve");
   const [score, setScore] = React.useState(10);
   const [description, setDescription] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [result, setResult] = React.useState("");
+  useEffect(() => {
+    console.log(nProblem);
+    setTitle("문제 " + (nProblem + 1));
+  }, [nProblem]);
   const createProblem = () => {
     //먼저 파일 업로드
     //파일 코드를 받으면 보내기
@@ -93,9 +98,6 @@ const CreateProblem = ({
         console.log(err);
       });
   };
-  useEffect(() => {
-    setTitle("문제 " + (nProblem + 1));
-  }, [nProblem]);
   useEffect(() => {
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
@@ -212,6 +214,7 @@ const CreateProblem = ({
           <hr />
           <CardContent>
             <TextField
+              key={title}
               variant="outlined"
               label="문제명"
               style={{ width: "100%" }}
@@ -251,7 +254,7 @@ const CreateProblem = ({
                 control={<Radio color="primary" />}
               />
               <FormControlLabel
-                value="real"
+                value="solve"
                 label="문제 해결"
                 labelPlacement="end"
                 control={<Radio color="primary" />}

@@ -19,9 +19,20 @@ import checkSubmissionRoute from "./checkSubmission";
 import createMaterialRoute from "./createMaterial";
 import readMaterialRoute from "./readMaterial";
 import readDashScoreRoute from "./readDashScore";
-import { readEnrollent } from "../controller/enrollement";
 import readEnrollmentRoute from "./readEnrollment";
 import readUserRoute from "./readUser";
+import updateProblemRoute from "./updateProblem";
+import updateLectureRoute from "./updateLecture";
+import updateMaterialRoute from "./updateMaterial";
+import updatePracticeRoute from "./updatePractice";
+import updateTestcaseRoute from "./updateTestcase";
+import updateUserPasswordRoute from "./updateUserPassword";
+import deleteLectureRoute from "./deleteLecture";
+import deleteMaterialRoute from "./deleteMaterial";
+import deletePracticeRoute from "./deletePractice";
+import deleteProblemRoute from "./deleteProblem";
+import deleteTestcaseRoute from "./deleteTestcase";
+import deleteUserRoute from "./deleteUser";
 
 const apiRoute = express();
 
@@ -89,4 +100,67 @@ apiRoute.use("/readMaterial", authorization_handler(), readMaterialRoute);
 apiRoute.use("/readDashScore", authorization_handler(), readDashScoreRoute);
 apiRoute.use("/readEnrollment", authorization_handler(), readEnrollmentRoute);
 apiRoute.use("/readUser", authorization_handler(), readUserRoute);
+
+apiRoute.use(
+  "/updateLecture",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  updateLectureRoute
+);
+apiRoute.use(
+  "/updateMaterial",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  updateMaterialRoute
+);
+apiRoute.use(
+  "/updatePractice",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  updatePracticeRoute
+);
+apiRoute.use(
+  "/updateProblem",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  updateProblemRoute
+);
+apiRoute.use(
+  "/updateTestcase",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  updateTestcaseRoute
+);
+apiRoute.use(
+  "/updateUserPassword",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  updateUserPasswordRoute
+);
+
+apiRoute.use(
+  "/deleteLecture",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  deleteLectureRoute
+);
+apiRoute.use(
+  "/deleteMaterial",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  deleteMaterialRoute
+);
+apiRoute.use(
+  "/deletePractice",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  deletePracticeRoute
+);
+apiRoute.use(
+  "/deleteProblem",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  deleteProblemRoute
+);
+apiRoute.use(
+  "/deleteTestcase",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  deleteTestcaseRoute
+);
+apiRoute.use(
+  "/deleteUser",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  deleteUserRoute
+);
+
 export default apiRoute;

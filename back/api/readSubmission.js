@@ -10,18 +10,16 @@ readSubmissionRoute.post(
     const { problem, student } = req.body;
 
     const { id } = req.body;
-    if (id) {
+    if (id !== undefined) {
+      console.log("id ", id);
       return await readSubmissionById({ id });
+    } else {
+      console.log(problem);
+      return await readSubmission({
+        problem,
+        student,
+      });
     }
-
-    // 유효성 검증 , id.. problem_type
-
-    // koj 채점 queue에 보냄
-
-    return await readSubmission({
-      problem,
-      student,
-    });
   })
 );
 

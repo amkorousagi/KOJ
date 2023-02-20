@@ -24,3 +24,27 @@ export async function readPractice({ lecture }) {
   );
   return results;
 }
+
+export async function updatePractice({
+  practice,
+  title,
+  start_date,
+  end_date,
+}) {
+  const update = {};
+  if (title) {
+    update.title = title;
+  }
+  if (start_date) {
+    update.start_date = start_date;
+  }
+  if (end_date) {
+    update.end_date = end_date;
+  }
+  return await Practice.findByIdAndUpdate(practice, update, { new: true });
+}
+
+export async function deletePractice({ practice }) {
+  await Problem.deleteMany({ practice });
+  return await Practice.findByIdAndDelete(practice);
+}

@@ -15,6 +15,14 @@ import {
 import React, { useEffect } from "react";
 import { BASE_URL } from "../../config.js";
 
+const IsClose = ({ open }) => {
+  if (open) {
+    return <div className="isClose" hidden></div>;
+  } else {
+    return <></>;
+  }
+};
+
 const Score = ({ open, handleClose, problemId, userId }) => {
   const [submissions, setSubmissions] = React.useState([]);
   const submissions_components = submissions.map((item) => {
@@ -25,9 +33,10 @@ const Score = ({ open, handleClose, problemId, userId }) => {
         break;
       }
     }
+    console.log(item.state);
     return (
       <TableRow>
-        <TableCell>{correct ? "O" : "X"}</TableCell>
+        <TableCell>{item.state}</TableCell>
         <TableCell>
           <Button
             onClick={() => {
@@ -54,46 +63,53 @@ const Score = ({ open, handleClose, problemId, userId }) => {
       </TableRow>
     );
   });
+
   useEffect(() => {
-    fetch(BASE_URL + "/api/readSubmission", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        problem: problemId,
-        student: userId,
-      }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log("score ", data);
-        const ss = data.data;
-        setSubmissions(
-          ss.sort((a, b) => {
-            if (a.created_date > b.created_date) {
-              return -1;
-            }
-            if (a.created_date < b.created_date) {
-              return 1;
-            }
-            return 0;
+    let intervalId;
+    let isClose;
+    intervalId = setInterval(() => {
+      isClose = document.querySelector(".isClose");
+      if (isClose) {
+        console.log(problemId, userId);
+        fetch(BASE_URL + "/api/readSubmission", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            problem: problemId,
+            student: userId,
+          }),
+        })
+          .then((res) => {
+            return res.json();
           })
-        );
-      });
-  }, []);
+          .then((data) => {
+            console.log("score ", data);
+            const ss = data.data;
+            setSubmissions(
+              ss.sort((a, b) => {
+                if (a.created_date > b.created_date) {
+                  return -1;
+                }
+                if (a.created_date < b.created_date) {
+                  return 1;
+                }
+                return 0;
+              })
+            );
+          });
+      } else {
+        console.log("close");
+        clearInterval(intervalId);
+      }
+    }, 1000);
+  }, [open]);
 
   return (
     <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={handleClose}>
         <Box
           display="flex"
           justifyContent="center"
@@ -104,8 +120,6 @@ const Score = ({ open, handleClose, problemId, userId }) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "80vw",
-            backfaceVisibility: "hidden",
           }}
         >
           <Card variant="outlined">
@@ -127,6 +141,7 @@ const Score = ({ open, handleClose, problemId, userId }) => {
           </Card>
         </Box>
       </Modal>
+      <IsClose open={open} />
     </div>
   );
 };

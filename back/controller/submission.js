@@ -1,6 +1,12 @@
 import Submission from "../model/submission";
 
-export async function initSubmission({ problem, student, code, language }) {
+export async function initSubmission({
+  problem,
+  student,
+  code,
+  language,
+  entry,
+}) {
   const submission = new Submission({
     problem,
     student,
@@ -18,6 +24,7 @@ export async function initSubmission({ problem, student, code, language }) {
     signal: [],
     error: [],
     feedback: [],
+    entry,
   });
   return await submission.save();
 }
