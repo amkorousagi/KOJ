@@ -9,6 +9,7 @@ const problemSchema = mongoose.Schema({
   pdf: [String],
   result_answer: String,
   execution_time_limit: Number,
+  blank: String,
 });
 
 const Problem = mongoose.model("Problem", problemSchema);

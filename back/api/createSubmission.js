@@ -15,7 +15,7 @@ const createSubmissionRoute = express();
 createSubmissionRoute.post(
   "/",
   responseHandler(async (req) => {
-    const { problem, code, language, entry } = req.body;
+    const { problem, code, language, entry, result, blank } = req.body;
 
     const submission = await initSubmission({
       problem,
@@ -23,8 +23,14 @@ createSubmissionRoute.post(
       code,
       language,
       entry,
+      result,
+      blank,
     });
-    const problem_score = await createScore({ problem, student: req.user._id });
+    const problem_score = await createScore({
+      problem,
+      student: req.user._id,
+      submission: submission._id,
+    });
     // 유효성 검증 , id.. problem_type
 
     // koj 채점 queue에 보냄

@@ -14,8 +14,9 @@ import {
   TextField,
   FormLabel,
   Typography,
+  IconButton,
 } from "@material-ui/core";
-import { Add, Save } from "@mui/icons-material";
+import { Add, Close, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
@@ -185,10 +186,15 @@ const UpdateMaterial = ({
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
-          <Typography style={{ fontFamily: "Nanum Gothic" }}>
-            <div style={{ textAlign: "center", fontWeight: 700, marginTop: 5 }}>
-              강의 자료 수정
-            </div>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
+          <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+            강의 자료 수정
           </Typography>
           <hr />
           <CardContent>

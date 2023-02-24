@@ -18,6 +18,8 @@ const submissionSchema = mongoose.Schema({
   error: [String],
   feedback: [String],
   entry: String,
+  result: String,
+  blank: [String],
 });
 
 const Submission = mongoose.model("Submission", submissionSchema);

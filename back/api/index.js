@@ -33,6 +33,7 @@ import deletePracticeRoute from "./deletePractice";
 import deleteProblemRoute from "./deleteProblem";
 import deleteTestcaseRoute from "./deleteTestcase";
 import deleteUserRoute from "./deleteUser";
+import resubmissionRoute from "./ReSubmission";
 
 const apiRoute = express();
 
@@ -162,5 +163,6 @@ apiRoute.use(
   authorization_handler([USER_TYPE.PROFESSOR]),
   deleteUserRoute
 );
+apiRoute.use("/resubmission", authorization_handler(), resubmissionRoute);
 
 export default apiRoute;

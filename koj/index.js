@@ -151,7 +151,7 @@ app.get(
 app.get(
   "/request_judge/:submission_id",
   responseHandler(async (req, res) => {
-    const success = [],
+    let success = [],
       stdin = [],
       stdout = [],
       stderr = [],
@@ -162,6 +162,7 @@ app.get(
       signal = [],
       feedback = [],
       error = [];
+    let process = "compile";
     try {
       const submission = await Submission.findById(req.params.submission_id);
       const entry = submission.entry;
@@ -170,6 +171,10 @@ app.get(
       });
       //submission 디렉터리 만들고
       console.log(submission);
+      await fs.promises.rm(
+        path.join(__dirname + "/submission", req.params.submission_id),
+        { recursive: true, force: true }
+      );
       await fs.promises.mkdir(
         path.join(__dirname + "/submission", req.params.submission_id)
       );
@@ -194,8 +199,40 @@ app.get(
           .catch((err) => console.log(err));
       }
       const problem = await Problem.findById(submission.problem);
-      const testcases = await Testcase.find({ problem: problem._id });
-      //console.log(problem);
+
+      if (problem.problem_type === "result") {
+        // to do
+        if (submission.result.trim() === problem.result_answer.trim()) {
+          return res.json({
+            success: [true],
+            stdin: [""],
+            stdout: [""],
+            stderr: [""],
+            exit_code: [""],
+            error_type: [""],
+            cpu_usage: [""],
+            memory_usage: [""],
+            signal: [""],
+            feedback: [""],
+            error: [""],
+          });
+        } else {
+          return res.json({
+            success: [false],
+            stdin: [""],
+            stdout: [""],
+            stderr: [""],
+            exit_code: [""],
+            error_type: [""],
+            cpu_usage: [""],
+            memory_usage: [""],
+            signal: [""],
+            feedback: [""],
+            error: [""],
+          });
+        }
+      }
+
       let language;
       if (submission.language == "c") {
         language = "c";
@@ -211,89 +248,192 @@ app.get(
         console.log("wrong language");
         return res.json({});
       }
+
+      if (problem.problem_type === "blank") {
+        //replace blank to string
+        let code_string = problem.blank;
+        for (const b of submission.blank) {
+          code_string = code_string.replace("#BLANK#", b);
+        }
+        //save string to file and add code_names
+        if (language == "c") {
+          await fs.promises.writeFile(
+            path.join(
+              __dirname + "/submission/" + req.params.submission_id + "/main.c"
+            ),
+            code_string
+          );
+          code_names.push("main.c");
+        } else if (language == "cpp") {
+        } else if (language == "java") {
+        } else if (language == "python") {
+        } else if (language == "node") {
+        }
+      }
+      const testcases = await Testcase.find({ problem: problem._id });
+      //console.log(problem);
+
       console.log("start testcase");
 
-      let compile;
-
-      if (language == "c") {
-        let code_str = "";
-        for (const code_name of code_names) {
-          code_str += code_name + " ";
+      try {
+        let compile;
+        process = "compile";
+        if (language == "c") {
+          let code_str = "";
+          for (const code_name of code_names) {
+            code_str += code_name + " ";
+          }
+          compile = exec("gcc -o code -std=c99 -lm " + code_str, {
+            cwd: path.join(
+              __dirname + "/submission/" + req.params.submission_id
+            ),
+            timeout: 5000,
+          });
+          let ro, re;
+          compile.stdout.on("data", function (data) {
+            data = data.toString();
+            ro += data;
+          });
+          compile.stderr.on("data", function (data) {
+            data = data.toString();
+            re += data;
+          });
+          let rc;
+          await new Promise((resolve, reject) => {
+            compile.on("exit", (c) => {
+              console.log("close with " + c);
+              rc = c;
+              resolve();
+            });
+            compile.on("error", (c) => {
+              console.log("error with " + c);
+              reject();
+            });
+          });
+          console.log("ro", ro);
+          console.log("re", re);
+          if (rc !== 0) {
+            // 컴파일 에러
+            exit_code.push(rc);
+            error.push(re);
+            feedback.push("compile error");
+            throw new Error("compile error");
+          }
+        } else if (language == "cpp") {
+          let code_str = "";
+          for (const code_name of code_names) {
+            code_str += code_name + " ";
+          }
+          compile = exec("g++ -o code -std=c++0x -lm " + code_str, {
+            cwd: path.join(
+              __dirname + "/submission/" + req.params.submission_id
+            ),
+            timeout: 5000,
+          });
+          let ro, re;
+          compile.stdout.on("data", function (data) {
+            data = data.toString();
+            ro += data;
+          });
+          compile.stderr.on("data", function (data) {
+            data = data.toString();
+            re += data;
+          });
+          let rc;
+          await new Promise((resolve, reject) => {
+            compile.on("exit", (c) => {
+              console.log("close with " + c);
+              rc = c;
+              resolve();
+            });
+            compile.on("error", (c) => {
+              console.log("error with " + c);
+              reject();
+            });
+          });
+          console.log("ro", ro);
+          console.log("re", re);
+          if (rc !== 0) {
+            // 컴파일 에러
+            exit_code.push(rc);
+            error.push(re);
+            feedback.push("compile error");
+            throw new Error("compile error");
+          }
+        } else if (language == "java") {
+          compile = exec("javac -cp . ./*.java", {
+            cwd: path.join(
+              __dirname + "/submission/" + req.params.submission_id
+            ),
+            timeout: 5000,
+          });
+          let ro, re;
+          compile.stdout.on("data", function (data) {
+            data = data.toString();
+            ro += data;
+          });
+          compile.stderr.on("data", function (data) {
+            data = data.toString();
+            re += data;
+          });
+          let rc;
+          await new Promise((resolve, reject) => {
+            compile.on("exit", (c) => {
+              console.log("close with " + c);
+              rc = c;
+              resolve();
+            });
+            compile.on("error", (c) => {
+              console.log("error with " + c);
+              reject();
+            });
+          });
+          console.log("ro", ro);
+          console.log("re", re);
+          if (rc !== 0) {
+            // 컴파일 에러
+            exit_code.push(rc);
+            error.push(re);
+            feedback.push("compile error");
+            throw new Error("compile error");
+          }
+        } else if (language == "python") {
+          // do not need
+        } else if (language == "node") {
+          // do not need
         }
-        compile = exec("gcc -o code -std=c99 -lm " + code_str, {
-          cwd: path.join(__dirname + "/submission/" + req.params.submission_id),
-          timeout: 5000,
+      } catch (err) {
+        success = [false];
+        stdin = [""];
+        stdout = [""];
+        stderr = [""];
+        error_type = ["컴파일 에러"];
+        cpu_usage = [""];
+        memory_usage = [""];
+        signal = [""];
+        return res.json({
+          success,
+          stdin,
+          stdout,
+          stderr,
+          exit_code,
+          error_type,
+          cpu_usage,
+          memory_usage,
+          signal,
+          feedback,
+          error,
         });
-        let ro, re;
-        compile.stdout.on("data", function (data) {
-          data = data.toString();
-          ro += data;
-        });
-        compile.stderr.on("data", function (data) {
-          data = data.toString();
-          re += data;
-        });
-        let rc;
-        await new Promise((resolve, reject) => {
-          compile.on("close", (c) => {
-            console.log("close with " + c);
-            rc = c;
-            resolve();
-          });
-          compile.on("error", (c) => {
-            console.log("error with " + c);
-            reject();
-          });
-        });
-        console.log("ro", ro);
-        console.log("re", re);
-        if (rc !== 0) {
-          // 컴파일 에러
-          error.push(re);
-          feedback.push("compile error");
-          throw new Error("compile error");
-        }
-      } else if (language == "cpp") {
-        let code_str = "";
-        for (const code_name of code_names) {
-          code_str += code_name + " ";
-        }
-        compile = exec("g++ -o code -std=c++0x -lm " + code_str, {
-          cwd: path.join(__dirname + "/submission/" + req.params.submission_id),
-          timeout: 5000,
-        });
-        await new Promise((resolve, reject) => {
-          compile.on("close", (c) => {
-            console.log("close with " + c);
-            resolve();
-          });
-          compile.on("error", (c) => {
-            console.log("error with " + c);
-            reject();
-          });
-        });
-      } else if (language == "java") {
-        compile = exec("javac -cp . ./*.java", {
-          cwd: path.join(__dirname + "/submission/" + req.params.submission_id),
-          timeout: 5000,
-        });
-        await new Promise((resolve, reject) => {
-          compile.on("close", (c) => {
-            console.log("close with " + c);
-            resolve();
-          });
-          compile.on("error", (c) => {
-            console.log("error with " + c);
-            reject();
-          });
-        });
-      } else if (language == "python") {
-        // do not need
-      } else if (language == "node") {
-        // do not need
       }
+
       let cnt = 0;
       for (const t of testcases) {
+        let result_output = "";
+        let result_error = "";
+        let result_exit_code = "";
+        let result_signal = "";
+        let error_detail = "";
+        let error_type_detail = "";
         try {
           cnt++;
           await Submission.findByIdAndUpdate(req.params.submission_id, {
@@ -320,72 +460,100 @@ app.get(
           }
           console.log(path.join("./code"));
           let cod;
-
+          process = "runtime";
+          const args =
+            (t.arg_text !== "") | t.arg_text ? t.arg_text.split(" ") : [];
           if (language == "c") {
-            cod = spawn(path.join("./code"), {
+            cod = spawn(path.join("./code"), [...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
-              timeout: 1000,
             });
           } else if (language == "cpp") {
-            cod = spawn(path.join("./code"), {
+            cod = spawn(path.join("./code"), [...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
-              timeout: 1000,
             });
           } else if (language == "java") {
             const entry_str =
               code_names.length > 1
                 ? entry.split(".")[0]
                 : code_names[0].split(".")[0];
-            cod = spawn("java", [entry_str], {
+            cod = spawn("java", [entry_str, ...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
-              timeout: 1000,
             });
           } else if (language == "python") {
             const entry_str = code_names.length > 1 ? entry : code_names[0];
-            cod = spawn("python3", [entry_str], {
+            cod = spawn("python3", [entry_str, ...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
-              timeout: 1000,
             });
           } else if (language == "node") {
             const entry_str = code_names.length > 1 ? entry : code_names[0];
-            cod = spawn("node", [entry_str], {
+            cod = spawn("node", [entry_str, ...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
-              timeout: 1000,
             });
           }
-          console.log("ss ");
-          cod.stdin.write(t.input_text);
-          let result_output = "";
+          setTimeout(
+            () => {
+              error_type_detail = "시간 초과";
+              error_detail =
+                "timeout " +
+                (problem.execution_time_limit
+                  ? problem.execution_time_limit
+                  : 1000) +
+                "ms";
+              cod.kill("SIGTERM");
+            },
+            problem.execution_time_limit ? problem.execution_time_limit : 1000
+          );
+          cod.stdin.write(t.input_text.trim() + "\n");
+          const max_len = 10000;
+          result_output = "";
+          result_error = "";
+          result_exit_code = "";
           cod.stdout.on("data", function (data) {
             data = data.toString();
             result_output += data;
+            if (result_output.length > max_len) {
+              error_type_detail = "출력 초과";
+              error_detail = "too many output";
+              cod.kill("SIGTERM");
+            }
           });
-          let result_error = "";
+
           cod.stderr.on("data", function (data) {
             data = data.toString();
             result_error += data;
           });
           cod.on("error", (err) => {
+            console.log(err.code);
             console.log("catch error", err);
           });
-          let result_exit_code = "";
+
           await new Promise((resolve, reject) => {
-            cod.on("close", (c) => {
+            cod.on("exit", (c, sg) => {
               result_exit_code = c;
+              result_signal = sg;
               resolve();
             });
           });
-          console.log({ result_output, result_error, result_exit_code });
+
+          console.log({
+            result_output,
+            result_error,
+            result_exit_code,
+            result_signal,
+          });
+          if (result_exit_code !== 0) {
+            throw new Error("runtime error");
+          }
           /*
         const resultPromise = agent.runFile(
           path.join(
@@ -459,7 +627,16 @@ app.get(
               feedback.push("no output file");
             }
           } else {
-            if (result.stdout == t.output_text) {
+            console.log({
+              r: result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
+            });
+            console.log({
+              t: t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
+            });
+            if (
+              result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ===
+              t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
+            ) {
               success.push(true);
               feedback.push("good");
             } else {
@@ -470,34 +647,29 @@ app.get(
           stdin.push(t.input_text);
           stdout.push(result.stdout);
           stderr.push(result.stderr);
-          exit_code.push(result.exitCode);
-          error_type.push(0);
-          cpu_usage.push(0);
-          memory_usage.push(0);
-          signal.push(0);
-          error.push(undefined);
+          exit_code.push(result.exit_code);
+          error_type.push("");
+          cpu_usage.push("");
+          memory_usage.push("");
+          signal.push(result_signal);
+          error.push("");
         } catch (err) {
           console.log(err);
           success.push(false);
-          feedback.push("error");
-          stdout.push("");
-          stderr.push("");
-          exit_code.push("");
-          error_type.push("");
-          cpu_usage.push(0);
-          memory_usage.push(0);
-          signal.push(0);
-          error.push({
-            testcase: t._id,
-            testcase_name: t.title,
-            error_stack: err.stack,
-            error: err,
-          });
+          feedback.push("runtime error");
+
+          stdout.push(result_output);
+          stderr.push(result_error);
+          exit_code.push(result_exit_code);
+          error_type.push(
+            error_type_detail === "" ? "런타임 에러" : error_type_detail
+          );
+          cpu_usage.push("");
+          memory_usage.push("");
+          signal.push(result_signal);
+          error.push(error_detail === "" ? "runtime error" : error_detail);
         }
       }
-      await Submission.findByIdAndUpdate(req.params.submission_id, {
-        state: "done",
-      });
       // 컴파일 하고 저장.
       //testcase 마다
 
@@ -506,7 +678,19 @@ app.get(
       // 결과 분석 후 저장 및 전달
     } catch (err) {
       console.log(err);
+      console.log("unknown error");
+      success = [false];
+      stdin = [""];
+      stdout = [""];
+      stderr = [""];
+      exit_code = [""];
+      cpu_usage = [""];
+      memory_usage = [""];
+      signal = [""];
+      error = [err];
+      error_type = ["알수없는 오류"];
     }
+
     console.log({
       success,
       stdin,

@@ -20,31 +20,42 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Add,
+  Close,
   DisabledByDefault,
+  DoDisturb,
   ExpandLess,
   ExpandMore,
   LeakAddOutlined,
+  PanoramaFishEye,
 } from "@mui/icons-material";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
-const Dash = ({ scores }) => {
+const Dash = ({ scores, requestPractice }) => {
   console.log(scores);
+  // code, 결과, 재채점
   if (Object.keys(scores).length !== 0) {
     if (scores.meta.practices) {
       let total = 0;
       const head = scores.meta.practices.map((item) => {
         return (
           <TableCell>
-            {item.title}(
-            {scores.meta.problems.reduce((acc, current) => {
-              if (current.practice === item._id) {
-                total += current.score;
-                return acc + current.score;
-              } else {
-                return acc;
-              }
-            }, 0)}
-            )
+            <Button
+              variant="outlined"
+              onClick={() => {
+                requestPractice(item);
+              }}
+            >
+              {item.title}(
+              {scores.meta.problems.reduce((acc, current) => {
+                if (current.practice === item._id) {
+                  total += current.score;
+                  return acc + current.score;
+                } else {
+                  return acc;
+                }
+              }, 0)}
+              )
+            </Button>
           </TableCell>
         );
       });
@@ -60,12 +71,40 @@ const Dash = ({ scores }) => {
           <TableBody>
             {scores.dashscore.map((item) => {
               let s_total = 0;
+
               const r = scores.meta.practices.map((p) => {
+                let icon = <></>;
+                const sub_total = scores.meta.problems.reduce(
+                  (acc, current) => {
+                    if (current.practice === p._id) {
+                      total += current.score;
+                      return acc + current.score;
+                    } else {
+                      return acc;
+                    }
+                  },
+                  0
+                );
+                console.log(p);
+                if (item[p._id] < sub_total) {
+                  icon = <DoDisturb />;
+                } else {
+                  icon = <PanoramaFishEye />;
+                }
+
                 if (item[p._id]) {
                   s_total += item[p._id];
-                  return <TableCell>{item[p._id]}</TableCell>;
+                  return (
+                    <TableCell>
+                      {icon}({item[p._id]})
+                    </TableCell>
+                  );
                 } else {
-                  return <TableCell>{0}</TableCell>;
+                  return (
+                    <TableCell>
+                      <Close />({0})
+                    </TableCell>
+                  );
                 }
               });
               return (
@@ -93,7 +132,53 @@ const Dash = ({ scores }) => {
         total += item.score;
         return (
           <TableCell>
-            {item.title}({item.score})
+            <Button
+              variant="outlined"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    item.title +
+                      "문제를 재채점 하시겠습니까.(문제를 푼 모든 학생을 재채점 합니다.)"
+                  )
+                ) {
+                  fetch(BASE_URL + "/api/resubmission", {
+                    method: "POST",
+                    headers: {
+                      Authorization: "bearer " + localStorage.getItem("token"),
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      submissions: scores.dashscore.map((it) => {
+                        let result = undefined;
+                        if (it.submission !== undefined) {
+                          it.submission.map((i) => {
+                            if (i !== undefined) {
+                              if (i.problem === item._id) {
+                                result = i.submission;
+                              }
+                            }
+                            return;
+                          });
+                        }
+                        return result;
+                      }),
+                    }),
+                  })
+                    .then((res) => {
+                      return res.json();
+                    })
+                    .then((data) => {
+                      console.log(data);
+                      alert("재채점이 완료되었습니다.");
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }
+              }}
+            >
+              {item.title}({item.score})
+            </Button>
           </TableCell>
         );
       });
@@ -110,11 +195,58 @@ const Dash = ({ scores }) => {
             {scores.dashscore.map((item) => {
               let s_total = 0;
               const r = scores.meta.problems.map((p) => {
-                if (item[p._id]) {
+                if (item[p._id] !== undefined) {
                   s_total += item[p._id];
-                  return <TableCell>{item[p._id]}</TableCell>;
+
+                  return (
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          fetch(BASE_URL + "/api/resubmission", {
+                            method: "POST",
+                            headers: {
+                              Authorization:
+                                "bearer " + localStorage.getItem("token"),
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                              submissions: [
+                                item.submission.filter(
+                                  (it) => it.problem === p._id
+                                )[0].submission,
+                              ],
+                            }),
+                          })
+                            .then((res) => {
+                              return res.json();
+                            })
+                            .then((data) => {
+                              console.log(data);
+                              alert(
+                                "재채점이 완료되었습니다." +
+                                  item[p._id] +
+                                  "=>" +
+                                  data.data.score
+                              );
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                        }}
+                      >
+                        {item[p._id]}
+                      </Button>
+                    </TableCell>
+                  );
                 } else {
-                  return <TableCell>{0}</TableCell>;
+                  return (
+                    <TableCell>
+                      <Button variant="outlined" disabled>
+                        {0}
+                      </Button>
+                    </TableCell>
+                  );
                 }
               });
               return (
@@ -147,6 +279,32 @@ const DashScore = ({ userId, userType }) => {
   const [practiceData, setPracticeData] = React.useState([]);
   const [curPracTitle, setCurPracTitle] = React.useState(lectureTitle);
   const [scores, setScores] = React.useState({});
+
+  const requestPractice = (item) => {
+    setCurPracTitle(item.title);
+    fetch(BASE_URL + "/api/readDashScore", {
+      method: "POST",
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        lecture: lectureId,
+        practice: item._id,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        console.log(JSON.stringify(data.data));
+        setScores(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   // lecutre 없는 practice 만들어짐
   // 제대로 read하는지 확인
   useEffect(() => {
@@ -315,7 +473,7 @@ const DashScore = ({ userId, userType }) => {
                       </div>
                       <hr />
                     </Typography>
-                    <Dash scores={scores} />
+                    <Dash scores={scores} requestPractice={requestPractice} />
                   </CardContent>
                 </Card>
               </Box>

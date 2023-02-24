@@ -12,16 +12,22 @@ import {
   TableCell,
   TableBody,
   TextField,
+  IconButton,
+  CardHeader,
+  Typography,
 } from "@material-ui/core";
-import { Add, Save } from "@mui/icons-material";
+import { Add, Close, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../../config.js";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs/index.js";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/index.js";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker/index.js";
 
 const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
-  const now = new Date(Date.now());
   const [name, setName] = React.useState("실습 " + (nPractice + 1));
-  const [startDate, setStartDate] = React.useState(now.toLocaleString("en-US"));
-  const [endDate, setEndDate] = React.useState(now.toLocaleString("en-US"));
+  const [startDate, setStartDate] = React.useState(dayjs());
+  const [endDate, setEndDate] = React.useState(dayjs());
   useEffect(() => {
     setName("실습 " + (nPractice + 1));
   }, [nPractice]);
@@ -36,8 +42,8 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
       body: JSON.stringify({
         lecture: lecture_id,
         title: name,
-        start_date: startDate,
-        end_date: endDate,
+        start_date: startDate.format(),
+        end_date: endDate.format(),
       }),
     })
       .then((res) => {
@@ -54,18 +60,6 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
       });
   };
 
-  const rows = [
-    {
-      result: "맞았습니다",
-      scoreId: 1,
-      createDate: new Date("2022-09-17T03:24:00"),
-    },
-    {
-      result: "틀렸습니다",
-      scoreId: 2,
-      createDate: new Date("2022-09-17T00:24:00"),
-    },
-  ];
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -77,12 +71,22 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
           position: "absolute",
           top: "50%",
           left: "50%",
-          transform: "translate(-50%, -50%) scale(2, 2)",
+          transform: "translate(-50%, -50%)",
           "backface-visibility": "hidden",
-          zoom: 0.5,
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
+          <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+            실습 생성
+          </Typography>
+          <hr />
           <CardContent>
             <TextField
               key={name}
@@ -96,28 +100,43 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
             />
             <br />
             <br />
-            <TextField
-              variant="outlined"
-              label="시작 시간"
-              style={{ width: "100%" }}
-              defaultValue={startDate}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                label="시작 날짜"
+                value={startDate}
+                onChange={(newValue) => {
+                  setStartDate(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                    {...params}
+                  />
+                )}
+              />
+
+              <br />
+              <br />
+              <DateTimePicker
+                label="종료 날짜"
+                value={endDate}
+                onChange={(newValue) => {
+                  setEndDate(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                    {...params}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+
             <br />
             <br />
-            <TextField
-              variant="outlined"
-              label="종료 시간"
-              style={{ width: "100%" }}
-              defaultValue={endDate}
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
-            />
-            <br />
-            <br />
+
             <Button
               variant="contained"
               style={{ margin: "5px" }}

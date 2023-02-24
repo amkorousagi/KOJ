@@ -7,6 +7,7 @@ export async function createTestcase({
   score,
   hidden,
   input_text,
+  arg_text,
   output_text,
   input_file,
   output_file,
@@ -17,6 +18,7 @@ export async function createTestcase({
     score,
     hidden,
     input_text,
+    arg_text,
     output_text,
     input_file,
     output_file,
@@ -38,6 +40,7 @@ export async function updateTestcase({
   score,
   hidden,
   input_text,
+  arg_text,
   output_text,
   input_file,
   output_file,
@@ -49,7 +52,7 @@ export async function updateTestcase({
   if (score) {
     update.score = score;
   }
-  if (hidden) {
+  if (hidden !== undefined) {
     update.hidden = hidden;
   }
   if (input_text) {
@@ -63,6 +66,9 @@ export async function updateTestcase({
   }
   if (output_file) {
     update.output_file = output_file;
+  }
+  if (arg_text) {
+    update.arg_text = arg_text;
   }
   return await Testcase.findByIdAndUpdate(testcase, update, { new: true });
 }

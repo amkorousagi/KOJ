@@ -11,16 +11,16 @@ const loginRoute = express();
 loginRoute.post(
   "/",
   responseHandler(async (req, res) => {
-    const { id, password, user_type } = req.body;
+    const { id, password } = req.body;
     logger.info(req.body);
-    const user = await findUserByIdAndUser_type({ id, user_type });
+    const user = await findUserByIdAndUser_type({ id });
     if (user) {
       const result = await bcrypt.compare(password, user.password);
       if (result) {
-        const token = jwt.sign({ id, user_type }, secret, {
+        const token = jwt.sign({ id, user_type: user.user_type }, secret, {
           expiresIn: 60 * 60 * 24 * 3,
         });
-        return { token };
+        return { token, user_type: user.user_type };
       } else {
         sendErrorWithoutLog({ req, res, error: "잘못된 비밀번호입니다." });
       }

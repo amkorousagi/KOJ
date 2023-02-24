@@ -19,6 +19,8 @@ import {
 import {
   Add,
   BrowserUpdatedOutlined,
+  Close,
+  CloseOutlined,
   Delete,
   Edit,
   SecurityUpdate,
@@ -178,6 +180,12 @@ const UpdateModal = ({ open, onClose, cur }) => {
         }}
       >
         <Card variant="outlined">
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={onClose}
+          >
+            <Close />
+          </IconButton>
           <ListItemText
             primary={cur.title + " (" + cur.semester + ")"}
             secondary={cur.lecturer ? cur.lecturer.name + " 교수님" : ""}
@@ -240,6 +248,48 @@ const LectureList = ({ userType, userId, title, lectureList, isCur }) => {
   const [cur, setCur] = useState({});
 
   const lectures = lectureList.map((item) => {
+    let editAndDelete = <></>;
+
+    if (userType === "professor" || userType === "admin") {
+      editAndDelete = (
+        <>
+          <IconButton
+            onClick={() => {
+              setCur(item);
+              setModal(true);
+            }}
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              if (window.confirm("정말로 삭제하겠습니까?")) {
+                fetch(BASE_URL + "/api/deleteLecture", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "bearer " + localStorage.getItem("token"),
+                  },
+                  body: JSON.stringify({
+                    lecture: item._id,
+                  }),
+                })
+                  .then((res) => {
+                    return res.json();
+                  })
+                  .then((data) => {
+                    console.log(data);
+                    window.location.reload();
+                  })
+                  .catch((err) => console.log(err));
+              }
+            }}
+          >
+            <Delete />
+          </IconButton>
+        </>
+      );
+    }
     return (
       <ListItem>
         <Button
@@ -256,40 +306,7 @@ const LectureList = ({ userType, userId, title, lectureList, isCur }) => {
             secondary={item.lecturer.name + " 교수님"}
           />
         </Button>
-        <IconButton
-          onClick={() => {
-            setCur(item);
-            setModal(true);
-          }}
-        >
-          <Edit />
-        </IconButton>
-        <IconButton
-          onClick={() => {
-            if (window.confirm("정말로 삭제하겠습니까?")) {
-              fetch(BASE_URL + "/api/deleteLecture", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: "bearer " + localStorage.getItem("token"),
-                },
-                body: JSON.stringify({
-                  lecture: item._id,
-                }),
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((data) => {
-                  console.log(data);
-                  window.location.reload();
-                })
-                .catch((err) => console.log(err));
-            }
-          }}
-        >
-          <Delete />
-        </IconButton>
+        {editAndDelete}
       </ListItem>
     );
   });

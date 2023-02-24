@@ -17,8 +17,9 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
+  IconButton,
 } from "@material-ui/core";
-import { Add, Label, Save } from "@mui/icons-material";
+import { Add, Close, Label, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
@@ -33,9 +34,11 @@ const CreateTestcase = ({
   const [score, setScore] = React.useState(10);
   const [hidden, setHidden] = React.useState("private");
   const [input_text, setInput_text] = React.useState("");
+  const [arg_text, setArg_text] = React.useState("");
   const [output_text, setOutput_text] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [files2, setFiles2] = React.useState([]);
+  console.log(hidden);
   const createTestcase = async () => {
     //먼저 파일 업로드
     //파일 코드를 받으면 보내기
@@ -101,8 +104,9 @@ const CreateTestcase = ({
         problem: problemId,
         title,
         score,
-        hidden: hidden === "public" ? true : false,
+        hidden: hidden === "public" ? false : true,
         input_text,
+        arg_text,
         output_text,
         input_file,
         output_file,
@@ -264,6 +268,13 @@ const CreateTestcase = ({
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
           <Typography style={{ fontFamily: "Nanum Gothic" }}>
             <div style={{ textAlign: "center", fontWeight: 700, marginTop: 5 }}>
               {problemTitle} 테스트케이스 생성
@@ -300,13 +311,13 @@ const CreateTestcase = ({
                 공개 &nbsp;&nbsp;
               </FormLabel>
               <FormControlLabel
-                value="public"
+                value={"public"}
                 label="공개"
                 labelPlacement="end"
                 control={<Radio color="primary" />}
               />
               <FormControlLabel
-                value="private"
+                value={"private"}
                 label="비공개"
                 labelPlacement="end"
                 control={<Radio color="primary" />}
@@ -321,6 +332,18 @@ const CreateTestcase = ({
               defaultValue={score}
               onChange={(e) => {
                 setScore(e.target.value);
+              }}
+            />
+            <br />
+            <br />
+            <TextField
+              variant="outlined"
+              label="실행 인자 입력"
+              style={{ width: "100%" }}
+              defaultValue={arg_text}
+              multiline
+              onChange={(e) => {
+                setArg_text(e.target.value);
               }}
             />
             <br />

@@ -7,7 +7,9 @@ import {
   Modal,
   FormLabel,
   Paper,
+  IconButton,
 } from "@material-ui/core";
+import { Close } from "@mui/icons-material";
 import React from "react";
 import { FILE_URL } from "../../config.js";
 
@@ -33,8 +35,15 @@ const Testcase = ({ open, handleClose, testcase }) => {
           }}
         >
           <Card variant="outlined">
-            <Typography style={{ fontFamily: "Nanum Gothic" }}>
-              <div style={{ textAlign: "center" }}>{testcase.title}</div>
+            <IconButton
+              style={{ position: "absolute", top: 0, right: 0 }}
+              onClick={handleClose}
+            >
+              <Close />
+            </IconButton>
+            <br />
+            <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+              {testcase.title}
             </Typography>
             <hr />
             <CardContent>

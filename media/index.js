@@ -69,6 +69,17 @@ app.post("/file/:filename", async (req, res) => {
   res.status(200).json({ success: true });
 });
 //code
+app.post("/filename", async (req, res) => {
+  const { ids } = req.body;
+  console.log({ ids });
+  const files = [];
+  for (const id of ids) {
+    const file = await File.findById(id);
+    files.push(file);
+  }
+
+  return res.json({ success: true, files });
+});
 app.post("/code/:filename", async (req, res) => {
   try {
     console.log(req.body);

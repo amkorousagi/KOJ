@@ -30,8 +30,8 @@ export async function readEnrollent({ lecture, student }) {
 export async function checkIsRealStudent({ practice, student }) {
   const p = await Practice.findById(practice);
   if (p) {
-    const enrollment = Enrollment.find({ lecture: p.lecture, student });
-
+    const enrollment = await Enrollment.find({ lecture: p.lecture, student });
+    console.log(enrollment);
     if (enrollment.length == 0) {
       return false;
     } else {

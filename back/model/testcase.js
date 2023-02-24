@@ -6,6 +6,7 @@ const testcaseSchema = mongoose.Schema({
   score: Number,
   hidden: Boolean,
   input_text: String,
+  arg_text: String,
   output_text: String,
   input_file: [String],
   output_file: [String],

@@ -101,6 +101,11 @@ const Lecture = ({ userId, userType }) => {
     setOpenModal2(!openModal2);
   };
   const handleOpenModal = () => {
+    if (currentProblem._id === undefined || currentProblem === {}) {
+      console.log(currentProblem);
+      alert("문제를 선택하세요.");
+      return;
+    }
     setOpenModal(!openModal);
   };
   const handleClick = (i) => {
@@ -126,7 +131,17 @@ const Lecture = ({ userId, userType }) => {
       })
       .then((data) => {
         //console.log(data);
-        setPracticeData(data.data);
+        setPracticeData(
+          data.data.sort((a, b) => {
+            if (a.created_date > b.created_date) {
+              return 1;
+            }
+            if (a.created_date < b.created_date) {
+              return -1;
+            }
+            return 0;
+          })
+        );
         setNPractice(data.data.length);
       })
       .catch((err) => {
@@ -136,6 +151,7 @@ const Lecture = ({ userId, userType }) => {
   const practices = practiceData.map((item, index) => {
     //console.log(item);
 
+    console.log(problemData[item._id]);
     let problems;
     if (problemData[item._id] === undefined) {
       problems = <></>;
@@ -148,55 +164,147 @@ const Lecture = ({ userId, userType }) => {
         } else {
           testcases = testcaseData[p._id].map((t) => {
             //console.log(t);
+
+            let editAndDelete = <></>;
+            if (userType === "professor") {
+              editAndDelete = (
+                <>
+                  <IconButton
+                    onClick={() => {
+                      setCurTestcase(t);
+                      setOpenUpdateTestcase(true);
+                    }}
+                  >
+                    <Edit />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => {
+                      fetch(BASE_URL + "/api/deleteTestcase", {
+                        method: "POST",
+                        headers: {
+                          Authorization:
+                            "bearer " + localStorage.getItem("token"),
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          testcase: t._id,
+                        }),
+                      })
+                        .then((res) => {
+                          return res.json();
+                        })
+                        .then((data) => {
+                          window.location.reload();
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    }}
+                  >
+                    <Delete />
+                  </IconButton>
+                </>
+              );
+            }
+            let tc;
+            tc = (
+              <Button
+                style={{ width: "100%", textAlign: "left" }}
+                onClick={() => {
+                  setCurTestcase(t);
+                  setOpenUpdateTestcase(true);
+                }}
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <ListItemText primary={t.title} />
+              </Button>
+            );
             return (
               <ListItem>
-                <Button
-                  style={{ width: "100%", textAlign: "left" }}
-                  onClick={() => {
-                    setCurTestcase(t);
-                    setOpenModal6(true);
-                  }}
-                >
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <ListItemText primary={t.title} />
-                </Button>
-                <IconButton
-                  onClick={() => {
-                    setCurTestcase(t);
-                    setOpenUpdateTestcase(true);
-                  }}
-                >
-                  <Edit />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    fetch(BASE_URL + "/api/deleteTestcase", {
-                      method: "POST",
-                      headers: {
-                        Authorization:
-                          "bearer " + localStorage.getItem("token"),
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        testcase: t._id,
-                      }),
-                    })
-                      .then((res) => {
-                        return res.json();
-                      })
-                      .then((data) => {
-                        window.location.reload();
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                  }}
-                >
-                  <Delete />
-                </IconButton>
+                {tc}
+                {editAndDelete}
               </ListItem>
             );
           });
+        }
+        let editAndDelete2 = <></>;
+        if (userType === "professor") {
+          editAndDelete2 = (
+            <>
+              <IconButton
+                onClick={() => {
+                  setCurrentProblem(p);
+                  setOpenUpdateProblem(true);
+                }}
+              >
+                <Edit />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  fetch(BASE_URL + "/api/deleteProblem", {
+                    method: "POST",
+                    headers: {
+                      Authorization: "bearer " + localStorage.getItem("token"),
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      problem: p._id,
+                    }),
+                  })
+                    .then((res) => {
+                      return res.json();
+                    })
+                    .then((data) => {
+                      window.location.reload();
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }}
+              >
+                <Delete />
+              </IconButton>
+            </>
+          );
+        }
+        let add = <></>;
+        if (userType === "professor") {
+          add = (
+            <>
+              <ListItem>
+                <Button
+                  variant="contained"
+                  style={{ margin: "5px" }}
+                  startIcon={<Add />}
+                  onClick={() => {
+                    setNTestcase(testcases.length);
+                    setCurrentProblem(p);
+                    setOpenModal5(true);
+                  }}
+                >
+                  테스트케이스 생성
+                </Button>
+              </ListItem>
+            </>
+          );
+        }
+        let collapse_testcase = <></>;
+        if (userType === "professor") {
+          collapse_testcase = (
+            <Collapse in={openTest[p._id]} timeout="auto" unmountOnExit>
+              <List
+                disablePadding
+                subheader={
+                  <ListSubheader>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;테스트케이스
+                  </ListSubheader>
+                }
+              >
+                {testcases}
+                {add}
+              </List>
+            </Collapse>
+          );
         }
         return (
           <>
@@ -265,103 +373,26 @@ const Lecture = ({ userId, userType }) => {
             >
               &nbsp;&nbsp;&nbsp;&nbsp;
               <ListItemText primary={p.title} />
-              <IconButton
-                onClick={() => {
-                  setCurrentProblem(p);
-                  setOpenUpdateProblem(true);
-                }}
-              >
-                <Edit />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  fetch(BASE_URL + "/api/deleteProblem", {
-                    method: "POST",
-                    headers: {
-                      Authorization: "bearer " + localStorage.getItem("token"),
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      problem: p._id,
-                    }),
-                  })
-                    .then((res) => {
-                      return res.json();
-                    })
-                    .then((data) => {
-                      window.location.reload();
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                }}
-              >
-                <Delete />
-              </IconButton>
-              {openTest[p._id] ? <ExpandLess /> : <ExpandMore />}
+              {editAndDelete2}
+              {userType === "professor" ? (
+                openTest[p._id] ? (
+                  <ExpandLess />
+                ) : (
+                  <ExpandMore />
+                )
+              ) : (
+                <></>
+              )}
             </ListItem>
-            <Collapse in={openTest[p._id]} timeout="auto" unmountOnExit>
-              <List
-                disablePadding
-                subheader={
-                  <ListSubheader>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;테스트케이스
-                  </ListSubheader>
-                }
-              >
-                {testcases}
-                <ListItem>
-                  <Button
-                    variant="contained"
-                    style={{ margin: "5px" }}
-                    startIcon={<Add />}
-                    onClick={() => {
-                      setNTestcase(testcases.length);
-                      setCurrentProblem(p);
-                      setOpenModal5(true);
-                    }}
-                  >
-                    테스트케이스 생성
-                  </Button>
-                </ListItem>
-              </List>
-            </Collapse>
+            {userType === "professor" ? collapse_testcase : <></>}
           </>
         );
       });
     }
-    return (
-      <>
-        <ListItem
-          button
-          onClick={() => {
-            setPracStart(item.start_date);
-            setPracEnd(item.end_date);
-            fetch(BASE_URL + "/api/readProblem", {
-              method: "POST",
-              headers: {
-                Authorization: "bearer " + localStorage.getItem("token"),
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                practice: item._id,
-              }),
-            })
-              .then((res) => {
-                return res.json();
-              })
-              .then((data) => {
-                //console.log(data);
-                const cc = {};
-                cc[item._id] = data.data;
-                setProblemData({ ...problemData, ...cc });
-              })
-              .catch((err) => console.log(err));
-
-            handleClick(index);
-          }}
-        >
-          <ListItemText primary={item.title} />
+    let editAndDelete3 = <></>;
+    if (userType === "professor") {
+      editAndDelete3 = (
+        <>
           <IconButton
             onClick={() => {
               setCurPractice(item);
@@ -395,6 +426,64 @@ const Lecture = ({ userId, userType }) => {
           >
             <Delete />
           </IconButton>
+        </>
+      );
+    }
+    let add2 = <></>;
+    if (userType === "professor") {
+      add2 = (
+        <>
+          <ListItem style={{ alignItems: "right" }}>
+            <Button
+              variant="contained"
+              style={{ margin: "5px" }}
+              startIcon={<Add />}
+              onClick={() => {
+                setNProblem(problems.length);
+                setCurPracId(item._id);
+                setCurPracTitle(item.title);
+                setOpenModal4(true);
+              }}
+            >
+              문제 생성
+            </Button>
+          </ListItem>
+        </>
+      );
+    }
+    return (
+      <>
+        <ListItem
+          button
+          onClick={() => {
+            setPracStart(item.start_date);
+            setPracEnd(item.end_date);
+            fetch(BASE_URL + "/api/readProblem", {
+              method: "POST",
+              headers: {
+                Authorization: "bearer " + localStorage.getItem("token"),
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                practice: item._id,
+              }),
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((data) => {
+                console.log("problame data ", data);
+                const cc = {};
+                cc[item._id] = data.data;
+                setProblemData({ ...problemData, ...cc });
+              })
+              .catch((err) => console.log(err));
+
+            handleClick(index);
+          }}
+        >
+          <ListItemText primary={item.title} />
+          {editAndDelete3}
           {open[index] ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open[index]} timeout="auto" unmountOnExit>
@@ -406,27 +495,31 @@ const Lecture = ({ userId, userType }) => {
           >
             {problems}
 
-            <ListItem style={{ alignItems: "right" }}>
-              <Button
-                variant="contained"
-                style={{ margin: "5px" }}
-                startIcon={<Add />}
-                onClick={() => {
-                  setNProblem(problems.length);
-                  setCurPracId(item._id);
-                  setCurPracTitle(item.title);
-                  setOpenModal4(true);
-                }}
-              >
-                문제 생성
-              </Button>
-            </ListItem>
+            {add2}
           </List>
         </Collapse>
       </>
     );
   });
-
+  let add3 = <></>;
+  if (userType === "professor") {
+    add3 = (
+      <>
+        <ListItem>
+          <Button
+            variant="contained"
+            style={{ margin: "5px" }}
+            startIcon={<Add />}
+            onClick={() => {
+              setOpenModal3(true);
+            }}
+          >
+            실습 생성
+          </Button>
+        </ListItem>
+      </>
+    );
+  }
   return (
     <>
       <Testcase
@@ -441,6 +534,7 @@ const Lecture = ({ userId, userType }) => {
         openScore={openOnlyModal2}
         handleClose={handleOpenModal}
         problem_id={currentProblem._id}
+        problem={currentProblem}
       />
       <Score
         open={openModal2}
@@ -523,18 +617,7 @@ const Lecture = ({ userId, userType }) => {
             >
               {practices}
               <hr />
-              <ListItem>
-                <Button
-                  variant="contained"
-                  style={{ margin: "5px" }}
-                  startIcon={<Add />}
-                  onClick={() => {
-                    setOpenModal3(true);
-                  }}
-                >
-                  실습 생성
-                </Button>
-              </ListItem>
+              {add3}
             </List>
           </div>
         </Grid>

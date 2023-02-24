@@ -12,8 +12,12 @@ import {
   TableCell,
   TableBody,
   TextField,
+  IconButton,
+  ListItemText,
+  Typography,
+  ListItem,
 } from "@material-ui/core";
-import { Add, Save } from "@mui/icons-material";
+import { Add, Close, Save } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../config.js";
 
@@ -73,6 +77,19 @@ const UpdateUserPassword = ({ open, handleClose }) => {
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
+          <Typography
+            style={{ textAlign: "center", fontSize: 20, fontWeight: 800 }}
+          >
+            비밀번호 변경
+          </Typography>
+          <hr />
           <CardContent>
             <TextField
               variant="outlined"

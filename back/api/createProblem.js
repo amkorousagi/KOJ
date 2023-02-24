@@ -15,6 +15,8 @@ createProblemRoute.post(
       score,
       pdf,
       result_answer,
+      execution_time_limit,
+      blank,
     } = req.body;
 
     // 유효성 검증 , id.. problem_type
@@ -27,6 +29,8 @@ createProblemRoute.post(
       score,
       pdf,
       result_answer,
+      execution_time_limit,
+      blank,
     });
   })
 );

@@ -17,8 +17,10 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
+  IconButton,
+  InputAdornment,
 } from "@material-ui/core";
-import { Add, Label, Save } from "@mui/icons-material";
+import { Add, Close, Label, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
@@ -36,11 +38,17 @@ const CreateProblem = ({
   const [description, setDescription] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [result, setResult] = React.useState("");
+  const [execution_time_limit, setExecution_time_limit] = React.useState(1000);
+  const [blank, setBlank] = React.useState("");
   useEffect(() => {
     console.log(nProblem);
     setTitle("문제 " + (nProblem + 1));
   }, [nProblem]);
   const createProblem = () => {
+    if (execution_time_limit > 10000) {
+      alert("실행시간은 10 초(10000ms)를 초과할 수 없습니다");
+      return;
+    }
     //먼저 파일 업로드
     //파일 코드를 받으면 보내기
     const formData = new FormData();
@@ -76,6 +84,8 @@ const CreateProblem = ({
             score,
             pdf: data.files,
             result_answer: result,
+            execution_time_limit,
+            blank,
           }),
         })
           .then((res) => {
@@ -189,6 +199,29 @@ const CreateProblem = ({
       return <></>;
     }
   };
+  const blank_fill = () => {
+    if (problem_type === "blank") {
+      return (
+        <>
+          <TextField
+            variant="outlined"
+            label="빈칸 문제"
+            helperText="빈칸을 삽입하고 싶은 곳에 #BLANK# 를 적으세요"
+            style={{ width: "100%" }}
+            defaultValue={blank}
+            multiline
+            onChange={(e) => {
+              setBlank(e.target.value);
+            }}
+          />
+          <br />
+          <br />
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  };
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -206,6 +239,13 @@ const CreateProblem = ({
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
           <Typography style={{ fontFamily: "Nanum Gothic" }}>
             <div style={{ textAlign: "center", fontWeight: 700, marginTop: 5 }}>
               {practiceTitle} 문제 생성
@@ -227,7 +267,7 @@ const CreateProblem = ({
             <br />
             <RadioGroup
               row
-              defaultValue={"real"}
+              defaultValue={problem_type}
               onChange={(e) => {
                 e.preventDefault();
                 setProblem_type(e.target.value);
@@ -260,6 +300,23 @@ const CreateProblem = ({
                 control={<Radio color="primary" />}
               />
             </RadioGroup>
+            <br />
+            <br />
+            <TextField
+              variant="outlined"
+              label="실행시간"
+              style={{ width: "100%" }}
+              type="number"
+              defaultValue={execution_time_limit}
+              onChange={(e) => {
+                setExecution_time_limit(e.target.value);
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">ms</InputAdornment>
+                ),
+              }}
+            />
             <br />
             <br />
             <TextField
@@ -298,6 +355,7 @@ const CreateProblem = ({
             <br />
             <br />
             {result_fill()}
+            {blank_fill()}
             <Button
               variant="contained"
               style={{ margin: "5px" }}

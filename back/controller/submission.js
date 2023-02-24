@@ -6,6 +6,8 @@ export async function initSubmission({
   code,
   language,
   entry,
+  result,
+  blank,
 }) {
   const submission = new Submission({
     problem,
@@ -25,6 +27,8 @@ export async function initSubmission({
     error: [],
     feedback: [],
     entry,
+    result,
+    blank,
   });
   return await submission.save();
 }

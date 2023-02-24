@@ -1,18 +1,23 @@
 import Testcase from "../model/testcase";
 import Problem_score from "../model/problem_score";
 
-export async function createScore({ problem, student }) {
+export async function createScore({ problem, student, submission }) {
   const existing = await Problem_score.find({ problem, student });
   if (existing.length == 0) {
     const problem_score = new Problem_score({
       problem,
       student,
+      submission,
       score: 0,
     });
 
     return await problem_score.save();
   } else {
-    return existing[0];
+    return await Problem_score.findByIdAndUpdate(
+      existing[0]._id,
+      { submission },
+      { new: true }
+    );
   }
 }
 

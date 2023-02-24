@@ -17,8 +17,10 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
+  IconButton,
+  InputAdornment,
 } from "@material-ui/core";
-import { Add, Label, Save } from "@mui/icons-material";
+import { Add, Close, Label, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
@@ -37,7 +39,13 @@ const UpdateProblem = ({
   const [description, setDescription] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [result, setResult] = React.useState("");
+  const [execution_time_limit, setExecution_time_limit] = React.useState(1000);
+
   const updateProblem = () => {
+    if (execution_time_limit > 10000) {
+      alert("실행시간은 10 초(10000ms)를 초과할 수 없습니다");
+      return;
+    }
     //먼저 파일 업로드
     //파일 코드를 받으면 보내기
     const formData = new FormData();
@@ -217,10 +225,15 @@ const UpdateProblem = ({
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
-          <Typography style={{ fontFamily: "Nanum Gothic" }}>
-            <div style={{ textAlign: "center", fontWeight: 700, marginTop: 5 }}>
-              {curProblem.title} 문제 수정
-            </div>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
+          <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+            {curProblem.title} 문제 수정
           </Typography>
           <hr />
           <CardContent>
@@ -272,6 +285,27 @@ const UpdateProblem = ({
                 control={<Radio color="primary" />}
               />
             </RadioGroup>
+            <br />
+            <br />
+            <TextField
+              variant="outlined"
+              label="실행시간"
+              style={{ width: "100%" }}
+              type="number"
+              defaultValue={
+                curProblem.execution_time_limit
+                  ? curProblem.execution_time_limit
+                  : 1000
+              }
+              onChange={(e) => {
+                setExecution_time_limit(e.target.value);
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">ms</InputAdornment>
+                ),
+              }}
+            />
             <br />
             <br />
             <TextField

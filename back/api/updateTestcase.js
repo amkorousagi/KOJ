@@ -15,11 +15,11 @@ updateTestcaseRoute.post(
       score,
       hidden,
       input_text,
+      arg_text,
       output_text,
       input_file,
       output_file,
     } = req.body;
-
     // 유효성 검증 , id.. problem_type
     const t = await updateTestcase({
       testcase,
@@ -27,6 +27,7 @@ updateTestcaseRoute.post(
       score,
       hidden,
       input_text,
+      arg_text,
       output_text,
       input_file,
       output_file,

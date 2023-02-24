@@ -12,8 +12,10 @@ import {
   TableCell,
   TableBody,
   TextField,
+  IconButton,
+  Typography,
 } from "@material-ui/core";
-import { Add, Save } from "@mui/icons-material";
+import { Add, Close, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../../config.js";
 
@@ -80,6 +82,17 @@ const UpdatePractice = ({
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
+          <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+            실습 수정
+          </Typography>
+          <hr />
           <CardContent>
             <TextField
               key={curPractice.title}

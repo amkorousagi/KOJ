@@ -16,8 +16,9 @@ import {
   Typography,
   List,
   ListItem,
+  IconButton,
 } from "@material-ui/core";
-import { Add, AttachFileOutlined, Save } from "@mui/icons-material";
+import { Add, AttachFileOutlined, Close, Save } from "@mui/icons-material";
 import { ListItemButton } from "@mui/material";
 import React, { useEffect } from "react";
 import { BASE_URL, DOWNLOAD_URL, FILE_URL } from "../../config.js";
@@ -83,10 +84,15 @@ const MaterialDetail = ({ open, handleClose, currentMaterial }) => {
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
-          <Typography style={{ fontFamily: "Nanum Gothic" }}>
-            <div style={{ textAlign: "center", fontWeight: 700, marginTop: 5 }}>
-              {currentMaterial ? currentMaterial.title : ""}
-            </div>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
+          <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+            {currentMaterial ? currentMaterial.title : ""}
           </Typography>
           <hr />
           <CardContent>

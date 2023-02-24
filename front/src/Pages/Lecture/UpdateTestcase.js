@@ -17,10 +17,20 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
+  IconButton,
+  List,
 } from "@material-ui/core";
-import { Add, Label, Save } from "@mui/icons-material";
+import {
+  Add,
+  AttachFileOutlined,
+  Attachment,
+  Close,
+  Label,
+  Save,
+} from "@mui/icons-material";
+import { ListItemButton } from "@mui/material";
 import React, { useEffect } from "react";
-import { BASE_URL, FILE_URL } from "../../config.js";
+import { BASE_URL, DOWNLOAD_URL, FILE_URL, MEDIA_URL } from "../../config.js";
 
 const UpdateTestcase = ({
   open,
@@ -34,9 +44,18 @@ const UpdateTestcase = ({
   const [score, setScore] = React.useState("");
   const [hidden, setHidden] = React.useState("");
   const [input_text, setInput_text] = React.useState("");
+  const [arg_text, setArg_text] = React.useState("");
   const [output_text, setOutput_text] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [files2, setFiles2] = React.useState([]);
+  const [previewInput, setPreviewInput] = React.useState([]);
+  const [previewOutput, setPreviewOutput] = React.useState([]);
+  const [atInput, setAtInput] = React.useState([]);
+  const [atOutput, setAtOutput] = React.useState([]);
+  useEffect(() => {
+    setAtInput([]);
+    setAtOutput([]);
+  }, [open]);
   const updateTestcase = async () => {
     //먼저 파일 업로드
     //파일 코드를 받으면 보내기
@@ -103,10 +122,13 @@ const UpdateTestcase = ({
       update.score = score;
     }
     if (hidden) {
-      update.hidden = hidden === "public" ? true : false;
+      update.hidden = hidden === "public" ? false : true;
     }
     if (input_text) {
       update.input_text = input_text;
+    }
+    if (arg_text) {
+      update.arg_text = arg_text;
     }
     if (output_text) {
       update.output_text = output_text;
@@ -142,6 +164,70 @@ const UpdateTestcase = ({
         console.log(err);
       });
   };
+  useEffect(() => {
+    if (curTestcase !== undefined && curTestcase !== {}) {
+      if (
+        curTestcase.input_file !== undefined &&
+        curTestcase.input_file.length !== 0
+      ) {
+        fetch(MEDIA_URL + "/filename", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            ids: curTestcase.input_file,
+          }),
+        })
+          .then((res) => {
+            console.log("got res");
+            return res.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (data.success) {
+              setPreviewInput(data.files);
+            } else {
+              console.log("error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      if (
+        curTestcase.output_file !== undefined &&
+        curTestcase.output_file.length !== 0
+      ) {
+        fetch(MEDIA_URL + "/filename", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            ids: curTestcase.output_file,
+          }),
+        })
+          .then((res) => {
+            console.log("got res");
+            return res.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (data.success) {
+              setPreviewOutput(data.files);
+            } else {
+              console.log("error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  }, [curTestcase]);
   useEffect(() => {
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
@@ -260,7 +346,80 @@ const UpdateTestcase = ({
       }
     }, 500);
   }, []);
+  useEffect(() => {
+    Promise.all(
+      previewInput.map(async (item, index) => {
+        if (item !== null) {
+          const response = await fetch(DOWNLOAD_URL + "/" + item._id, {
+            method: "get",
+          });
+          const filename = response.headers.get("pragma");
 
+          return (
+            <ListItemButton
+              onClick={async () => {
+                const file = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(file);
+                const anchorElement = document.createElement("a");
+                document.body.appendChild(anchorElement);
+                anchorElement.download = filename; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
+                anchorElement.href = downloadUrl; // href에 url 달아주기
+
+                anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
+                console.log(anchorElement);
+                document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
+                window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
+              }}
+            >
+              {index + 1}. {item.description}
+              <AttachFileOutlined />
+            </ListItemButton>
+          );
+        } else {
+          return <ListItemButton></ListItemButton>;
+        }
+      })
+    ).then((values) => {
+      setAtInput(values);
+    });
+  }, [previewInput]);
+  useEffect(() => {
+    Promise.all(
+      previewOutput.map(async (item, index) => {
+        if (item !== null) {
+          const response = await fetch(DOWNLOAD_URL + "/" + item._id, {
+            method: "get",
+          });
+          const filename = response.headers.get("pragma");
+
+          return (
+            <ListItemButton
+              onClick={async () => {
+                const file = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(file);
+                const anchorElement = document.createElement("a");
+                document.body.appendChild(anchorElement);
+                anchorElement.download = filename; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
+                anchorElement.href = downloadUrl; // href에 url 달아주기
+
+                anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
+                console.log(anchorElement);
+                document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
+                window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
+              }}
+            >
+              {index + 1}. {item.description}
+              <AttachFileOutlined />
+            </ListItemButton>
+          );
+        } else {
+          return <ListItemButton></ListItemButton>;
+        }
+      })
+    ).then((values) => {
+      setAtOutput(values);
+    });
+  }, [previewOutput]);
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -278,10 +437,15 @@ const UpdateTestcase = ({
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
-          <Typography style={{ fontFamily: "Nanum Gothic" }}>
-            <div style={{ textAlign: "center", fontWeight: 700, marginTop: 5 }}>
-              {curTestcase.title} 테스트케이스 수정
-            </div>
+          <IconButton
+            style={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+          <br />
+          <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+            {curTestcase.title} 테스트케이스 수정
           </Typography>
           <hr />
           <CardContent>
@@ -300,7 +464,7 @@ const UpdateTestcase = ({
             <RadioGroup
               row
               key={curTestcase.hidden}
-              defaultValue={curTestcase.hidden}
+              defaultValue={curTestcase.hidden === true ? "private" : "public"}
               onChange={(e) => {
                 e.preventDefault();
                 setHidden(e.target.value);
@@ -315,13 +479,13 @@ const UpdateTestcase = ({
                 공개 &nbsp;&nbsp;
               </FormLabel>
               <FormControlLabel
-                value="public"
+                value={"public"}
                 label="공개"
                 labelPlacement="end"
                 control={<Radio color="primary" />}
               />
               <FormControlLabel
-                value="private"
+                value={"private"}
                 label="비공개"
                 labelPlacement="end"
                 control={<Radio color="primary" />}
@@ -337,6 +501,18 @@ const UpdateTestcase = ({
               defaultValue={curTestcase.score}
               onChange={(e) => {
                 setScore(e.target.value);
+              }}
+            />
+            <br />
+            <br />
+            <TextField
+              variant="outlined"
+              label="실행 인자 입력"
+              style={{ width: "100%" }}
+              defaultValue={curTestcase.arg_text}
+              multiline
+              onChange={(e) => {
+                setArg_text(e.target.value);
               }}
             />
             <br />
@@ -376,6 +552,7 @@ const UpdateTestcase = ({
             </Button>
             <div className="preview">
               <p>기존파일</p>
+              <List>{atInput}</List>
             </div>
             <br />
             <br />
@@ -388,6 +565,7 @@ const UpdateTestcase = ({
             </Button>
             <div className="preview2">
               <p>기존 파일</p>
+              <List>{atOutput}</List>
             </div>
             <br />
             <br />

@@ -89,6 +89,24 @@ const Material = ({ userType, userId }) => {
       .catch((err) => console.log(err));
   }, []);
 
+  let add = <></>;
+  if (userType === "professor" || userType === "admin") {
+    add = (
+      <>
+        <ListItemButton
+          onClick={() => {
+            setOpenAdd(true);
+          }}
+        >
+          <ListItemIcon>
+            <Add />
+          </ListItemIcon>
+          <ListItemText primary="새로운 강의자료 추가" />
+        </ListItemButton>
+        <hr />
+      </>
+    );
+  }
   return (
     <>
       <MaterialDetail
@@ -138,18 +156,52 @@ const Material = ({ userType, userId }) => {
                 backgroundColor: "#F0F0F0",
               }}
             >
-              <ListItemButton
-                onClick={() => {
-                  setOpenAdd(true);
-                }}
-              >
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="새로운 강의자료 추가" />
-              </ListItemButton>
-              <hr />
+              {add}
               {materials.map((item, index) => {
+                let editAndDelete = <></>;
+                if (userType === "professor" || userType === "admin") {
+                  editAndDelete = (
+                    <>
+                      <IconButton
+                        onClick={() => {
+                          setCurrentMaterial(materials[index]);
+                          setOpenUpdate(true);
+                        }}
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          if (window.confirm("정말로 삭제하시겠습니까?")) {
+                            fetch(BASE_URL + "/api/deleteMaterial", {
+                              method: "POST",
+                              headers: {
+                                "Content-Type": "application/json",
+                                Authorization:
+                                  "bearer " + localStorage.getItem("token"),
+                              },
+                              body: JSON.stringify({
+                                material: item._id,
+                              }),
+                            })
+                              .then((res) => {
+                                return res.json();
+                              })
+                              .then((data) => {
+                                console.log("deleteMaterial ", data);
+                                setMaterials(
+                                  materials.filter((it) => it._id !== item._id)
+                                );
+                              })
+                              .catch((err) => console.log(err));
+                          }
+                        }}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </>
+                  );
+                }
                 return (
                   <ListItem>
                     <Button
@@ -169,44 +221,7 @@ const Material = ({ userType, userId }) => {
                         )}
                       />
                     </Button>
-                    <IconButton
-                      onClick={() => {
-                        setCurrentMaterial(materials[index]);
-                        setOpenUpdate(true);
-                      }}
-                    >
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        if (window.confirm("정말로 삭제하시겠습니까?")) {
-                          fetch(BASE_URL + "/api/deleteMaterial", {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                              Authorization:
-                                "bearer " + localStorage.getItem("token"),
-                            },
-                            body: JSON.stringify({
-                              material: item._id,
-                            }),
-                          })
-                            .then((res) => {
-                              return res.json();
-                            })
-                            .then((data) => {
-                              console.log("deleteMaterial ", data);
-                              setMaterials(
-                                materials.filter((it) => it._id !== item._id)
-                              );
-                            })
-                            .catch((err) => console.log(err));
-                        }
-                      }}
-                    >
-                      <Delete />
-                    </IconButton>
-
+                    {editAndDelete}
                     <AttachmentsIcon attachments={item.attachments} />
                   </ListItem>
                 );

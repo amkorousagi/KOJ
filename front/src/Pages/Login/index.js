@@ -16,19 +16,11 @@ import {
 import { BASE_URL } from "../../config.js";
 
 const Login = () => {
-  const [userType, setUserType] = React.useState(
-    localStorage.getItem("user_type")
-  );
-
   const [id, setId] = React.useState(localStorage.getItem("id"));
   const [password, setPassword] = React.useState(
     localStorage.getItem("password")
   );
   const [errorText, setErrorText] = React.useState("");
-  const handlingRadio = (e) => {
-    e.preventDefault();
-    setUserType(e.target.value);
-  };
 
   const onLogin = (e) => {
     fetch(BASE_URL + "/api/login", {
@@ -39,7 +31,6 @@ const Login = () => {
       body: JSON.stringify({
         id,
         password,
-        user_type: userType,
       }),
     })
       .then((res) => {
@@ -51,7 +42,7 @@ const Login = () => {
           localStorage.setItem("token", data.data.token);
           localStorage.setItem("id", id);
           localStorage.setItem("password", password);
-          localStorage.setItem("user_type", userType);
+          localStorage.setItem("user_type", data.data.user_type);
           localStorage.setItem("isLogined", "true");
           window.location.reload();
         } else {
@@ -75,57 +66,17 @@ const Login = () => {
       <Card variant="outlined">
         <CardContent>
           <Typography
-            style={{ fontFamily: "Nanum Gothic", textAlign: "center" }}
+            style={{
+              fontFamily: "Nanum Gothic",
+              textAlign: "center",
+              fontWeight: 800,
+              fontSize: 20,
+            }}
           >
             로그인
           </Typography>
           <hr />
-          <FormControl component="fieldset">
-            <RadioGroup
-              row
-              aria-label="position"
-              id="userTypeRadio"
-              name="userType"
-              defaultValue={localStorage.getItem("user_type") ?? "student"}
-              onChange={handlingRadio}
-            >
-              <FormLabel
-                component="legend"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                회원 유형&nbsp;&nbsp;
-              </FormLabel>
-              <FormControlLabel
-                value="student"
-                control={<Radio color="primary" />}
-                label="학생"
-                labelPlacement="end"
-              />
 
-              <FormControlLabel
-                value="tutor"
-                control={<Radio color="primary" />}
-                label="튜터"
-                labelPlacement="end"
-              />
-
-              <FormControlLabel
-                value="professor"
-                control={<Radio color="primary" />}
-                label="교수"
-                labelPlacement="end"
-              />
-              <FormControlLabel
-                value="admin"
-                control={<Radio color="primary" />}
-                label="관리자"
-                labelPlacement="end"
-              />
-            </RadioGroup>
-          </FormControl>
           <form>
             <TextField
               id="id"

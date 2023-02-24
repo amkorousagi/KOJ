@@ -9,6 +9,7 @@ export async function readDashScore({ lecture, practice }) {
   const dashscore = {};
   const meta = {};
   if (practice) {
+    //실습 하나 보기
     const problems = await Problem.find({ practice });
 
     const problem_scores = await Problem_score.find({
@@ -20,16 +21,27 @@ export async function readDashScore({ lecture, practice }) {
         dashscore[problem_score.student][problem_score.problem] =
           problem_score.score;
         dashscore[problem_score.student].score += problem_score.score;
+        dashscore[problem_score.student].submission.push({
+          problem: problem_score.problem,
+          submission: problem_score.submission,
+        });
       } else {
         dashscore[problem_score.student] = {
           student: problem_score.student,
           score: problem_score.score,
+          submission: [
+            {
+              problem: problem_score.problem,
+              submission: problem_score.submission,
+            },
+          ],
           [problem_score.problem]: problem_score.score,
         };
       }
     }
     meta["problems"] = problems;
   } else {
+    //강의 전체 보기
     const practices = await Practice.find({ lecture });
     let problems_all = [];
 

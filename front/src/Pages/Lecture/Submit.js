@@ -9,8 +9,11 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
+  IconButton,
+  TextField,
 } from "@material-ui/core";
-import React from "react";
+import { Close } from "@mui/icons-material";
+import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
 const Entry = ({ language, files, setEntry }) => {
@@ -54,10 +57,58 @@ const Entry = ({ language, files, setEntry }) => {
   }
 };
 
-const Submit = ({ open, handleClose, openScore, problem_id }) => {
+const Submit = ({ open, handleClose, openScore, problem_id, problem }) => {
   const [language, setLanguage] = React.useState("c");
   const [files, setFiles] = React.useState([]);
   const [entry, setEntry] = React.useState("");
+  const [result, setResult] = React.useState("");
+  const [blank, setBlank] = React.useState([]);
+  const blank_input = () => {
+    if (problem.blank !== undefined) {
+      const words = problem.blank.split("#BLANK#");
+      console.log(words);
+      const words_b = blank.map((item, index) => {
+        return (
+          <>
+            <TextField
+              variant="outlined"
+              size="small"
+              multiline
+              style={{ display: "inline" }}
+              onChange={(e) => {
+                const o = [...blank];
+                o[index] = e.target.value;
+                setBlank(o);
+              }}
+            />
+            <span>{words[index + 1]}</span>
+          </>
+        );
+      });
+
+      return (
+        <>
+          <span>{words[0]}</span>
+          {words_b}
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  };
+  useEffect(() => {
+    if (problem.blank !== undefined) {
+      let para = problem.blank;
+      const cnt = [];
+      let indexFirst = para.indexOf("#BLANK");
+
+      while (indexFirst !== -1) {
+        cnt.push("");
+        indexFirst = para.indexOf("#BLANK", indexFirst + 1);
+      }
+      setBlank(cnt);
+    }
+  }, [problem]);
   const dropHandler = (ev) => {
     console.log("File(s) dropped");
 
@@ -153,6 +204,8 @@ const Submit = ({ open, handleClose, openScore, problem_id }) => {
         code: codes,
         language,
         entry,
+        result,
+        blank,
       }),
     })
       .then((res) => {
@@ -169,124 +222,251 @@ const Submit = ({ open, handleClose, openScore, problem_id }) => {
         console.log(err);
       });
   };
-
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        style={{
-          textAlign: "center",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <Card variant="outlined">
-          <CardContent>
-            <FormLabel
-              style={{
-                alignItems: "center",
-                textAlign: "center",
-              }}
+  if (problem.problem_type === "solve") {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            textAlign: "center",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Card variant="outlined">
+            <IconButton
+              style={{ position: "absolute", top: 0, right: 0 }}
+              onClick={handleClose}
             >
-              언어
-            </FormLabel>
+              <Close />
+            </IconButton>
             <br />
-            <br />
-            <RadioGroup
-              row
-              defaultValue={language}
-              onChange={(e) => {
-                e.preventDefault();
-                setLanguage(e.target.value);
-              }}
-            >
-              <FormControlLabel
-                value="c"
-                label="C"
-                labelPlacement="end"
-                control={<Radio color="primary" />}
-              />
-              <FormControlLabel
-                value="cpp"
-                label="C++"
-                labelPlacement="end"
-                control={<Radio color="primary" />}
-              />
-              <FormControlLabel
-                value="java"
-                label="Java"
-                labelPlacement="end"
-                control={<Radio color="primary" />}
-              />
-              <FormControlLabel
-                value="python"
-                label="Python"
-                labelPlacement="end"
-                control={<Radio color="primary" />}
-              />
-              <FormControlLabel
-                value="node"
-                label="Node"
-                labelPlacement="end"
-                control={<Radio color="primary" />}
-              />
-            </RadioGroup>
-            <br />
-            <br />
-            <Entry language={language} files={files} setEntry={setEntry} />
-            <FormLabel
-              style={{
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
-              소스 코드
-            </FormLabel>
-            <br />
-            <br />
-            <Typography style={{ fontFamily: "Nanum Gothic" }}>
-              <div
-                id="drop_zone"
-                onDrop={dropHandler}
-                onDragOver={dragOverHandler}
+            <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+              정답 제출
+            </Typography>
+            <hr />
+            <CardContent>
+              <FormLabel
                 style={{
-                  border: "5px solid blue",
-                  width: "400px",
-                  height: "200px",
+                  alignItems: "center",
+                  textAlign: "center",
                 }}
               >
-                <p
-                  id="myDropZone"
-                  style={{ whiteSpace: "pre-line", textAlign: "center" }}
+                언어
+              </FormLabel>
+              <br />
+              <br />
+              <RadioGroup
+                row
+                defaultValue={language}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setLanguage(e.target.value);
+                }}
+              >
+                <FormControlLabel
+                  value="c"
+                  label="C"
+                  labelPlacement="end"
+                  control={<Radio color="primary" />}
+                />
+                <FormControlLabel
+                  value="cpp"
+                  label="C++"
+                  labelPlacement="end"
+                  control={<Radio color="primary" />}
+                />
+                <FormControlLabel
+                  value="java"
+                  label="Java"
+                  labelPlacement="end"
+                  control={<Radio color="primary" />}
+                />
+                <FormControlLabel
+                  value="python"
+                  label="Python"
+                  labelPlacement="end"
+                  control={<Radio color="primary" />}
+                />
+                <FormControlLabel
+                  value="node"
+                  label="Node"
+                  labelPlacement="end"
+                  control={<Radio color="primary" />}
+                />
+              </RadioGroup>
+              <br />
+              <br />
+              <Entry language={language} files={files} setEntry={setEntry} />
+              <FormLabel
+                style={{
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+              >
+                소스 코드
+              </FormLabel>
+              <br />
+              <br />
+              <Typography style={{ fontFamily: "Nanum Gothic" }}>
+                <div
+                  id="drop_zone"
+                  onDrop={dropHandler}
+                  onDragOver={dragOverHandler}
+                  style={{
+                    border: "5px solid blue",
+                    width: "400px",
+                    height: "200px",
+                  }}
                 >
-                  <Button component="label" variant="contained">
-                    Choose file(s)
-                    <input
-                      type="file"
-                      hidden
-                      multiple
-                      id="myChooseFile"
-                      onChange={changeChooseFile}
-                    />
-                  </Button>
-                  {"\n\n"}
-                  or Drag&Drop file(s)
-                </p>
+                  <p
+                    id="myDropZone"
+                    style={{ whiteSpace: "pre-line", textAlign: "center" }}
+                  >
+                    <Button component="label" variant="contained">
+                      Choose file(s)
+                      <input
+                        type="file"
+                        hidden
+                        multiple
+                        id="myChooseFile"
+                        onChange={changeChooseFile}
+                      />
+                    </Button>
+                    {"\n\n"}
+                    or Drag&Drop file(s)
+                  </p>
+                </div>
+                <br />
+                <Button variant="contained" onClick={submitFile}>
+                  {" "}
+                  제출하기
+                </Button>
+              </Typography>
+              <Typography style={{ color: "red", fontWeight: 800 }}>
+                <br />
+                ※성적은 마지막 제출을 기준으로 산정합니다.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      </Modal>
+    );
+  } else if (problem.problem_type === "result") {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            textAlign: "center",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Card variant="outlined">
+            <IconButton
+              style={{ position: "absolute", top: 0, right: 0 }}
+              onClick={handleClose}
+            >
+              <Close />
+            </IconButton>
+            <br />
+            <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+              정답 제출
+            </Typography>
+            <hr />
+            <CardContent>
+              <br />
+              <br />
+              <TextField
+                label="실행 결과"
+                fullWidth
+                multiline
+                onChange={(e) => {
+                  setResult(e.target.value);
+                }}
+              />
+              <br />
+              <br />
+              <Typography style={{ fontFamily: "Nanum Gothic" }}>
+                <Button variant="contained" onClick={submitFile}>
+                  제출하기
+                </Button>
+              </Typography>
+              <Typography style={{ color: "red", fontWeight: 800 }}>
+                <br />
+                ※성적은 마지막 제출을 기준으로 산정합니다.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      </Modal>
+    );
+  } else if (problem.problem_type === "blank") {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            textAlign: "center",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Card variant="outlined">
+            <IconButton
+              style={{ position: "absolute", top: 0, right: 0 }}
+              onClick={handleClose}
+            >
+              <Close />
+            </IconButton>
+            <br />
+            <Typography style={{ textAlign: "center", fontWeight: 800 }}>
+              정답 제출
+            </Typography>
+            <hr />
+            <CardContent>
+              <br />
+              <br />
+              <div
+                style={{
+                  whiteSpace: "pre-wrap",
+                  textAlign: "left",
+                  lineHeight: "300%",
+                }}
+              >
+                {blank_input()}
               </div>
               <br />
-              <Button variant="contained" onClick={submitFile}>
-                {" "}
-                제출하기
-              </Button>
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-    </Modal>
-  );
+              <br />
+              <Typography style={{ fontFamily: "Nanum Gothic" }}>
+                <Button variant="contained" onClick={submitFile}>
+                  제출하기
+                </Button>
+              </Typography>
+              <Typography style={{ color: "red", fontWeight: 800 }}>
+                <br />
+                ※성적은 마지막 제출을 기준으로 산정합니다.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      </Modal>
+    );
+  } else {
+    return <></>;
+  }
 };
 export default Submit;

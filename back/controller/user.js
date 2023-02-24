@@ -20,8 +20,8 @@ export async function findUserById({ id }) {
   return await User.findOne({ id });
 }
 
-export async function findUserByIdAndUser_type({ id, user_type }) {
-  return await User.findOne({ id, user_type });
+export async function findUserByIdAndUser_type({ id }) {
+  return await User.findOne({ id });
 }
 
 export async function createUser({ id, password, name, user_type }) {
