@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { Route } from "react-router-dom";
-
+import { Navigate, Route, useNavigate } from "react-router-dom";
 import { BrowserRouter, Routes } from "react-router-dom";
 import Login from "../Pages/Login/index.js";
 import About from "../Pages/About/index.js";
@@ -17,6 +16,8 @@ import Material from "../Pages/Material/index.js";
 import DashScore from "../Pages/DashScore/index.js";
 import DashScores from "../Pages/DashScores/index.js";
 import Enrollemnt from "../Pages/Enrollment/index.js";
+import Scores from "../Pages/Scores/Score.js";
+import InitPassword from "../Pages/InitPassword/index.js";
 const Router = () => {
   const [isLogined, setIsLogined] = React.useState(false);
   const [userType, setUserType] = React.useState("");
@@ -51,7 +52,6 @@ const Router = () => {
         setIsLogined(false);
       });
   }, []);
-
   if (isLogined) {
     //userType 별로 다른 페이지 보여주기 : 조건부 렌더링
     return (
@@ -64,7 +64,7 @@ const Router = () => {
         <BrowserRouter>
           <Routes>
             <Route
-              path="/"
+              path="/lectures"
               element={<Lectures userType={userType} userId={userId} />}
             />
             <Route
@@ -88,6 +88,10 @@ const Router = () => {
               path="/dashscore/:lectureId/:lectureTitle"
               element={<DashScore userId={userId} userType={userType} />}
             />
+            <Route
+              path="/scores"
+              element={<Scores userId={userId} userType={userType} />}
+            />
             <Route path="/code/:submissionId" element={<Code />} />
             <Route path="/score/:submissionId" element={<Score />} />
             <Route path="/createUser" element={<CreateUser />} />
@@ -95,6 +99,7 @@ const Router = () => {
               path="/enrollment/:lectureId/:lectureTitle"
               element={<Enrollemnt />}
             />
+            <Route path="/initpassword" element={<InitPassword />} />
           </Routes>
         </BrowserRouter>
       </Layout>

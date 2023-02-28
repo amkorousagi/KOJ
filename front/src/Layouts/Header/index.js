@@ -106,7 +106,7 @@ const Menu1 = ({ isLogined, userType }) => {
     if (userType === "student") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/">
+          <a href="/lectures">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -122,7 +122,7 @@ const Menu1 = ({ isLogined, userType }) => {
     } else if (userType === "tutor") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/">
+          <a href="/lectures">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -138,7 +138,7 @@ const Menu1 = ({ isLogined, userType }) => {
     } else if (userType === "professor") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/">
+          <a href="/lectures">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -192,7 +192,7 @@ const Menu2 = ({ isLogined, userType }) => {
     if (userType === "student") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/judge">
+          <a href="/scores">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -240,7 +240,7 @@ const Menu2 = ({ isLogined, userType }) => {
     } else if (userType === "admin") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/data">
+          <a href="/initpassword">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -248,7 +248,7 @@ const Menu2 = ({ isLogined, userType }) => {
                 fontSize: "20px",
               }}
             >
-              채점 데이터
+              비번 초기화
             </Typography>
           </a>
         </Box>
@@ -354,6 +354,7 @@ const Header = ({ userType, name, isLogined, setIsLogined }) => {
         }}
       />
       <div
+        className="header"
         style={{
           position: "fixed",
           top: 0,
@@ -392,7 +393,12 @@ const Header = ({ userType, name, isLogined, setIsLogined }) => {
         </Grid>
         <hr />
       </div>
-      <div style={{ height: 160, width: "100%" }}></div>
+      <div
+        style={{
+          height: 160,
+          width: "100%",
+        }}
+      ></div>
     </>
   );
 };

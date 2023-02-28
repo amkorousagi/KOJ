@@ -15,6 +15,8 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Paper,
+  TableContainer,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -29,6 +31,7 @@ import {
   PanoramaFishEye,
 } from "@mui/icons-material";
 import { BASE_URL, FILE_URL } from "../../config.js";
+import { maxWidth } from "@mui/system";
 
 const Dash = ({ scores, requestPractice }) => {
   console.log(scores);
@@ -38,7 +41,14 @@ const Dash = ({ scores, requestPractice }) => {
       let total = 0;
       const head = scores.meta.practices.map((item) => {
         return (
-          <TableCell>
+          <TableCell
+            style={{
+              position: "sticky",
+              top: 0,
+              backgroundColor: "#F0F0F0",
+              zIndex: 10,
+            }}
+          >
             <Button
               variant="outlined"
               onClick={() => {
@@ -60,78 +70,123 @@ const Dash = ({ scores, requestPractice }) => {
         );
       });
       return (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>이름</TableCell>
-              <TableCell>총점({total})</TableCell>
-              {head}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {scores.dashscore.map((item) => {
-              let s_total = 0;
+        <TableContainer style={{ maxHeight: "80vh" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  style={{
+                    position: "sticky",
+                    top: 0,
+                    left: 0,
+                    backgroundColor: "#F0F0F0",
+                    zIndex: 11,
+                  }}
+                >
+                  이름
+                </TableCell>
+                <TableCell
+                  style={{
+                    position: "sticky",
+                    top: 0,
+                    left: 45,
+                    backgroundColor: "#F0F0F0",
+                    zIndex: 11,
+                  }}
+                >
+                  총점({total})
+                </TableCell>
+                {head}
+              </TableRow>
+            </TableHead>
+            <TableBody style={{}}>
+              {scores.dashscore.map((item) => {
+                let s_total = 0;
 
-              const r = scores.meta.practices.map((p) => {
-                let icon = <></>;
-                const sub_total = scores.meta.problems.reduce(
-                  (acc, current) => {
-                    if (current.practice === p._id) {
-                      total += current.score;
-                      return acc + current.score;
-                    } else {
-                      return acc;
-                    }
-                  },
-                  0
-                );
-                console.log(p);
-                if (item[p._id] < sub_total) {
-                  icon = <DoDisturb />;
-                } else {
-                  icon = <PanoramaFishEye />;
-                }
-
-                if (item[p._id]) {
-                  s_total += item[p._id];
-                  return (
-                    <TableCell>
-                      {icon}({item[p._id]})
-                    </TableCell>
-                  );
-                } else {
-                  return (
-                    <TableCell>
-                      <Close />({0})
-                    </TableCell>
-                  );
-                }
-              });
-              return (
-                <TableRow>
-                  <TableCell>
-                    {scores.meta.students.reduce((acc, cur) => {
-                      if (cur._id === item.student) {
-                        return cur.name;
+                const r = scores.meta.practices.map((p) => {
+                  let icon = <></>;
+                  const sub_total = scores.meta.problems.reduce(
+                    (acc, current) => {
+                      if (current.practice === p._id) {
+                        total += current.score;
+                        return acc + current.score;
                       } else {
-                        return acc + "";
+                        return acc;
                       }
-                    }, "")}
-                  </TableCell>
-                  <TableCell>{s_total}</TableCell>
-                  {r}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                    },
+                    0
+                  );
+                  console.log(p);
+                  if (item[p._id] < sub_total) {
+                    icon = <DoDisturb />;
+                  } else {
+                    icon = <PanoramaFishEye />;
+                  }
+
+                  if (item[p._id]) {
+                    s_total += item[p._id];
+                    return (
+                      <TableCell>
+                        {icon}({item[p._id]})
+                      </TableCell>
+                    );
+                  } else {
+                    return (
+                      <TableCell>
+                        <Close />({0})
+                      </TableCell>
+                    );
+                  }
+                });
+                return (
+                  <TableRow>
+                    <TableCell
+                      style={{
+                        position: "sticky",
+                        background: "white",
+                        left: 0,
+                        zIndex: 10,
+                      }}
+                    >
+                      {scores.meta.students.reduce((acc, cur) => {
+                        if (cur._id === item.student) {
+                          return cur.name;
+                        } else {
+                          return acc + "";
+                        }
+                      }, "")}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        position: "sticky",
+                        background: "white",
+                        left: 45,
+                        zIndex: 10,
+                      }}
+                    >
+                      {s_total}
+                    </TableCell>
+                    {r}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       );
     } else {
       let total = 0;
       const head = scores.meta.problems.map((item) => {
         total += item.score;
         return (
-          <TableCell>
+          <TableCell
+            style={{
+              position: "sticky",
+              top: 0,
+              backgroundColor: "#F0F0F0",
+              zIndex: 10,
+            }}
+          >
             <Button
               variant="outlined"
               onClick={() => {
@@ -183,90 +238,128 @@ const Dash = ({ scores, requestPractice }) => {
         );
       });
       return (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>이름</TableCell>
-              <TableCell>총점({total})</TableCell>
-              {head}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {scores.dashscore.map((item) => {
-              let s_total = 0;
-              const r = scores.meta.problems.map((p) => {
-                if (item[p._id] !== undefined) {
-                  s_total += item[p._id];
+        <TableContainer style={{ maxHeight: "80vh" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  style={{
+                    position: "sticky",
+                    top: 0,
+                    left: 0,
+                    backgroundColor: "#F0F0F0",
+                    zIndex: 11,
+                  }}
+                >
+                  이름
+                </TableCell>
+                <TableCell
+                  style={{
+                    position: "sticky",
+                    top: 0,
+                    left: 45,
+                    backgroundColor: "#F0F0F0",
+                    zIndex: 11,
+                  }}
+                >
+                  총점({total})
+                </TableCell>
+                {head}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {scores.dashscore.map((item) => {
+                let s_total = 0;
+                const r = scores.meta.problems.map((p) => {
+                  if (item[p._id] !== undefined) {
+                    s_total += item[p._id];
 
-                  return (
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          fetch(BASE_URL + "/api/resubmission", {
-                            method: "POST",
-                            headers: {
-                              Authorization:
-                                "bearer " + localStorage.getItem("token"),
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                              submissions: [
-                                item.submission.filter(
-                                  (it) => it.problem === p._id
-                                )[0].submission,
-                              ],
-                            }),
-                          })
-                            .then((res) => {
-                              return res.json();
+                    return (
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          onClick={() => {
+                            fetch(BASE_URL + "/api/resubmission", {
+                              method: "POST",
+                              headers: {
+                                Authorization:
+                                  "bearer " + localStorage.getItem("token"),
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({
+                                submissions: [
+                                  item.submission.filter(
+                                    (it) => it.problem === p._id
+                                  )[0].submission,
+                                ],
+                              }),
                             })
-                            .then((data) => {
-                              console.log(data);
-                              alert(
-                                "재채점이 완료되었습니다." +
-                                  item[p._id] +
-                                  "=>" +
-                                  data.data.score
-                              );
-                            })
-                            .catch((err) => {
-                              console.log(err);
-                            });
-                        }}
-                      >
-                        {item[p._id]}
-                      </Button>
+                              .then((res) => {
+                                return res.json();
+                              })
+                              .then((data) => {
+                                console.log(data);
+                                alert(
+                                  "재채점이 완료되었습니다." +
+                                    item[p._id] +
+                                    "=>" +
+                                    data.data.score
+                                );
+                              })
+                              .catch((err) => {
+                                console.log(err);
+                              });
+                          }}
+                        >
+                          {item[p._id]}
+                        </Button>
+                      </TableCell>
+                    );
+                  } else {
+                    return (
+                      <TableCell>
+                        <Button variant="outlined" disabled>
+                          {0}
+                        </Button>
+                      </TableCell>
+                    );
+                  }
+                });
+                return (
+                  <TableRow>
+                    <TableCell
+                      style={{
+                        position: "sticky",
+                        left: 0,
+                        zIndex: 10,
+                        backgroundColor: "white",
+                      }}
+                    >
+                      {scores.meta.students.reduce((acc, cur) => {
+                        if (cur._id === item.student) {
+                          return cur.name;
+                        } else {
+                          return acc + "";
+                        }
+                      }, "")}
                     </TableCell>
-                  );
-                } else {
-                  return (
-                    <TableCell>
-                      <Button variant="outlined" disabled>
-                        {0}
-                      </Button>
+                    <TableCell
+                      style={{
+                        position: "sticky",
+                        left: 45,
+                        zIndex: 10,
+                        backgroundColor: "white",
+                      }}
+                    >
+                      {s_total}
                     </TableCell>
-                  );
-                }
-              });
-              return (
-                <TableRow>
-                  <TableCell>
-                    {scores.meta.students.reduce((acc, cur) => {
-                      if (cur._id === item.student) {
-                        return cur.name;
-                      } else {
-                        return acc + "";
-                      }
-                    }, "")}
-                  </TableCell>
-                  <TableCell>{s_total}</TableCell>
-                  {r}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                    {r}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       );
     }
   } else {
@@ -425,7 +518,17 @@ const DashScore = ({ userId, userType }) => {
                     })
                     .then((data) => {
                       console.log(data);
-                      setScores(data.data);
+                      setScores(
+                        data.data.sort((a, b) => {
+                          if (a.created_date > b.created_date) {
+                            return 1;
+                          }
+                          if (a.created_date < b.created_date) {
+                            return -1;
+                          }
+                          return 0;
+                        })
+                      );
                     })
                     .catch((err) => {
                       console.log(err);
@@ -435,19 +538,6 @@ const DashScore = ({ userId, userType }) => {
                 <ListItemText primary={"전체보기"} />
               </ListItem>
               {practices}
-              <hr />
-              <ListItem
-                button
-                onClick={() => {
-                  window.open(
-                    "/enrollment/" + lectureId + "/" + lectureTitle,
-                    "_blank",
-                    "hegith=200,width=200"
-                  );
-                }}
-              >
-                <Add /> &nbsp; 학생 등록
-              </ListItem>
             </List>
           </div>
         </Grid>
@@ -472,7 +562,7 @@ const DashScore = ({ userId, userType }) => {
                         {curPracTitle}
                       </div>
                       <hr />
-                    </Typography>
+                    </Typography>{" "}
                     <Dash scores={scores} requestPractice={requestPractice} />
                   </CardContent>
                 </Card>

@@ -16,44 +16,87 @@ import {
 import { BASE_URL } from "../../config.js";
 
 const Login = () => {
-  const [id, setId] = React.useState(localStorage.getItem("id"));
-  const [password, setPassword] = React.useState(
-    localStorage.getItem("password")
-  );
+  const [id, setId] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [errorText, setErrorText] = React.useState("");
-
-  const onLogin = (e) => {
-    fetch(BASE_URL + "/api/login", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id,
-        password,
-      }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data.success) {
-          localStorage.setItem("token", data.data.token);
-          localStorage.setItem("id", id);
-          localStorage.setItem("password", password);
-          localStorage.setItem("user_type", data.data.user_type);
-          localStorage.setItem("isLogined", "true");
-          window.location.reload();
-        } else {
-          localStorage.setItem("isLogined", "false");
-          setErrorText(data.error);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        localStorage.setItem("isLogined", "false");
+  const getStoredCredentials = async () => {
+    try {
+      console.log(await navigator.credentials.get());
+      const credentials = await navigator.credentials.get({
+        password: true,
       });
+      console.log("hello");
+
+      if (credentials && credentials.type === "password") {
+        const { id, password } = credentials;
+        console.log({ id, password });
+        // Your login logic here
+      } else {
+        console.log(credentials);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  React.useEffect(() => {
+    getStoredCredentials();
+  }, []);
+
+  const onLogin = async (e) => {
+    e.preventDefault();
+    console.log(navigator);
+    try {
+      await navigator.credentials
+        .store(
+          new window.PasswordCredential({
+            password,
+            id,
+            // other options
+          }),
+          {
+            prompt: "required",
+          }
+        )
+        .then(() => {
+          console.log("Credentials stored successfully.");
+        })
+        .catch((error) => {
+          console.error("Error storing credentials:", error);
+        });
+      fetch(BASE_URL + "/api/login", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          password,
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            localStorage.setItem("token", data.data.token);
+            localStorage.setItem("id", id);
+            localStorage.setItem("password", password);
+            localStorage.setItem("user_type", data.data.user_type);
+            localStorage.setItem("isLogined", "true");
+            window.open("/lectures", "_self");
+          } else {
+            localStorage.setItem("isLogined", "false");
+            setErrorText(data.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          localStorage.setItem("isLogined", "false");
+        });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -77,26 +120,32 @@ const Login = () => {
           </Typography>
           <hr />
 
-          <form>
+          <form onSubmit={onLogin} autoComplete="on">
             <TextField
-              id="id"
+              id="username"
+              name="id"
+              type="text"
               label="아이디"
               onChange={(e) => setId(e.target.value)}
-              defaultValue={id}
+              value={id}
+              autoComplete="username"
             />
             <br />
             <TextField
               id="password"
+              name="pw"
               type="password"
               label="비밀번호"
               onChange={(e) => setPassword(e.target.value)}
-              defaultValue={password}
+              value={password}
+              autoComplete="current-password"
             />
+            <br />
+            <br />
+            <Button type="submit" variant="contained" color="primary">
+              로그인
+            </Button>
           </form>
-          <br />
-          <Button variant="contained" color="primary" onClick={onLogin}>
-            로그인
-          </Button>
           <hr />
           <Typography>
             아이디는 당신의{" "}

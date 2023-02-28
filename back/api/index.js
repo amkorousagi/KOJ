@@ -34,6 +34,7 @@ import deleteProblemRoute from "./deleteProblem";
 import deleteTestcaseRoute from "./deleteTestcase";
 import deleteUserRoute from "./deleteUser";
 import resubmissionRoute from "./ReSubmission";
+import adminUpdateUserPasswordRoute from "./adminUpdateUserPassword";
 
 const apiRoute = express();
 
@@ -131,6 +132,11 @@ apiRoute.use(
   "/updateUserPassword",
   authorization_handler([USER_TYPE.PROFESSOR]),
   updateUserPasswordRoute
+);
+apiRoute.use(
+  "/adminUpdateUserPassword",
+  authorization_handler([USER_TYPE.ADMIN]),
+  adminUpdateUserPasswordRoute
 );
 
 apiRoute.use(

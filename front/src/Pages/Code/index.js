@@ -66,27 +66,24 @@ const Code = () => {
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
+      .then(async (data) => {
         console.log(data);
-        data.data.code.map((item) => {
-          fetch(CODE_URL + "/" + item, {
+        const c = [];
+        for (const item of data.data.code) {
+          await fetch(CODE_URL + "/" + item, {
             method: "GET",
           })
             .then((res) => {
               return res.json();
             })
             .then((data) => {
-              console.log(data);
-              const c = codes.map((i) => {
-                return i;
-              });
               c.push(data);
-              setCodes(c);
             })
             .catch((err) => {
               console.log(err);
             });
-        });
+        }
+        setCodes(c);
       })
       .catch((err) => {
         console.log(err);
@@ -96,6 +93,7 @@ const Code = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  console.log(codes);
   return (
     <Box
       display="flex"

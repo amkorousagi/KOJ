@@ -33,10 +33,10 @@ export async function createUser({ id, password, name, user_type }) {
 export async function readUser({ name, student_id }) {
   const condition = {};
   if (name) {
-    condition["name"] = name;
+    condition["name"] = { $regex: name, $options: "i" };
   }
   if (student_id) {
-    condition["student_id"] = student_id;
+    condition["id"] = { $regex: student_id, $options: "i" };
   }
   return await User.find(condition);
 }
@@ -68,4 +68,8 @@ export async function updateUser({ id, password, newPassword }) {
 
 export async function deleteUser({ id }) {
   return await User.findOneAndDelete({ id });
+}
+
+export async function adminUpdateUser({ id, password }) {
+  return await User.findOneAndUpdate({ id }, { password }, { new: true });
 }
