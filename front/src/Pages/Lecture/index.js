@@ -35,6 +35,7 @@ import UpdatePractice from "./UpdatePractice.js";
 import UpdateProblem from "./UpdateProblem.js";
 import UpdateTestcase from "./UpdateTestcase.js";
 import { Stack } from "@mui/system";
+import StudentExcel from "./StudentExcel.js";
 
 const LectureDate = ({ pracStart, pracEnd }) => {
   if (pracStart !== "") {
@@ -610,39 +611,7 @@ const Lecture = ({ userId, userType }) => {
               backgroundColor: "#F0F0F0",
             }}
           >
-            <Grid
-              container
-              style={{
-                width: "100%",
-                alignContent: "space-between",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Grid
-                item
-                xs={6}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  padding: 5,
-                }}
-              >
-                <Button variant="contained" startIcon={<DownloadOutlined />}>
-                  등록 양식
-                </Button>
-              </Grid>
-              <Grid
-                item
-                xs={6}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                <Button variant="contained" startIcon={<UploadFileOutlined />}>
-                  학생 등록
-                </Button>
-              </Grid>
-            </Grid>
-            <hr />
+            <StudentExcel lectureId={lectureId} />
             <List
               subheader={<ListSubheader>{lectureTitle}</ListSubheader>}
               style={{

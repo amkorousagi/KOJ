@@ -1,10 +1,12 @@
 import { sendErrorWithoutLog } from "../lib/common";
 import User from "../model/user";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 import { USER_TYPE } from "../type";
+import Enrollment from "../model/enrollment";
 /*
 import bcrypt from "bcrypt";
-import mongoose from "mongoose";
+
 const admin = async () => {
   const a = new User({
     id: "admin",
@@ -46,6 +48,28 @@ export async function insertManyUser(users) {
   const result = await User.insertMany(users);
   //학번 같은 유저 있으면 넣지 말기
   await session.endSession();
+  return result;
+}
+
+export async function createEnrollStudent({ lecture, users }) {
+  const session = await mongoose.startSession();
+  let result;
+  try {
+    result = await Promise.allSettled(
+      users.map(async (item) => {
+        const user = new User({ ...item });
+        const saved = await user.save();
+
+        const enrollment = new Enrollment({ lecture, student: saved._id });
+
+        return await enrollment.save();
+      })
+    );
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await session.endSession();
+  }
   return result;
 }
 

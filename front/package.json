@@ -30,7 +30,8 @@
     "react-scripts": "5.0.1",
     "recoil": "^0.7.5",
     "styled-components": "^5.3.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

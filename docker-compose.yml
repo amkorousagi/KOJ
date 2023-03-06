@@ -1,29 +1,63 @@
 # Use root/example as user/password credentials
-version: '3.8'
+version: "3.8"
 
 services:
   front:
-    image: node
+    image: koj_front
     container_name: front
     restart: always
-    volumes:
-      - ./front/:/app/
     ports:
-      - "3001:3001"
-    working_dir: /app
-    command: npm start 
+      - "3011:3011"
+    working_dir: /KOJ/front
+    volumes:
+      - ./front/src/config.js:/KOJ/front/src/config.js
+    command: npm start
     tty: true
 
   koj:
-    image: node
+    image: koj_koj
     container_name: koj
     restart: always
+    depends_on:
+      - mongo
     volumes:
-      - ./koj/:/app/
+      - ./data/submission/:/KOJ/koj/submission
+      - ./data/testcase/:/KOJ/koj/testcase
+      - ./koj/config.js:/KOJ/koj/config.js
     ports:
-      - "3002:3002"
-    working_dir: /app
-    command: node /app/index.js
+      - "3014:3014"
+    working_dir: /KOJ/koj
+    command: nodemon index.js
+    tty: true
+
+  media:
+    image: koj_media
+    container_name: media
+    restart: always
+    depends_on:
+      - mongo
+    volumes:
+      - ./data/file/:/KOJ/media/file
+      - ./media/config.js:/KOJ/media/config.js
+    ports:
+      - "3013:3013"
+    working_dir: /KOJ/media
+    command: nodemon index.js
+    tty: true
+
+  back:
+    image: koj_back
+    container_name: back
+    restart: always
+    depends_on:
+      - mongo
+    volumes:
+      - ./back/config.js:/KOJ/back/config.js
+      - ./back/secret.js:/KOJ/back/secret.js
+    ports:
+      - "3012:3012"
+    working_dir: /KOJ/back
+    command: npm run dev
     tty: true
 
   mongo:
@@ -31,24 +65,10 @@ services:
     container_name: mongo
     restart: always
     ports:
-      -  "3003:3003"
+      - "3015:3015"
     command: mongod --port 3003
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - ./mongo/:/data/db/
-
-  back:
-    image: node
-    container_name: back
-    restart: always
-    depends_on:
-      - mongo
-    ports:
-      - "3000:3000"
-    working_dir: /app
-    command: node /app/index.js
-    tty: true
-    volumes:
-      - ./back/:/app/

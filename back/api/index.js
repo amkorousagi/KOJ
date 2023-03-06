@@ -35,6 +35,7 @@ import deleteTestcaseRoute from "./deleteTestcase";
 import deleteUserRoute from "./deleteUser";
 import resubmissionRoute from "./ReSubmission";
 import adminUpdateUserPasswordRoute from "./adminUpdateUserPassword";
+import createEnrollmentStudentRoute from "./createEnrollStudent";
 
 const apiRoute = express();
 
@@ -170,5 +171,11 @@ apiRoute.use(
   deleteUserRoute
 );
 apiRoute.use("/resubmission", authorization_handler(), resubmissionRoute);
+
+apiRoute.use(
+  "/createEnrollStudent",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  createEnrollmentStudentRoute
+);
 
 export default apiRoute;
