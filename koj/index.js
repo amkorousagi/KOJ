@@ -461,6 +461,7 @@ app.get(
           console.log(path.join("./code"));
           let cod;
           process = "runtime";
+          //undefined 인지도 검사하기
           const args =
             (t.arg_text !== "") | t.arg_text ? t.arg_text.split(" ") : [];
           if (language == "c") {
