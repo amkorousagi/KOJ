@@ -1,5 +1,8 @@
 docker-compose.yml
-
+data/file/*
+data/submission/*
+data/testcase/*
+mongo/*
 # Logs
 logs
 *.log
