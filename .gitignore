@@ -1,4 +1,4 @@
-docker-compose.yml
+
 data/file/*
 data/submission/*
 data/testcase/*

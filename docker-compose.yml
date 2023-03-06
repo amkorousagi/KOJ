@@ -1,0 +1,74 @@
+# Use root/example as user/password credentials
+version: "3.8"
+
+services:
+  front:
+    image: koj_front
+    container_name: front
+    restart: always
+    ports:
+      - "3011:3011"
+    working_dir: /KOJ/front
+    volumes:
+      - ./front/src/config.js:/KOJ/front/src/config.js
+    command: sh -c "npm start"
+    tty: true
+
+  koj:
+    image: koj_koj
+    container_name: koj
+    restart: always
+    depends_on:
+      - mongo
+    volumes:
+      - ./data/submission/:/KOJ/koj/submission
+      - ./data/testcase/:/KOJ/koj/testcase
+      - ./koj/config.js:/KOJ/koj/config.js
+    ports:
+      - "3014:3014"
+    working_dir: /KOJ/koj
+    command: sh -c "nodemon index.js"
+    tty: true
+
+  media:
+    image: koj_media
+    container_name: media
+    restart: always
+    depends_on:
+      - mongo
+    volumes:
+      - ./data/file/:/KOJ/media/file
+      - ./media/config.js:/KOJ/media/config.js
+    ports:
+      - "3013:3013"
+    working_dir: /KOJ/media
+    command: sh -c "nodemon index.js"
+    tty: true
+
+  back:
+    image: koj_back
+    container_name: back
+    restart: always
+    depends_on:
+      - mongo
+    volumes:
+      - ./back/config.js:/KOJ/back/config.js
+      - ./back/secret.js:/KOJ/back/secret.js
+    ports:
+      - "3012:3012"
+    working_dir: /KOJ/back
+    command: sh -c "npm run dev"
+    tty: true
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - "3015:3015"
+    command: mongod --port 3003
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - ./mongo/:/data/db/
