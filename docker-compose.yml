@@ -11,7 +11,7 @@ services:
     working_dir: /KOJ/front
     volumes:
       - ./front/src/config.js:/KOJ/front/src/config.js
-    command: npm start
+    command: sh -c "npm start"
     tty: true
 
   koj:
@@ -27,7 +27,7 @@ services:
     ports:
       - "3014:3014"
     working_dir: /KOJ/koj
-    command: nodemon index.js
+    command: sh -c "nodemon index.js"
     tty: true
 
   media:
@@ -42,7 +42,7 @@ services:
     ports:
       - "3013:3013"
     working_dir: /KOJ/media
-    command: nodemon index.js
+    command: sh -c "nodemon index.js"
     tty: true
 
   back:
@@ -57,7 +57,7 @@ services:
     ports:
       - "3012:3012"
     working_dir: /KOJ/back
-    command: npm run dev
+    command: sh -c "npm run dev"
     tty: true
 
   mongo:
