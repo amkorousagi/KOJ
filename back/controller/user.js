@@ -14,7 +14,10 @@ const admin = async () => {
   });
   await a.save();
 };
-admin();
+
+admin().catch((err) => {
+  console.log(err);
+});
 
 export async function findUserById({ id }) {
   return await User.findOne({ id });
