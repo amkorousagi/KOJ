@@ -152,9 +152,11 @@ app.all("*", (req, res) => {
 });
 
 mongoose
-  .connect(
-    `mongodb://${id}:${pwd}@${ip}:${port}/${dbName}?authMechanism=DEFAULT`
-  )
+  .connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`, {
+    authSource: "admin",
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
   .then(() => {
     console.log("connected to MongoDB");
     app.listen(3013, () => {

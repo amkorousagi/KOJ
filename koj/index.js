@@ -746,7 +746,11 @@ app.use(handlingError);
 app.all("*", notFoundRouterError);
 
 mongoose
-  .connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`)
+  .connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`, {
+    authSource: "admin",
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
   .then(() => {
     console.log("connected to MongoDB");
     app.listen(3014, () => {

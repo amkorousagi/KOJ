@@ -3,7 +3,10 @@ import { id, pwd, dbName, ip, port } from "./config";
 
 export async function connect_db() {
   try {
-    await mongoose.connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`);
+    await mongoose.connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
   } catch (err) {
     console.log(err);
   }
