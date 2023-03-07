@@ -61,7 +61,7 @@ services:
     tty: true
 
   mongo:
-    image: mongo:lts
+    image: mongo
     container_name: mongo
     restart: always
     ports:

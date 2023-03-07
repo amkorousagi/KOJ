@@ -10,9 +10,9 @@ import {
   updateScore,
 } from "../controller/problem_score";
 
-const resubmissionRoute = express();
+const reSubmissionRoute = express();
 
-resubmissionRoute.post(
+reSubmissionRoute.post(
   "/",
   responseHandler(async (req) => {
     const { submissions } = req.body;
@@ -93,4 +93,4 @@ resubmissionRoute.post(
   })
 );
 
-export default resubmissionRoute;
+export default reSubmissionRoute;
