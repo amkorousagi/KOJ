@@ -33,7 +33,7 @@ import deletePracticeRoute from "./deletePractice";
 import deleteProblemRoute from "./deleteProblem";
 import deleteTestcaseRoute from "./deleteTestcase";
 import deleteUserRoute from "./deleteUser";
-import resubmissionRoute from "./reSubmission";
+import reSubmissionRoute from "./reSubmission";
 import adminUpdateUserPasswordRoute from "./adminUpdateUserPassword";
 import createEnrollmentStudentRoute from "./createEnrollStudent";
 
@@ -170,7 +170,7 @@ apiRoute.use(
   authorization_handler([USER_TYPE.PROFESSOR]),
   deleteUserRoute
 );
-apiRoute.use("/resubmission", authorization_handler(), resubmissionRoute);
+apiRoute.use("/resubmission", authorization_handler(), reSubmissionRoute);
 
 apiRoute.use(
   "/createEnrollStudent",

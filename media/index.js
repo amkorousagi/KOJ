@@ -152,7 +152,9 @@ app.all("*", (req, res) => {
 });
 
 mongoose
-  .connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`)
+  .connect(
+    `mongodb://${id}:${pwd}@${ip}:${port}/${dbName}?authMechanism=DEFAULT`
+  )
   .then(() => {
     console.log("connected to MongoDB");
     app.listen(3013, () => {
