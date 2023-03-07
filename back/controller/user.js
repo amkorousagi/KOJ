@@ -5,8 +5,6 @@ import mongoose from "mongoose";
 import { USER_TYPE } from "../type";
 import Enrollment from "../model/enrollment";
 
-import bcrypt from "bcrypt";
-
 const admin = async () => {
   const a = new User({
     id: "admin",
