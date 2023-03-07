@@ -1,5 +1,5 @@
 config.sh
-
+.env
 data/file/*
 data/submission/*
 data/testcase/*
