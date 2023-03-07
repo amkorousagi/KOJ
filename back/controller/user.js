@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import { USER_TYPE } from "../type";
 import Enrollment from "../model/enrollment";
-/*
+
 import bcrypt from "bcrypt";
 
 const admin = async () => {
@@ -17,7 +17,7 @@ const admin = async () => {
   await a.save();
 };
 admin();
-*/
+
 export async function findUserById({ id }) {
   return await User.findOne({ id });
 }
