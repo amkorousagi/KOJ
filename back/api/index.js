@@ -33,7 +33,7 @@ import deletePracticeRoute from "./deletePractice";
 import deleteProblemRoute from "./deleteProblem";
 import deleteTestcaseRoute from "./deleteTestcase";
 import deleteUserRoute from "./deleteUser";
-import resubmissionRoute from "./ReSubmission";
+import resubmissionRoute from "./reSubmission";
 import adminUpdateUserPasswordRoute from "./adminUpdateUserPassword";
 import createEnrollmentStudentRoute from "./createEnrollStudent";
 
