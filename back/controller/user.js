@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { USER_TYPE } from "../type";
 import Enrollment from "../model/enrollment";
 
-const admin = async () => {
+export async function initAdmin() {
   const a = new User({
     id: "admin",
     password: bcrypt.hashSync("eselab", 10),
@@ -13,11 +13,7 @@ const admin = async () => {
     user_type: USER_TYPE.ADMIN,
   });
   await a.save();
-};
-
-admin().catch((err) => {
-  console.log(err);
-});
+}
 
 export async function findUserById({ id }) {
   return await User.findOne({ id });
