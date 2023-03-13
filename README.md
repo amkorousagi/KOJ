@@ -11,9 +11,6 @@ bash build.sh
 ```bash
 docker compose up -d
 ```
-3. managing containers with kubernetes
-![image](https://user-images.githubusercontent.com/39821875/223618210-dc4cac6a-0c10-4444-b901-1097f5d047df.png)
-
 
 ## NOTE
 0. check if installing docker
