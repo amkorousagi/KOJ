@@ -465,13 +465,13 @@ app.get(
           const args =
             (t.arg_text !== "") | t.arg_text ? t.arg_text.split(" ") : [];
           if (language == "c") {
-            cod = spawn(path.join("./code"), [...args], {
+            cod = spawn("./code", [...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
             });
           } else if (language == "cpp") {
-            cod = spawn(path.join("./code"), [...args], {
+            cod = spawn("./code", [...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
