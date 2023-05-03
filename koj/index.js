@@ -580,7 +580,7 @@ app.get(
         );
         */
           const result = {
-            stdout: result_output,
+            stdout: result_output.replace(/^\s+|\s+$/gm, ""),
             stderr: result_error,
             exit_code: result_exit_code,
           };
