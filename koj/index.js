@@ -520,13 +520,7 @@ app.get(
           //input.pipe(cod.stdin);
           //input.write(t.input_text.trim() + "\n");
           //input.end();
-          cod.stdin.setDefaultEncoding("utf-8");
-          cod.stdin.write("-10 ");
-          cod.stdin.write("-10 ");
-          cod.stdin.write("-10 ");
-          cod.stdin.write("-10 ");
-          cod.stdin.write("-10\n");
-          //git acod.stdin.write(t.input_text.trim() + "\n");
+          cod.stdin.write(t.input_text.trim() + "\n");
           const max_len = 10000;
           result_output = "";
           result_error = "";
