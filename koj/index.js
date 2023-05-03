@@ -619,8 +619,12 @@ app.get(
               );
               if (answer.equals(makedFile)) {
                 if (
-                  result.stdout.replace(/^\s+|\s+$/gm, "") ==
-                  t.output_text.replace(/^\s+|\s+$/gm, "")
+                  result.stdout
+                    .replace(/^\s+|\s+$/gm, "")
+                    .replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
+                  t.output_text
+                    .replace(/^\s+|\s+$/gm, "")
+                    .replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
                 ) {
                   success.push(true);
                   feedback.push("good");
@@ -644,8 +648,12 @@ app.get(
               t: t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
             });
             if (
-              result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ===
-              t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
+              result.stdout
+                .replace(/^\s+|\s+$/gm, "")
+                .replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
+              t.output_text
+                .replace(/^\s+|\s+$/gm, "")
+                .replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
             ) {
               success.push(true);
               feedback.push("good");
