@@ -580,7 +580,7 @@ app.get(
         );
         */
           const result = {
-            stdout: result_output.replace(/^\s+|\s+$/gm, ""),
+            stdout: result_output,
             stderr: result_error,
             exit_code: result_exit_code,
           };
@@ -618,7 +618,10 @@ app.get(
                 )
               );
               if (answer.equals(makedFile)) {
-                if (result.stdout == t.output_text) {
+                if (
+                  result.stdout.replace(/^\s+|\s+$/gm, "") ==
+                  t.output_text.replace(/^\s+|\s+$/gm, "")
+                ) {
                   success.push(true);
                   feedback.push("good");
                 } else {
