@@ -469,6 +469,7 @@ app.get(
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
+              stdio: "inherit",
             });
           } else if (language == "cpp") {
             cod = spawn("./code", [...args], {
