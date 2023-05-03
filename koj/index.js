@@ -517,7 +517,7 @@ app.get(
           );
           console.log({ stdin: t.input_text.trim() + "\n" });
           const input = new PassThrough();
-          input.pipe(cod);
+          input.pipe(cod.stdin);
           input.write(t.input_text.trim() + "\n");
           //cod.stdin.write(t.input_text.trim() + "\n");
           const max_len = 10000;
