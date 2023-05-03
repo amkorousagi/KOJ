@@ -284,7 +284,7 @@ app.get(
           for (const code_name of code_names) {
             code_str += code_name + " ";
           }
-          compile = exec("gcc -o code -std=c99 -lm " + code_str, {
+          compile = exec("gcc -std=c99 " + code_str + " -lm -o code", {
             cwd: path.join(
               __dirname + "/submission/" + req.params.submission_id
             ),
@@ -325,7 +325,7 @@ app.get(
           for (const code_name of code_names) {
             code_str += code_name + " ";
           }
-          compile = exec("g++ -o code -std=c++0x -lm " + code_str, {
+          compile = exec("g++ -std=c++0x " + code_str + " -lm -o code", {
             cwd: path.join(
               __dirname + "/submission/" + req.params.submission_id
             ),
