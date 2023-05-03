@@ -14,6 +14,7 @@ import { id, pwd, dbName, ip, port, MEDIA_URL } from "./config.js";
 import Problem from "./model/problem.js";
 import File from "./model/file.js";
 import { exec, spawn, spawnSync } from "child_process";
+import { PassThrough } from "stream";
 
 function errorHandler(cb) {
   return function (req, res, next) {
@@ -469,7 +470,6 @@ app.get(
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
-              stdio: "inherit",
             });
           } else if (language == "cpp") {
             cod = spawn("./code", [...args], {
@@ -516,7 +516,10 @@ app.get(
             problem.execution_time_limit ? problem.execution_time_limit : 1000
           );
           console.log({ stdin: t.input_text.trim() + "\n" });
-          cod.stdin.write(t.input_text.trim() + "\n");
+          const input = new PassThrough();
+          input.pipe(cod);
+          input.write(t.input_text.trim() + "\n");
+          //cod.stdin.write(t.input_text.trim() + "\n");
           const max_len = 10000;
           result_output = "";
           result_error = "";
