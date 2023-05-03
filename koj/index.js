@@ -521,6 +521,7 @@ app.get(
           //input.write(t.input_text.trim() + "\n");
           //input.end();
           cod.stdin.setDefaultEncoding("utf-8");
+          cod.stdin.write(`${parseInt(-10)} `);
           cod.stdin.write(t.input_text.trim() + "\n");
           const max_len = 10000;
           result_output = "";
