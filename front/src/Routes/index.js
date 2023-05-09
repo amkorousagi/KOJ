@@ -18,6 +18,7 @@ import DashScores from "../Pages/DashScores/index.js";
 import Enrollemnt from "../Pages/Enrollment/index.js";
 import Scores from "../Pages/Scores/Score.js";
 import InitPassword from "../Pages/InitPassword/index.js";
+import Lab from "../Pages/Lab/index.js";
 const Router = () => {
   const [isLogined, setIsLogined] = React.useState(false);
   const [userType, setUserType] = React.useState("");
@@ -100,6 +101,8 @@ const Router = () => {
               element={<Enrollemnt />}
             />
             <Route path="/initpassword" element={<InitPassword />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/lab" element={<Lab />} />
           </Routes>
         </BrowserRouter>
       </Layout>
@@ -111,6 +114,7 @@ const Router = () => {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/about" element={<About />} />
+            <Route path="/lab" element={<Lab />} />
           </Routes>
         </BrowserRouter>
       </Layout>

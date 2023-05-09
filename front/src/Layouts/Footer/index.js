@@ -14,10 +14,7 @@ const Footer = () => {
           Sechan Park
         </a>
         &nbsp;in&nbsp;
-        <a
-          href="/about"
-          style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
-        >
+        <a href="/lab" style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}>
           ESE lab
         </a>
         &nbsp;All rights reserved.

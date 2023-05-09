@@ -89,7 +89,7 @@ const Menu1 = ({ isLogined, userType }) => {
   if (isLogined !== true) {
     return (
       <Box justifyContent="flex-end">
-        <a href="/koj">
+        <a href="/about">
           <Typography
             style={{
               fontFamily: "Nanum Gothic",
