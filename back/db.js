@@ -5,11 +5,14 @@ import logger from "./lib/logger";
 
 export async function connect_db() {
   try {
-    await mongoose.connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`, {
-      authSource: "admin",
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-    });
+    await mongoose.connect(
+      `mongodb://${id}:${pwd}@${ip}:${port}/${dbName}?replicaSet=rs0`,
+      {
+        authSource: "admin",
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      }
+    );
     try {
       await initAdmin();
     } catch (adminError) {

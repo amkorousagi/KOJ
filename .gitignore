@@ -3,7 +3,7 @@ config.sh
 data/file/*
 data/submission/*
 data/testcase/*
-mongo/*
+mongo*/*
 # Logs
 logs
 *.log

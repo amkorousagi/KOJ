@@ -13,13 +13,17 @@ services:
       - ./front/src/config.js:/KOJ/front/src/config.js
     command: sh -c "npm start"
     tty: true
+    networks:
+      - mongo-net
 
   koj:
     image: koj_koj
     container_name: koj
     restart: always
     depends_on:
-      - mongo
+      - mongo1
+      - mongo2
+      - mongo3
     volumes:
       - ./data/submission/:/KOJ/koj/submission
       - ./data/testcase/:/KOJ/koj/testcase
@@ -29,13 +33,17 @@ services:
     working_dir: /KOJ/koj
     command: sh -c "nodemon index.js"
     tty: true
+    networks:
+      - mongo-net
 
   media:
     image: koj_media
     container_name: media
     restart: always
     depends_on:
-      - mongo
+      - mongo1
+      - mongo2
+      - mongo3
     volumes:
       - ./data/file/:/KOJ/media/file
       - ./media/config.js:/KOJ/media/config.js
@@ -44,13 +52,17 @@ services:
     working_dir: /KOJ/media
     command: sh -c "nodemon index.js"
     tty: true
+    networks:
+      - mongo-net
 
   back:
     image: koj_back
     container_name: back
     restart: always
     depends_on:
-      - mongo
+      - mongo1
+      - mongo2
+      - mongo3
     volumes:
       - ./back/config.js:/KOJ/back/config.js
       - ./back/secret.js:/KOJ/back/secret.js
@@ -59,15 +71,61 @@ services:
     working_dir: /KOJ/back
     command: sh -c "npm run dev"
     tty: true
+    networks:
+      - mongo-net
 
-  mongo:
+  mongo1:
     image: mongo
-    container_name: mongo
+    container_name: mongo1
     restart: always
     ports:
-      - "3015:3015"
-    command: mongod --port 3015 --bind_ip 0.0.0.0
+      - "4001:27017"
     environment:
       - .env
     volumes:
-      - ./mongo/:/data/db/
+      - ./mongo1:/data/db
+    networks:
+      - mongo-net
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128
+
+  mongo2:
+    image: mongo
+    container_name: mongo2
+    restart: always
+    ports:
+      - "4002:27017"
+    environment:
+      - .env
+    volumes:
+      - ./mongo2:/data/db
+    networks:
+      - mongo-net
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128
+
+  mongo3:
+    image: mongo
+    container_name: mongo3
+    restart: always
+    ports:
+      - "4003:27017"
+    environment:
+      - .env
+    volumes:
+      - ./mongo3:/data/db
+    networks:
+      - mongo-net
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "3015:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - mongo-net
+
+networks:
+  mongo-net:
+    driver: bridge
