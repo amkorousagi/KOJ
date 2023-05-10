@@ -11,7 +11,7 @@ export async function connect_db() {
         authSource: "admin",
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        bufferCommands: false,
+        maxBsonSize: 64 * 1024 * 1024,
       }
     );
     try {
