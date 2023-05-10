@@ -48,15 +48,20 @@ const UpdateUserPassword = ({ open, handleClose }) => {
           if (data.success) {
             if (data.data.success) {
               alert(data.data.message);
+              handleClose();
             } else {
               alert(data.data.message);
             }
           } else {
+            alert(data.error);
             console.log("error");
           }
+        })
+        .catch((err) => {
+          alert(err);
         });
     } else {
-      alert("새로운비밀번호가 일치하지않습니다.");
+      alert("새로운 비밀번호가 일치하지않습니다.");
     }
   };
 
@@ -133,7 +138,7 @@ const UpdateUserPassword = ({ open, handleClose }) => {
               startIcon={<Save />}
               onClick={updateUserPassword}
             >
-              실습 저장
+              비밀번호 변경
             </Button>
           </CardContent>
         </Card>
