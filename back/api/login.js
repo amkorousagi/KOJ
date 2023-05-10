@@ -28,7 +28,7 @@ loginRoute.post(
       sendErrorWithoutLog({
         req,
         res,
-        error: "잘못된 아이디 또는 회원 유형입니다.",
+        error: "잘못된 아이디입니다.",
       });
     }
   })

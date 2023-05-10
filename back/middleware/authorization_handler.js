@@ -22,7 +22,7 @@ export const authorization_handler = (user_types) => async (req, res, next) => {
             }
           }
           if (!is_correct_user) {
-            sendErrorWithoutLog({ req, res, error: "wrong user type" });
+            return sendErrorWithoutLog({ req, res, error: "wrong user type" }); // return 없으면 next()까지 넘어감
           }
         }
 
@@ -34,13 +34,17 @@ export const authorization_handler = (user_types) => async (req, res, next) => {
           req.user = result;
           next();
         } else {
-          sendErrorWithoutLog({ req, res, error: "invaild token" });
+          return sendErrorWithoutLog({ req, res, error: "invaild token" });
         }
       }
     } else {
-      sendErrorWithoutLog({ req, res, error: "wrong authorization" });
+      return sendErrorWithoutLog({ req, res, error: "wrong authorization" });
     }
   } catch (err) {
-    sendErrorWithoutLog({ req, res, error: "authorization error:" + err });
+    return sendErrorWithoutLog({
+      req,
+      res,
+      error: "authorization error:" + err,
+    });
   }
 };
