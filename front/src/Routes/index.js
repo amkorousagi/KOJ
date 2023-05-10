@@ -19,6 +19,7 @@ import Enrollemnt from "../Pages/Enrollment/index.js";
 import Scores from "../Pages/Scores/Score.js";
 import InitPassword from "../Pages/InitPassword/index.js";
 import Lab from "../Pages/Lab/index.js";
+import { USER_TYPE } from "../type.js";
 const Router = () => {
   const [isLogined, setIsLogined] = React.useState(false);
   const [userType, setUserType] = React.useState("");
@@ -55,58 +56,185 @@ const Router = () => {
   }, []);
   if (isLogined) {
     //userType 별로 다른 페이지 보여주기 : 조건부 렌더링
-    return (
-      <Layout
-        userType={userType}
-        name={name}
-        isLogined={isLogined}
-        setIsLogined={setIsLogined}
-      >
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/lectures"
-              element={<Lectures userType={userType} userId={userId} />}
-            />
-            <Route
-              path="/dashscores"
-              element={<DashScores userType={userType} userId={userId} />}
-            />
-            <Route path="/about" element={<About />} />
-            <Route
-              path="/materials"
-              element={<Materials userType={userType} userId={userId} />}
-            />
-            <Route
-              path="/material/:lectureId/:lectureTitle"
-              element={<Material userId={userId} userType={userType} />}
-            />
-            <Route
-              path="/lecture/:lectureId/:lectureTitle"
-              element={<Lecture userId={userId} userType={userType} />}
-            />
-            <Route
-              path="/dashscore/:lectureId/:lectureTitle"
-              element={<DashScore userId={userId} userType={userType} />}
-            />
-            <Route
-              path="/scores"
-              element={<Scores userId={userId} userType={userType} />}
-            />
-            <Route path="/code/:submissionId" element={<Code />} />
-            <Route path="/score/:submissionId" element={<Score />} />
-            <Route path="/createUser" element={<CreateUser />} />
-            <Route
-              path="/enrollment/:lectureId/:lectureTitle"
-              element={<Enrollemnt />}
-            />
-            <Route path="/initpassword" element={<InitPassword />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/lab" element={<Lab />} />
-          </Routes>
-        </BrowserRouter>
-      </Layout>
-    );
+    if (userType === USER_TYPE.STUDENT) {
+      return (
+        <Layout
+          userType={userType}
+          name={name}
+          isLogined={isLogined}
+          setIsLogined={setIsLogined}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/lectures"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/materials"
+                element={<Materials userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/material/:lectureId/:lectureTitle"
+                element={<Material userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/lecture/:lectureId/:lectureTitle"
+                element={<Lecture userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/scores"
+                element={<Scores userId={userId} userType={userType} />}
+              />
+              <Route path="/code/:submissionId" element={<Code />} />
+              <Route path="/score/:submissionId" element={<Score />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/lab" element={<Lab />} />
+            </Routes>
+          </BrowserRouter>
+        </Layout>
+      );
+    } else if (userType === USER_TYPE.TUTOR) {
+      return (
+        <Layout
+          userType={userType}
+          name={name}
+          isLogined={isLogined}
+          setIsLogined={setIsLogined}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/lectures"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/materials"
+                element={<Materials userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/material/:lectureId/:lectureTitle"
+                element={<Material userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/lecture/:lectureId/:lectureTitle"
+                element={<Lecture userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/scores"
+                element={<Scores userId={userId} userType={userType} />}
+              />
+              <Route path="/code/:submissionId" element={<Code />} />
+              <Route path="/score/:submissionId" element={<Score />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/lab" element={<Lab />} />
+            </Routes>
+          </BrowserRouter>
+        </Layout>
+      );
+    } else if (userType === USER_TYPE.PROFESSOR) {
+      return (
+        <Layout
+          userType={userType}
+          name={name}
+          isLogined={isLogined}
+          setIsLogined={setIsLogined}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/lectures"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/dashscores"
+                element={<DashScores userType={userType} userId={userId} />}
+              />
+              <Route path="/about" element={<About />} />
+              <Route
+                path="/materials"
+                element={<Materials userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/material/:lectureId/:lectureTitle"
+                element={<Material userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/lecture/:lectureId/:lectureTitle"
+                element={<Lecture userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/dashscore/:lectureId/:lectureTitle"
+                element={<DashScore userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/scores"
+                element={<Scores userId={userId} userType={userType} />}
+              />
+              <Route path="/code/:submissionId" element={<Code />} />
+              <Route path="/score/:submissionId" element={<Score />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/lab" element={<Lab />} />
+            </Routes>
+          </BrowserRouter>
+        </Layout>
+      );
+    } else if (userType === USER_TYPE.ADMIN) {
+      return (
+        <Layout
+          userType={userType}
+          name={name}
+          isLogined={isLogined}
+          setIsLogined={setIsLogined}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/lectures"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/dashscores"
+                element={<DashScores userType={userType} userId={userId} />}
+              />
+              <Route path="/about" element={<About />} />
+              <Route
+                path="/materials"
+                element={<Materials userType={userType} userId={userId} />}
+              />
+              <Route
+                path="/material/:lectureId/:lectureTitle"
+                element={<Material userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/lecture/:lectureId/:lectureTitle"
+                element={<Lecture userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/dashscore/:lectureId/:lectureTitle"
+                element={<DashScore userId={userId} userType={userType} />}
+              />
+              <Route
+                path="/scores"
+                element={<Scores userId={userId} userType={userType} />}
+              />
+              <Route path="/code/:submissionId" element={<Code />} />
+              <Route path="/score/:submissionId" element={<Score />} />
+              <Route path="/createUser" element={<CreateUser />} />
+              <Route
+                path="/enrollment/:lectureId/:lectureTitle"
+                element={<Enrollemnt />}
+              />
+              <Route path="/initpassword" element={<InitPassword />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/lab" element={<Lab />} />
+            </Routes>
+          </BrowserRouter>
+        </Layout>
+      );
+    } else {
+      return <>not user type</>;
+    }
   } else {
     return (
       <Layout>
