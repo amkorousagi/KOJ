@@ -42,9 +42,15 @@ export async function readUser({ name, student_id }) {
 
 export async function insertManyUser(users) {
   const session = await mongoose.startSession();
-  const result = await User.insertMany(users);
-  //학번 같은 유저 있으면 넣지 말기
-  await session.endSession();
+  let result;
+  try {
+    result = await User.insertMany(users);
+  } catch (err) {
+    //학번 같은 유저 있으면 넣지 말기
+    await session.abortTransaction();
+  } finally {
+    await session.endSession();
+  }
   return result;
 }
 
@@ -64,6 +70,7 @@ export async function createEnrollStudent({ lecture, users }) {
     );
   } catch (err) {
     console.log(err);
+    await session.abortTransaction();
   } finally {
     await session.endSession();
   }

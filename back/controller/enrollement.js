@@ -5,16 +5,23 @@ import Practice from "../model/practice";
 export async function createEnrollments({ lecture, students }) {
   const session = await mongoose.startSession();
   const enrollments = [];
-  await Promise.all(
-    students.map(async (item) => {
-      const existing = await Enrollment.find({ lecture, student: item });
-      if (existing.length == 0) {
-        enrollments.push({ lecture, student: item });
-      }
-    })
-  );
-  const result = await Enrollment.insertMany(enrollments);
-  await session.endSession();
+  let result;
+
+  try {
+    await Promise.all(
+      students.map(async (item) => {
+        const existing = await Enrollment.find({ lecture, student: item });
+        if (existing.length == 0) {
+          enrollments.push({ lecture, student: item });
+        }
+      })
+    );
+    result = await Enrollment.insertMany(enrollments);
+  } catch (err) {
+    await session.abortTransaction();
+  } finally {
+    await session.endSession();
+  }
   return result;
 }
 export async function readEnrollent({ lecture, student }) {
