@@ -45,11 +45,10 @@ export async function insertManyUser(users) {
   let result;
   try {
     result = await User.insertMany(users);
+    await session.endSession();
   } catch (err) {
     //학번 같은 유저 있으면 넣지 말기
     await session.abortTransaction();
-  } finally {
-    await session.endSession();
   }
   return result;
 }
@@ -68,11 +67,10 @@ export async function createEnrollStudent({ lecture, users }) {
         return await enrollment.save();
       })
     );
+    await session.endSession();
   } catch (err) {
     console.log(err);
     await session.abortTransaction();
-  } finally {
-    await session.endSession();
   }
   return result;
 }

@@ -17,10 +17,9 @@ export async function createEnrollments({ lecture, students }) {
       })
     );
     result = await Enrollment.insertMany(enrollments);
+    await session.endSession();
   } catch (err) {
     await session.abortTransaction();
-  } finally {
-    await session.endSession();
   }
   return result;
 }
