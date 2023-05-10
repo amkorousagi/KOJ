@@ -11,6 +11,7 @@ export async function connect_db() {
         authSource: "admin",
         useUnifiedTopology: true,
         useNewUrlParser: true,
+        bufferCommands: false,
       }
     );
     try {
