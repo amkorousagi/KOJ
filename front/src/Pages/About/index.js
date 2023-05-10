@@ -17,6 +17,14 @@ const About = () => {
             <br />
             KOJ는 경북대학교 온라인 채점 시스템입니다.
             <br />
+            KOJ의 특징은 다음과 같습니다.
+            <ul>
+              <li>성적처리</li>
+              <li>재채점</li>
+              <li>부분점수</li>
+              <li>복수 파일 컴파일 및 실행</li>
+            </ul>
+            <br />
             KOJ의 기능은 다음과 같습니다.
             <br />
             <ul>
@@ -51,19 +59,41 @@ const About = () => {
                 <li>채점 데이터 관리 및 다운로드</li>
               </ul>
             </ul>
-            오시는 길 : 경북대학교 IT-5호관 523호
             <br />
-            문의용 이메일 : hasmi5452@gmail.com
+            채점 환경 : ubuntu 18.04 LTS
             <br />
-            전화 : 053-950-6378
-            <br />
-            연구실 홈페이지 :{" "}
-            <a
-              href="http://selab.knu.ac.kr/dokuwiki/doku.php"
-              style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
-            >
-              selab
-            </a>
+            <ul>
+              <li>C99</li>
+              <ul>
+                <li>컴파일 : gcc -std=c99 Main.c -lm -o Main</li>
+                <li>실행 : ./Main</li>
+                <li>버전 : gcc 10.2.1</li>
+              </ul>
+              <li>C++17</li>
+              <ul>
+                <li>컴파일 : g++ -std=c++17 Main.c -lm -o Main</li>
+                <li>실행 : ./Main</li>
+                <li>버전 : g++ 10.2.1</li>
+              </ul>
+              <li>Java 11</li>
+              <ul>
+                <li>컴파일 : javac -cp . ./*.java</li>
+                <li>실행 : java Main</li>
+                <li>버전 : openjdk version "16.0.1" 2021-04-20</li>
+              </ul>
+              <li>Python 3</li>
+              <ul>
+                <li>컴파일 : X</li>
+                <li>실행 : python3 Main.py</li>
+                <li>버전 : Python 3.9.2</li>
+              </ul>
+              <li>node.js</li>
+              <ul>
+                <li>컴파일 : X</li>
+                <li>실행 : node Main.js</li>
+                <li>버전 : node v18.14.2</li>
+              </ul>
+            </ul>
           </Typography>
         </CardContent>
       </Card>

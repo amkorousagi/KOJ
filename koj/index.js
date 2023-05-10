@@ -325,7 +325,7 @@ app.get(
           for (const code_name of code_names) {
             code_str += code_name + " ";
           }
-          compile = exec("g++ -std=c++0x " + code_str + " -lm -o code", {
+          compile = exec("g++ -std=c++17 " + code_str + " -lm -o code", {
             cwd: path.join(
               __dirname + "/submission/" + req.params.submission_id
             ),
