@@ -49,8 +49,9 @@ export async function insertManyUser(users) {
     await session.commitTransaction();
   } catch (err) {
     //학번 같은 유저 있으면 넣지 말기
-    console.log(err);
+    //console.log(err);
     await session.abortTransaction();
+    throw new Error(err.message);
   } finally {
     await session.endSession();
   }
@@ -74,8 +75,9 @@ export async function createEnrollStudent({ lecture, users }) {
     );
     await session.commitTransaction();
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     await session.abortTransaction();
+    throw new Error(err.message);
   } finally {
     await session.endSession();
   }

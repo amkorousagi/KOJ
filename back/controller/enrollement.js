@@ -21,6 +21,7 @@ export async function createEnrollments({ lecture, students }) {
     await session.commitTransaction();
   } catch (err) {
     await session.abortTransaction();
+    throw new Error(err.message);
   } finally {
     await session.endSession();
   }

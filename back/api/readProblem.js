@@ -21,7 +21,7 @@ readProblemRoute.post(
     ) {
       return await readProblem({ practice });
     } else {
-      throw Error("unanthorized access for this problem");
+      throw new Error("unanthorized access for this problem");
     }
   })
 );
