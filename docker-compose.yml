@@ -86,7 +86,7 @@ services:
       - ./mongo1:/data/db
     networks:
       - mongo-net
-    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --maxBsonObjectSize 16777216
 
   mongo2:
     image: mongo
@@ -100,7 +100,7 @@ services:
       - ./mongo2:/data/db
     networks:
       - mongo-net
-    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --maxBsonObjectSize 16777216
 
   mongo3:
     image: mongo
@@ -114,7 +114,7 @@ services:
       - ./mongo3:/data/db
     networks:
       - mongo-net
-    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --maxBsonObjectSize 16777216
 
   nginx:
     image: nginx:latest
