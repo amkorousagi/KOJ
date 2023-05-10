@@ -43,18 +43,30 @@ const apiRoute = express();
 apiRoute.use("/login", loginRoute);
 
 // authorized api
+
+// admin api
 apiRoute.use(
   "/createUsers",
   authorization_handler([USER_TYPE.ADMIN]),
   createUsersRoute
 );
+apiRoute.use(
+  "/adminUpdateUserPassword",
+  authorization_handler([USER_TYPE.ADMIN]),
+  adminUpdateUserPasswordRoute
+);
 
+// professor api
 apiRoute.use(
   "/createLecture",
   authorization_handler([USER_TYPE.PROFESSOR, USER_TYPE.ADMIN]),
   createLectureRoute
 );
-
+apiRoute.use(
+  "/createEnrollStudent",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  createEnrollmentStudentRoute
+);
 apiRoute.use(
   "/createEnrollment",
   authorization_handler([USER_TYPE.PROFESSOR, USER_TYPE.ADMIN]),
@@ -75,34 +87,14 @@ apiRoute.use(
 
 apiRoute.use(
   "/createTestcase",
-  authorization_handler([USER_TYPE.PROFESSOR, USER_TYPE.ADMIN]),
+  authorization_handler([USER_TYPE.PROFESSOR]),
   createTestcaseRoute
 );
-
 apiRoute.use(
-  "/createSubmission",
-  authorization_handler(),
-  createSubmissionRoute
+  "/createMaterial",
+  authorization_handler([USER_TYPE.PROFESSOR]),
+  createMaterialRoute
 );
-
-apiRoute.use("/readLecture", authorization_handler(), readLectureRoute);
-apiRoute.use("/readPractice", authorization_handler(), readPracticeRoute);
-apiRoute.use("/readProblem", authorization_handler(), readProblemRoute);
-apiRoute.use("/readTestcase", authorization_handler(), readTestcaseRoute);
-apiRoute.use("/readSubmission", authorization_handler(), readSubmissionRoute);
-
-apiRoute.use(
-  "/readProblemScore",
-  authorization_handler(),
-  readProblemScoreRoute
-);
-apiRoute.use("/checkSubmission", authorization_handler(), checkSubmissionRoute);
-
-apiRoute.use("/createMaterial", authorization_handler(), createMaterialRoute);
-apiRoute.use("/readMaterial", authorization_handler(), readMaterialRoute);
-apiRoute.use("/readDashScore", authorization_handler(), readDashScoreRoute);
-apiRoute.use("/readEnrollment", authorization_handler(), readEnrollmentRoute);
-apiRoute.use("/readUser", authorization_handler(), readUserRoute);
 
 apiRoute.use(
   "/updateLecture",
@@ -129,17 +121,6 @@ apiRoute.use(
   authorization_handler([USER_TYPE.PROFESSOR]),
   updateTestcaseRoute
 );
-apiRoute.use(
-  "/updateUserPassword",
-  authorization_handler([USER_TYPE.PROFESSOR]),
-  updateUserPasswordRoute
-);
-apiRoute.use(
-  "/adminUpdateUserPassword",
-  authorization_handler([USER_TYPE.ADMIN]),
-  adminUpdateUserPasswordRoute
-);
-
 apiRoute.use(
   "/deleteLecture",
   authorization_handler([USER_TYPE.PROFESSOR]),
@@ -170,12 +151,40 @@ apiRoute.use(
   authorization_handler([USER_TYPE.PROFESSOR]),
   deleteUserRoute
 );
-apiRoute.use("/resubmission", authorization_handler(), reSubmissionRoute);
+
+// anyone api (+student, tutor)
 
 apiRoute.use(
-  "/createEnrollStudent",
-  authorization_handler([USER_TYPE.PROFESSOR]),
-  createEnrollmentStudentRoute
+  "/createSubmission",
+  authorization_handler(),
+  createSubmissionRoute
 );
+
+apiRoute.use("/readLecture", authorization_handler(), readLectureRoute);
+apiRoute.use("/readPractice", authorization_handler(), readPracticeRoute);
+apiRoute.use("/readProblem", authorization_handler(), readProblemRoute);
+apiRoute.use("/readTestcase", authorization_handler(), readTestcaseRoute);
+apiRoute.use("/readSubmission", authorization_handler(), readSubmissionRoute);
+
+apiRoute.use(
+  "/readProblemScore",
+  authorization_handler(),
+  readProblemScoreRoute
+);
+
+apiRoute.use("/checkSubmission", authorization_handler(), checkSubmissionRoute); // 이거 머하는 애?
+
+apiRoute.use("/readMaterial", authorization_handler(), readMaterialRoute);
+apiRoute.use("/readDashScore", authorization_handler(), readDashScoreRoute);
+apiRoute.use("/readEnrollment", authorization_handler(), readEnrollmentRoute);
+apiRoute.use("/readUser", authorization_handler(), readUserRoute);
+
+apiRoute.use(
+  "/updateUserPassword",
+  authorization_handler(),
+  updateUserPasswordRoute
+);
+
+apiRoute.use("/resubmission", authorization_handler(), reSubmissionRoute);
 
 export default apiRoute;
