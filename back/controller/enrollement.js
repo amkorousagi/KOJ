@@ -4,6 +4,7 @@ import Practice from "../model/practice";
 
 export async function createEnrollments({ lecture, students }) {
   const session = await mongoose.startSession();
+  session.startTransaction();
   const enrollments = [];
   let result;
 
@@ -16,10 +17,12 @@ export async function createEnrollments({ lecture, students }) {
         }
       })
     );
-    result = await Enrollment.insertMany(enrollments);
-    await session.endSession();
+    result = await Enrollment.insertMany(enrollments, { session });
+    await session.commitTransaction();
   } catch (err) {
     await session.abortTransaction();
+  } finally {
+    await session.endSession();
   }
   return result;
 }

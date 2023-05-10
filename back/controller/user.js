@@ -42,35 +42,42 @@ export async function readUser({ name, student_id }) {
 
 export async function insertManyUser(users) {
   const session = await mongoose.startSession();
+  session.startTransaction();
   let result;
   try {
-    result = await User.insertMany(users);
-    await session.endSession();
+    result = await User.insertMany(users, { session });
+    await session.commitTransaction();
   } catch (err) {
     //학번 같은 유저 있으면 넣지 말기
+    console.log(err);
     await session.abortTransaction();
+  } finally {
+    await session.endSession();
   }
   return result;
 }
 
 export async function createEnrollStudent({ lecture, users }) {
   const session = await mongoose.startSession();
+  session.startTransaction();
   let result;
   try {
     result = await Promise.allSettled(
       users.map(async (item) => {
         const user = new User({ ...item });
-        const saved = await user.save();
+        const saved = await user.save({ session });
 
         const enrollment = new Enrollment({ lecture, student: saved._id });
 
-        return await enrollment.save();
+        return await enrollment.save({ session });
       })
     );
-    await session.endSession();
+    await session.commitTransaction();
   } catch (err) {
     console.log(err);
     await session.abortTransaction();
+  } finally {
+    await session.endSession();
   }
   return result;
 }
