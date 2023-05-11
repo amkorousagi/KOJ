@@ -4,6 +4,7 @@ data/file/*
 data/submission/*
 data/testcase/*
 mongo*/*
+*.key
 # Logs
 logs
 *.log
