@@ -84,10 +84,10 @@ services:
       - .env
     volumes:
       - ./mongo1:/data/db
-      - ./mongo.key:/etc/mongodb.key
+      - ./key:/key
     networks:
       - mongo-net
-    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --maxBsonObjectSize 16777216 --keyFile /etc/mongodb.key
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --keyFile /key/mongodb.key --setParameter maxMessageSizeBytes=67108864
 
   mongo2:
     image: mongo
@@ -99,10 +99,12 @@ services:
       - .env
     volumes:
       - ./mongo2:/data/db
-      - ./mongo.key:/etc/mongodb.key
+      - ./key:/key
     networks:
       - mongo-net
-    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --maxBsonObjectSize 16777216 --keyFile /etc/mongodb.key
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --keyFile /key/mongodb.key --setParameter maxMessageSizeBytes=67108864
+
+    # cat /etc/mongodb.key > /etc/mongodb2.key && chmod 400 /etc/mongodb2.key && chown mongo2:mongo2 /etc/mongodb2.key  && --keyFile /etc/mongodb2.key
 
   mongo3:
     image: mongo
@@ -114,10 +116,10 @@ services:
       - .env
     volumes:
       - ./mongo3:/data/db
-      - ./mongo.key:/etc/mongodb.key
+      - ./key:/key
     networks:
       - mongo-net
-    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --maxBsonObjectSize 16777216 --keyFile /etc/mongodb.key
+    command: mongod --replSet rs0 --bind_ip_all --port 27017 --oplogSize 128 --keyFile /key/mongodb.key --setParameter maxMessageSizeBytes=67108864
 
   nginx:
     image: nginx:latest
@@ -126,6 +128,7 @@ services:
       - "3015:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./key:/key
     networks:
       - mongo-net
 
