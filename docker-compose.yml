@@ -124,20 +124,29 @@ services:
       - mongo-net
     command: mongod --config /etc/mongodb.conf
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
+  haproxy:
+    image: haproxy:2.4
+    restart: always
+    container_name: haproxy
     ports:
-      - "3015:80"
+      - 3015:27017
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./key:/key
-    networks:
-      - mongo-net
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   depends_on:
+  #     - mongo1
+  #     - mongo2
+  #     - mongo3
+  #   ports:
+  #     - "3015:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #     - ./key:/key
+  #   networks:
+  #     - mongo-net
 
 networks:
   mongo-net:

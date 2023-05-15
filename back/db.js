@@ -5,17 +5,15 @@ import logger from "./lib/logger";
 
 export async function connect_db() {
   try {
-    await mongoose.connect(
-      `mongodb://${id}:${pwd}@${ip}:${port}/${dbName}?replicaSet=rs0`,
-      {
-        authSource: "admin",
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-        //bufferCommands: false,
-        //maxBsonSize: 16777216,
-        //maxMessageSizeBytes: 100 * 1024 * 1024,
-      }
-    );
+    await mongoose.connect(`mongodb://${id}:${pwd}@${ip}:${port}/${dbName}`, {
+      replicaSet: "rs0",
+      authSource: "admin",
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      //bufferCommands: false,
+      //maxBsonSize: 16777216,
+      //maxMessageSizeBytes: 100 * 1024 * 1024,
+    });
     try {
       await initAdmin();
     } catch (adminError) {
