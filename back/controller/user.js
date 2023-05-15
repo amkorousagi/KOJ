@@ -79,9 +79,8 @@ export async function createEnrollStudent({ lecture, users }) {
         return await enrollment.save({ session });
       })
     );
-    await session.commitTransaction();
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     await session.abortTransaction();
     await session.endSession();
     throw new Error(err.message);
