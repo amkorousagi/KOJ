@@ -5,6 +5,7 @@ data/submission/*
 data/testcase/*
 mongo*/*
 *.key
+mongo_init.txt
 # Logs
 logs
 *.log
