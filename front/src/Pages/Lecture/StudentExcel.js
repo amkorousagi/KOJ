@@ -105,11 +105,7 @@ const StudentSubmit = ({ open, handleClose, lectureId }) => {
         console.log(JSON.stringify(rows));
         const users = [];
         for (const r of rows) {
-          if (
-            r["학번"] !== undefined &&
-            r["이름"] !== undefined &&
-            r["유형"] !== undefined
-          ) {
+          if (r["학번"] !== undefined) {
             console.log(r);
             console.log(typeof r["이름"]);
             users.push({
