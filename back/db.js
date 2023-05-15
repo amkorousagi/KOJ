@@ -12,7 +12,8 @@ export async function connect_db() {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         //bufferCommands: false,
-        maxMessageSizeBytes: 100 * 1024 * 1024, //maxBsonSize: 16777216, // 16 MB
+        maxBsonSize: 16777216,
+        //maxMessageSizeBytes: 100 * 1024 * 1024,
       }
     );
     try {
