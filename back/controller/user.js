@@ -65,29 +65,33 @@ export async function createEnrollStudent({ lecture, users }) {
   try {
     result = await Promise.allSettled(
       users.map(async (item) => {
-        console.log(item);
-        let saved;
-        const existing = await User.findByOne({ id: item.id });
-        console.log(existing);
-        if (existing) {
-          console.log("ex us", item.id);
-          saved = existing;
-        } else {
-          const user = new User({ ...item });
-          saved = await user.save({ session });
-          //이미 존재하는 학생은 동일한 primary key로 만들수 없으니 해당 프로미스가 실패.
-        }
+        try {
+          console.log(item);
+          let saved;
+          const existing = await User.findByOne({ id: item.id });
+          console.log(existing);
+          if (existing) {
+            console.log("ex us", item.id);
+            saved = existing;
+          } else {
+            const user = new User({ ...item });
+            saved = await user.save({ session });
+            //이미 존재하는 학생은 동일한 primary key로 만들수 없으니 해당 프로미스가 실패.
+          }
 
-        const existing_enrollment = await Enrollment.findOne({
-          lecture,
-          student: saved._id,
-        });
-        if (existing_enrollment) {
-          console.log("ex en", item.id);
-          return;
-        } else {
-          const enrollment = new Enrollment({ lecture, student: saved._id });
-          return await enrollment.save({ session });
+          const existing_enrollment = await Enrollment.findOne({
+            lecture,
+            student: saved._id,
+          });
+          if (existing_enrollment) {
+            console.log("ex en", item.id);
+            return;
+          } else {
+            const enrollment = new Enrollment({ lecture, student: saved._id });
+            return await enrollment.save({ session });
+          }
+        } catch (err) {
+          console.log(err);
         }
       })
     );
