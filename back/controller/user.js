@@ -75,8 +75,16 @@ export async function createEnrollStudent({ lecture, users }) {
           //이미 존재하는 학생은 동일한 primary key로 만들수 없으니 해당 프로미스가 실패.
         }
 
-        const enrollment = new Enrollment({ lecture, student: saved._id });
-        return await enrollment.save({ session });
+        const existing_enrollment = await Enrollment.findOne({
+          lecture,
+          student: saved._id,
+        });
+        if (existing_enrollment) {
+          return;
+        } else {
+          const enrollement = new Enrollment({ lecture, student: saved._id });
+          return await enrollment.save({ session });
+        }
       })
     );
   } catch (err) {
