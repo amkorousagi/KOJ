@@ -106,8 +106,6 @@ services:
       - mongo-net
     command: mongod --config /etc/mongodb.conf
 
-    # cat /etc/mongodb.key > /etc/mongodb2.key && chmod 400 /etc/mongodb2.key && chown mongo2:mongo2 /etc/mongodb2.key  && --keyFile /etc/mongodb2.key
-
   mongo3:
     image: mongo
     container_name: mongo3
@@ -120,6 +118,7 @@ services:
       - ./mongo3:/data/db
       - ./key:/key
       - ./mongodb.conf:/etc/mongodb.conf
+      - ./haproxy.cfg:/etc/haproxy.cfg
     networks:
       - mongo-net
     command: mongod --config /etc/mongodb.conf
@@ -132,21 +131,8 @@ services:
       - 3015:27017
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-
-  # nginx:
-  #   image: nginx:latest
-  #   container_name: nginx
-  #   depends_on:
-  #     - mongo1
-  #     - mongo2
-  #     - mongo3
-  #   ports:
-  #     - "3015:80"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #     - ./key:/key
-  #   networks:
-  #     - mongo-net
+    networks:
+      - mongo-net
 
 networks:
   mongo-net:

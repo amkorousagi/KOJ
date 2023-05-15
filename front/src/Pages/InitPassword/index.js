@@ -122,7 +122,7 @@ const InitPassword = ({}) => {
             fullWidth
             label="새 비밀번호"
             helperText={
-              selected === -1
+              (selected === -1) | (users[selected] === undefined)
                 ? "사용자를 선택하세요"
                 : users[selected].name + " 님의 비밀번호를 초기화합니다."
             }
