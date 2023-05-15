@@ -68,7 +68,7 @@ export async function createEnrollStudent({ lecture, users }) {
         try {
           console.log(item);
           let saved;
-          const existing = await User.findByOne({ id: item.id });
+          const existing = await User.findOne({ id: item.id });
           console.log(existing);
           if (existing) {
             console.log("ex us", item.id);
