@@ -83,10 +83,12 @@ export async function createEnrollStudent({ lecture, users }) {
   } catch (err) {
     //console.log(err);
     await session.abortTransaction();
-    throw new Error(err.message);
-  } finally {
     await session.endSession();
+    throw new Error(err.message);
   }
+  await session.commitTransaction();
+  await session.endSession();
+
   return result;
 }
 
