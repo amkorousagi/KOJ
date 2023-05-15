@@ -65,8 +65,10 @@ export async function createEnrollStudent({ lecture, users }) {
   try {
     result = await Promise.allSettled(
       users.map(async (item) => {
+        console.log(item);
         let saved;
         const existing = await User.findByOne({ id: item.id });
+        console.log(existing);
         if (existing) {
           console.log("ex us", item.id);
           saved = existing;
