@@ -68,6 +68,7 @@ export async function createEnrollStudent({ lecture, users }) {
         let saved;
         const existing = await User.findByOne({ id: item.id });
         if (existing) {
+          console.log("ex us", item.id);
           saved = existing;
         } else {
           const user = new User({ ...item });
@@ -80,9 +81,10 @@ export async function createEnrollStudent({ lecture, users }) {
           student: saved._id,
         });
         if (existing_enrollment) {
+          console.log("ex en", item.id);
           return;
         } else {
-          const enrollement = new Enrollment({ lecture, student: saved._id });
+          const enrollment = new Enrollment({ lecture, student: saved._id });
           return await enrollment.save({ session });
         }
       })
