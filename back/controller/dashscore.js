@@ -4,6 +4,7 @@ import Problem_score from "../model/problem_score";
 import Problem from "../model/problem";
 import Practice from "../model/practice";
 import User from "../model/user";
+import { USER_TYPE } from "../type";
 
 export async function readDashScore({ lecture, practice }) {
   const dashscore = {};
@@ -87,7 +88,7 @@ export async function readDashScore({ lecture, practice }) {
   const enr = await Enrollment.find({ lecture }).populate("student").exec();
   meta["students"] = enr.map((item) => item.student);
   meta["students"].forEach((element) => {
-    if (dashscore[element._id]) {
+    if (dashscore[element._id] || element.user_type !== USER_TYPE.STUDENT) {
     } else {
       dashscore[element._id] = { student: element._id, score: 0 };
     }
