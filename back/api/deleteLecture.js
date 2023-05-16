@@ -10,7 +10,6 @@ deleteLectureRoute.post(
     const { lecture } = req.body;
     console.log(req.body);
     // 유효성 검증 , id..
-
     return await deleteLecture({ lecture });
   })
 );

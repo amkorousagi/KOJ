@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteMaterial } from "../controller/material";
+import { checkOwner, deleteMaterial } from "../controller/material";
 import { responseHandler } from "../lib/common";
 
 const deleteMaterialRoute = express();
@@ -10,7 +10,7 @@ deleteMaterialRoute.post(
     const { material } = req.body;
     console.log(req.body);
     // 유효성 검증 , id..
-
+    await checkOwner({ material, owner: req.user._id });
     return await deleteMaterial({ material });
   })
 );
