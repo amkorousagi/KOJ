@@ -64,15 +64,16 @@ apiRoute.use(
 );
 apiRoute.use(
   "/createEnrollStudent",
-  authorization_handler([USER_TYPE.PROFESSOR]),
+  authorization_handler([USER_TYPE.PROFESSOR, USER_TYPE.ADMIN]),
   createEnrollmentStudentRoute
 );
+/*
 apiRoute.use(
   "/createEnrollment",
   authorization_handler([USER_TYPE.PROFESSOR, USER_TYPE.ADMIN]),
   createEnrollmentRoute
 );
-
+*/
 apiRoute.use(
   "/createPractice",
   authorization_handler([USER_TYPE.PROFESSOR]),

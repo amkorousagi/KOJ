@@ -4,6 +4,7 @@ import { responseHandler } from "../lib/common";
 
 const createEnrollmentRoute = express();
 
+//관리자용으로 만들었는데 없어도 될듯
 createEnrollmentRoute.post(
   "/",
   responseHandler(async (req) => {

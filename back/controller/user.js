@@ -58,6 +58,7 @@ export async function insertManyUser(users) {
   return result;
 }
 
+//학생 등록 및 추가
 export async function createEnrollStudent({ lecture, users }) {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -76,7 +77,6 @@ export async function createEnrollStudent({ lecture, users }) {
           } else {
             const user = new User({ ...item });
             saved = await user.save({ session });
-            //이미 존재하는 학생은 동일한 primary key로 만들수 없으니 해당 프로미스가 실패.
           }
 
           const existing_enrollment = await Enrollment.findOne({

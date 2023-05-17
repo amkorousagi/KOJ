@@ -2,6 +2,23 @@ import mongoose from "mongoose";
 import Enrollment from "../model/enrollment";
 import Practice from "../model/practice";
 
+export async function checkOwner({ lecture, owner }) {
+  let l;
+  if (lecture) {
+    l = await Lecture.findById(lecture);
+  }
+
+  if (l) {
+    if (l.lecturer === owner) {
+      return;
+    } else {
+      throw new Error("not owner");
+    }
+  } else {
+    throw new Error("cannot check owner");
+  }
+}
+
 export async function createEnrollments({ lecture, students }) {
   const session = await mongoose.startSession();
   session.startTransaction();
