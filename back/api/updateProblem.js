@@ -1,5 +1,5 @@
 import express from "express";
-import { updateProblem } from "../controller/problem";
+import { checkOwner, updateProblem } from "../controller/problem";
 import { responseHandler } from "../lib/common";
 
 const updateProblemRoute = express();
@@ -19,7 +19,7 @@ updateProblemRoute.post(
     } = req.body;
 
     // 유효성 검증 , id.. problem_type
-
+    await checkOwner({ problem, owner: req.user._id });
     return await updateProblem({
       problem,
       problem_type,

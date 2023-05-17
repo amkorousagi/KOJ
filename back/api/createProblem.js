@@ -1,5 +1,5 @@
 import express from "express";
-import { createProblem } from "../controller/problem";
+import { checkOwner, createProblem } from "../controller/problem";
 import { responseHandler } from "../lib/common";
 
 const createProblemRoute = express();
@@ -20,7 +20,7 @@ createProblemRoute.post(
     } = req.body;
 
     // 유효성 검증 , id.. problem_type
-
+    await checkOwner({ practice, owner: req.user._id });
     return await createProblem({
       practice,
       problem_type,

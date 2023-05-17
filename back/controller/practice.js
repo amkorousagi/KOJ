@@ -1,6 +1,25 @@
 import Practice from "../model/practice";
 import Problem from "../model/problem";
 
+export async function checkOwner({ lecture, practice, owner }) {
+  let l;
+  if (lecture) {
+    l = await Lecture.findById(lecture);
+  } else if (practice) {
+    l = await Practice.findById(practice).populate("lecture").exec();
+  }
+
+  if (l) {
+    if (l.lecturer === owner) {
+      return;
+    } else {
+      throw new Error("not owner");
+    }
+  } else {
+    throw new Error("cannot check owner");
+  }
+}
+
 export async function createPractice({ lecture, title, start_date, end_date }) {
   const practice = new Practice({
     lecture,

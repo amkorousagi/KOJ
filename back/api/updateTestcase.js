@@ -1,5 +1,5 @@
 import express from "express";
-import { updateTestcase } from "../controller/testcase";
+import { checkOwner, updateTestcase } from "../controller/testcase";
 import { responseHandler } from "../lib/common";
 import fetch from "node-fetch";
 import { KOJ_URL } from "../config";
@@ -20,6 +20,8 @@ updateTestcaseRoute.post(
       input_file,
       output_file,
     } = req.body;
+    await checkOwner({ testcase, owner: req.user._id });
+
     // 유효성 검증 , id.. problem_type
     const t = await updateTestcase({
       testcase,

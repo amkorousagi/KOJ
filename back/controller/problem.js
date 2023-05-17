@@ -1,6 +1,30 @@
 import Problem from "../model/problem";
 import { PROBLEM_TYPE } from "../type";
 
+export async function checkOwner({ practice, problem, owner }) {
+  let l;
+  if (problem) {
+    l = await Problem.findById(problem)
+      .populate({
+        path: "pratice",
+        populate: { path: "lecture" },
+      })
+      .exec();
+  } else if (practice) {
+    l = await Practice.findById(practice).populate("lecture").exec();
+  }
+
+  if (l) {
+    if (l.lecturer === owner) {
+      return;
+    } else {
+      throw new Error("not owner");
+    }
+  } else {
+    throw new Error("cannot check owner");
+  }
+}
+
 export async function createProblem({
   practice,
   problem_type,

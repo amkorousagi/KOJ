@@ -1,5 +1,5 @@
 import express from "express";
-import { updatePractice } from "../controller/practice";
+import { checkOwner, updatePractice } from "../controller/practice";
 import { responseHandler } from "../lib/common";
 
 const updatePracticeRoute = express();
@@ -10,7 +10,7 @@ updatePracticeRoute.post(
     const { practice, title, start_date, end_date } = req.body;
 
     // 유효성 검증 , id..
-
+    await checkOwner({ practice, owner: req.user_id });
     return await updatePractice({ practice, title, start_date, end_date });
   })
 );

@@ -1,6 +1,19 @@
 import Lecture from "../model/lecture";
 import Enrollment from "../model/enrollment";
 
+export async function checkOwner({ lecture, owner }) {
+  const l = await Lecture.findById(lecture);
+  if (l) {
+    if (l.lecturer === owner) {
+      return;
+    } else {
+      throw new Error("not owner");
+    }
+  } else {
+    throw new Error("cannot check owner");
+  }
+}
+
 export async function createLecture({ lecturer, title, semester }) {
   const lecture = new Lecture({ lecturer, title, semester });
   console.log(lecture);

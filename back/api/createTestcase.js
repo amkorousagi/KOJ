@@ -1,5 +1,5 @@
 import express from "express";
-import { createTestcase } from "../controller/testcase";
+import { checkOwner, createTestcase } from "../controller/testcase";
 import { responseHandler } from "../lib/common";
 import fetch from "node-fetch";
 import { KOJ_URL } from "../config";
@@ -33,6 +33,8 @@ createTestcaseRoute.post(
       input_file,
       output_file,
     });
+
+    await checkOwner({ problem, owner: req.user._id });
     // koj : create testcase env
     const result = await fetch(
       KOJ_URL + "/build_judge_environment/" + testcase._id,

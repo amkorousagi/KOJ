@@ -1,5 +1,40 @@
+import Problem from "../model/problem";
 import Testcase from "../model/testcase";
 import { USER_TYPE } from "../type";
+
+export async function checkOwner({ problem, testcase, owner }) {
+  let l;
+  if (problem) {
+    l = await Problem.findById(problem)
+      .populate({
+        path: "pratice",
+        populate: { path: "lecture" },
+      })
+      .exec();
+  } else if (testcase) {
+    l = await Testcase.findById(testcase)
+      .populate({
+        path: "problem",
+        populate: {
+          path: "practice",
+          populate: {
+            path: "lecture",
+          },
+        },
+      })
+      .exec();
+  }
+
+  if (l) {
+    if (l.lecturer === owner) {
+      return;
+    } else {
+      throw new Error("not owner");
+    }
+  } else {
+    throw new Error("cannot check owner");
+  }
+}
 
 export async function createTestcase({
   problem,
