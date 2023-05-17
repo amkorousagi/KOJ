@@ -1,3 +1,4 @@
+import Lecture from "../model/lecture";
 import Practice from "../model/practice";
 import Problem from "../model/problem";
 

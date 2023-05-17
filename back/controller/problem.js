@@ -1,3 +1,4 @@
+import Practice from "../model/practice";
 import Problem from "../model/problem";
 import { PROBLEM_TYPE } from "../type";
 
