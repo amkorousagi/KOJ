@@ -14,6 +14,8 @@ export async function checkOwner({ lecture, practice, owner }) {
     if (l.lecturer === owner) {
       return;
     } else {
+      console.log(l);
+      console.log(owner);
       throw new Error("not owner");
     }
   } else {
