@@ -15,6 +15,8 @@ export async function checkOwner({ practice, problem, owner }) {
     l = await Practice.findById(practice).populate("lecture").exec();
   }
 
+  console.log(l);
+
   if (l) {
     if (l.lecturer.toString() === owner.toString()) {
       return;
