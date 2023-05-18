@@ -7,6 +7,7 @@ export async function checkOwner({ lecture, material, owner }) {
     l = await Lecture.findById(lecture);
   } else if (material) {
     l = await Material.findById(material).populate("lecture").exec();
+    l = l.lecture;
   }
 
   if (l) {

@@ -11,11 +11,9 @@ export async function checkOwner({ practice, problem, owner }) {
         populate: { path: "lecture" },
       })
       .exec();
+    l = l.practice.lecture;
   } else if (practice) {
-    l = await Practice.findById(practice);
-    console.log(l);
     l = await Practice.findById(practice).populate("lecture").exec();
-    console.log(l);
     l = l.lecture;
   }
 

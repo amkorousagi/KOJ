@@ -8,6 +8,7 @@ export async function checkOwner({ lecture, practice, owner }) {
     l = await Lecture.findById(lecture);
   } else if (practice) {
     l = await Practice.findById(practice).populate("lecture").exec();
+    l = l.lecture;
   }
 
   if (l) {

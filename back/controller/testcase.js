@@ -11,6 +11,7 @@ export async function checkOwner({ problem, testcase, owner }) {
         populate: { path: "lecture" },
       })
       .exec();
+    l = l.practice.lecture;
   } else if (testcase) {
     l = await Testcase.findById(testcase)
       .populate({
@@ -23,6 +24,7 @@ export async function checkOwner({ problem, testcase, owner }) {
         },
       })
       .exec();
+    l = l.problem.practice.lecture;
   }
 
   if (l) {
