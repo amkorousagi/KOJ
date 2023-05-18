@@ -9,7 +9,7 @@ export async function checkOwner({ lecture, owner }) {
   }
 
   if (l) {
-    if (l.lecturer === owner) {
+    if (l.lecturer.toString() === owner.toString()) {
       return;
     } else {
       throw new Error("not owner");

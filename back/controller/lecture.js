@@ -4,7 +4,7 @@ import Enrollment from "../model/enrollment";
 export async function checkOwner({ lecture, owner }) {
   const l = await Lecture.findById(lecture);
   if (l) {
-    if (l.lecturer === owner) {
+    if (l.lecturer.toString() === owner.toString()) {
       return;
     } else {
       throw new Error("not owner");

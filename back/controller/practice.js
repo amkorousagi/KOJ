@@ -11,7 +11,7 @@ export async function checkOwner({ lecture, practice, owner }) {
   }
 
   if (l) {
-    if (l.lecturer === owner) {
+    if (l.lecturer.toString() === owner.toString()) {
       return;
     } else {
       console.log(l);
