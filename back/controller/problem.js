@@ -12,11 +12,12 @@ export async function checkOwner({ practice, problem, owner }) {
       })
       .exec();
   } else if (practice) {
+    l = await Practice.findById(practice);
+    console.log(l);
     l = await Practice.findById(practice).populate("lecture").exec();
+    console.log(l);
+    l = l.lecture;
   }
-
-  console.log(l);
-  l = await Practice.findById(practice);
 
   if (l) {
     if (l.lecturer.toString() === owner.toString()) {
