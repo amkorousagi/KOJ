@@ -6,6 +6,7 @@ import { USER_TYPE } from "../type";
 import Enrollment from "../model/enrollment";
 
 export async function initAdmin() {
+  // MUST REMOVE WHEN PRODUCTION
   const a = new User({
     id: "admin",
     password: bcrypt.hashSync("eselab", 10),

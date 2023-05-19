@@ -119,6 +119,13 @@ const CreateProblem = ({
       if (fileInput && preview) {
         const fileTypes = [
           "application/pdf", // 한컴 pdf 확인
+          "image/jpg",
+          "image/jpeg",
+          "image/png",
+          "image/gif",
+          "image/bmp",
+          "image/svg",
+          "image/webp",
         ];
         function validFileType(file) {
           return fileTypes.includes(file.type);

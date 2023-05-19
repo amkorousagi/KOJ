@@ -7,7 +7,7 @@ export async function checkOwner({ problem, testcase, owner }) {
   if (problem) {
     l = await Problem.findById(problem)
       .populate({
-        path: "pratice",
+        path: "practice",
         populate: { path: "lecture" },
       })
       .exec();
