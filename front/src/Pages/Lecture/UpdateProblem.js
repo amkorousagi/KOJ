@@ -223,7 +223,7 @@ const UpdateProblem = ({
   };
   useEffect(() => {
     console.log(existings);
-    if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
+    if (existings !== undefined && Object.keys(existings).length !== 0) {
       console.log(existings);
 
       Promise.all(
@@ -271,7 +271,7 @@ const UpdateProblem = ({
         setAt(values);
       });
     }
-  }, [curProblem]);
+  }, [existings]);
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
