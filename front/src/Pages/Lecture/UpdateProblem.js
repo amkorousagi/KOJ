@@ -189,6 +189,11 @@ const UpdateProblem = ({
   }, []);
   */
   useEffect(() => {
+    if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
+      setExistings([...curProblem.pdf]);
+    }
+  }, curProblem);
+  useEffect(() => {
     console.log(existings);
     if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
       setExistings([...curProblem.pdf]);
