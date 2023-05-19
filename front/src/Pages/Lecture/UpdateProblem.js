@@ -45,7 +45,7 @@ const UpdateProblem = ({
   console.log(curProblem);
   const [title, setTitle] = React.useState("");
   const [problem_type, setProblem_type] = React.useState("");
-  const [score, setScore] = React.useState(10);
+  const [score, setScore] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [result, setResult] = React.useState("");
