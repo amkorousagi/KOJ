@@ -26,6 +26,7 @@ import {
   Add,
   AttachFileOutlined,
   Close,
+  DeleteOutlined,
   Label,
   Save,
 } from "@mui/icons-material";
@@ -51,44 +52,6 @@ const UpdateProblem = ({
   const [execution_time_limit, setExecution_time_limit] = React.useState(1000);
   const [existings, setExistings] = React.useState([]);
   const [at, setAt] = React.useState([]);
-  useEffect(() => {
-    console.log(existings);
-    if (existings !== undefined && Object.keys(existings).length !== 0) {
-      console.log(existings);
-
-      Promise.all(
-        existings.map(async (fileId) => {
-          const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
-            method: "get",
-          });
-          const filename = response.headers.get("pragma");
-
-          return (
-            <ListItemButton
-              onClick={async () => {
-                const file = await response.blob();
-                const downloadUrl = window.URL.createObjectURL(file);
-                const anchorElement = document.createElement("a");
-                document.body.appendChild(anchorElement);
-                anchorElement.download = filename; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
-                anchorElement.href = downloadUrl; // href에 url 달아주기
-
-                anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
-                console.log(anchorElement);
-                document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
-                window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
-              }}
-            >
-              {filename}
-              <AttachFileOutlined />
-            </ListItemButton>
-          );
-        })
-      ).then((values) => {
-        setAt(values);
-      });
-    }
-  }, [existings]);
 
   const updateProblem = () => {
     if (execution_time_limit > 10000) {
@@ -258,6 +221,55 @@ const UpdateProblem = ({
       return <></>;
     }
   };
+  useEffect(() => {
+    console.log(existings);
+    if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
+      console.log(existings);
+
+      Promise.all(
+        curProblem.pdf.map(async (fileId) => {
+          const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
+            method: "get",
+          });
+          const filename = response.headers.get("pragma");
+
+          return (
+            <ListItemButton
+              onClick={async () => {
+                const file = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(file);
+                const anchorElement = document.createElement("a");
+                document.body.appendChild(anchorElement);
+                anchorElement.download = filename; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
+                anchorElement.href = downloadUrl; // href에 url 달아주기
+
+                anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
+                console.log(anchorElement);
+                document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
+                window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
+              }}
+            >
+              {filename}
+              <AttachFileOutlined />
+              <IconButton
+                onClick={() => {
+                  setExistings(
+                    existings.filter((e) => {
+                      return e !== fileId;
+                    })
+                  );
+                }}
+              >
+                <DeleteOutlined />
+              </IconButton>
+            </ListItemButton>
+          );
+        })
+      ).then((values) => {
+        setAt(values);
+      });
+    }
+  }, [curProblem]);
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
