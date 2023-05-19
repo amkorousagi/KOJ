@@ -342,6 +342,8 @@ const UpdateProblem = ({
       ).then((values) => {
         setAt(values);
       });
+    } else {
+      setAt([]);
     }
   }, [existings]);
   return (
