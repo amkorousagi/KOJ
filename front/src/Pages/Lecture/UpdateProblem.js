@@ -31,7 +31,7 @@ import {
   Save,
 } from "@mui/icons-material";
 import { ListItemButton } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { BASE_URL, DOWNLOAD_URL, FILE_URL } from "../../config.js";
 
 const UpdateProblem = ({
@@ -129,10 +129,68 @@ const UpdateProblem = ({
         console.log(err);
       });
   };
+  useLayoutEffect(() => {
+    let fileInput = document.querySelector(".fileInput");
+    let preview = document.querySelector(".preview");
+
+    const fileTypes = [
+      "application/pdf", // 한컴 pdf 확인
+    ];
+    function validFileType(file) {
+      return fileTypes.includes(file.type);
+    }
+    function returnFileSize(number) {
+      if (number < 1024) {
+        return number + "bytes";
+      } else if (number >= 1024 && number < 1048576) {
+        return (number / 1024).toFixed(1) + "KB";
+      } else if (number >= 1048576) {
+        return (number / 1048576).toFixed(1) + "MB";
+      }
+    }
+    function updateImageDisplay() {
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      const curFiles = fileInput.files;
+      setFiles(curFiles);
+      if (curFiles.length === 0) {
+        const para = document.createElement("p");
+        para.textContent = "선택된 파일 없음";
+        preview.appendChild(para);
+      } else {
+        const list = document.createElement("ol");
+        preview.appendChild(list);
+
+        for (const file of curFiles) {
+          const listItem = document.createElement("li");
+          const para = document.createElement("p");
+          if (validFileType(file)) {
+            para.textContent = `File name ${
+              file.name
+            }, file size ${returnFileSize(file.size)}.`;
+            //const image = document.createElement("img");
+            //image.src = URL.createObjectURL(file);
+
+            //listItem.appendChild(image);
+            listItem.appendChild(para);
+          } else {
+            para.textContent = `File name ${file.name} 가 유효한 파일 형식이 아닙니다. 다시 선택하십시오.`;
+            listItem.appendChild(para);
+          }
+
+          list.appendChild(listItem);
+        }
+      }
+    }
+    fileInput.addEventListener("change", updateImageDisplay);
+  }, []);
   useEffect(() => {
     console.log(existings);
-    setExistings(curProblem.pdf);
+    setExistings([...curProblem.pdf]);
     console.log(existings);
+    /*
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
     let intervalId;
@@ -192,7 +250,6 @@ const UpdateProblem = ({
             }
           }
         }
-        console.log("dd");
         fileInput.addEventListener("change", updateImageDisplay);
         clearInterval(intervalId);
       } else {
@@ -200,6 +257,7 @@ const UpdateProblem = ({
         preview = document.querySelector(".preview");
       }
     }, 500);
+    */
   }, []);
   const result_fill = () => {
     if (problem_type === "result") {
