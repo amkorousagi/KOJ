@@ -129,6 +129,7 @@ const UpdateProblem = ({
         console.log(err);
       });
   };
+  /*
   useLayoutEffect(() => {
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
@@ -186,13 +187,14 @@ const UpdateProblem = ({
     }
     fileInput.addEventListener("change", updateImageDisplay);
   }, []);
+  */
   useEffect(() => {
     console.log(existings);
     if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
       setExistings([...curProblem.pdf]);
     }
     console.log(existings);
-    /*
+
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
     let intervalId;
@@ -259,7 +261,6 @@ const UpdateProblem = ({
         preview = document.querySelector(".preview");
       }
     }, 500);
-    */
   }, []);
   const result_fill = () => {
     if (problem_type === "result") {
