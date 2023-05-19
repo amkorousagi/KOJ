@@ -10,6 +10,7 @@ export async function connect_db() {
       authSource: "admin",
       useUnifiedTopology: true,
       useNewUrlParser: true,
+      readPreference: "secondary",
       //bufferCommands: false,
       //maxBsonSize: 16777216,
       //maxMessageSizeBytes: 100 * 1024 * 1024,
