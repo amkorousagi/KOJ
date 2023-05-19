@@ -130,7 +130,9 @@ const UpdateProblem = ({
       });
   };
   useEffect(() => {
+    console.log(existings);
     setExistings(curProblem.pdf);
+    console.log(existings);
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
     let intervalId;
@@ -255,11 +257,13 @@ const UpdateProblem = ({
               <AttachFileOutlined />
               <IconButton
                 onClick={() => {
+                  console.log(existings);
                   setExistings(
                     existings.filter((e) => {
                       return e !== fileId;
                     })
                   );
+                  console.log(existings);
                 }}
               >
                 <DeleteOutlined />
