@@ -52,6 +52,7 @@ const UpdateProblem = ({
   const [existings, setExistings] = React.useState([]);
   const [at, setAt] = React.useState([]);
   useEffect(() => {
+    console.log(existings);
     if (existings !== undefined && Object.keys(existings).length !== 0) {
       console.log(existings);
 
@@ -386,7 +387,6 @@ const UpdateProblem = ({
             <br />
             <br />
             <List className="attachments">{at}</List>
-
             <br />
             <br />
             <FormLabel>새 PDF</FormLabel>
@@ -397,7 +397,7 @@ const UpdateProblem = ({
               <input className="fileInput" type="file" hidden multiple />
             </Button>
             <div className="preview">
-              <p>새파일</p>
+              <p>새 파일</p>
             </div>
             <br />
             <br />
