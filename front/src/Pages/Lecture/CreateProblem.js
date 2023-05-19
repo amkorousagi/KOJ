@@ -261,7 +261,6 @@ const CreateProblem = ({
           <hr />
           <CardContent>
             <TextField
-              key={title}
               variant="outlined"
               label="문제명"
               style={{ width: "100%" }}

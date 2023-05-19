@@ -283,7 +283,6 @@ const CreateTestcase = ({
           <hr />
           <CardContent>
             <TextField
-              key={title}
               variant="outlined"
               label="테스트케이스명"
               style={{ width: "100%" }}

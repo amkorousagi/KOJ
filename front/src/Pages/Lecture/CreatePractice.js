@@ -89,7 +89,6 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
           <hr />
           <CardContent>
             <TextField
-              key={name}
               variant="outlined"
               label="실습명"
               style={{ width: "100%" }}
