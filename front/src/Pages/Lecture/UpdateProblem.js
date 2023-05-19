@@ -188,7 +188,9 @@ const UpdateProblem = ({
   }, []);
   useEffect(() => {
     console.log(existings);
-    setExistings([...curProblem.pdf]);
+    if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
+      setExistings([...curProblem.pdf]);
+    }
     console.log(existings);
     /*
     let fileInput = document.querySelector(".fileInput");
