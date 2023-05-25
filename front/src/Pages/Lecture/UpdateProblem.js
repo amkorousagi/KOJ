@@ -287,7 +287,7 @@ const UpdateProblem = ({
     }, 500);
   }, []);
   const result_fill = () => {
-    if (problem_type === "result") {
+    if (curProblem.problem_type === "result") {
       return (
         <>
           <TextField
@@ -309,7 +309,7 @@ const UpdateProblem = ({
     }
   };
   const blank_fill = () => {
-    if (problem_type === "blank") {
+    if (curProblem.problem_type === "blank") {
       return (
         <>
           <TextField
