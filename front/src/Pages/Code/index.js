@@ -94,38 +94,72 @@ const Code = () => {
     setValue(newValue);
   };
   console.log(codes);
-  return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      style={{ textAlign: "left" }}
-    >
-      <Card variant="outlined">
-        <CardContent>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
+  if (codes) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        style={{ textAlign: "left" }}
+      >
+        <Card variant="outlined">
+          <CardContent>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              {codes.map((item, index) => {
+                return <Tab label={item.file.name} {...allyProps(index)} />;
+              })}
+            </Tabs>
             {codes.map((item, index) => {
-              return <Tab label={item.file.name} {...allyProps(index)} />;
+              return (
+                <TabPanel
+                  value={value}
+                  index={index}
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {item.data}
+                </TabPanel>
+              );
             })}
-          </Tabs>
-          {codes.map((item, index) => {
-            return (
-              <TabPanel
-                value={value}
-                index={index}
-                style={{ whiteSpace: "pre-wrap" }}
-              >
-                {item.data}
-              </TabPanel>
-            );
-          })}
-        </CardContent>
-      </Card>
-    </Box>
-  );
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  } else {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        style={{ textAlign: "left" }}
+      >
+        <Card variant="outlined">
+          <CardContent>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              {"제출한 빈칸"}
+            </Tabs>
+            {codes.map((item, index) => {
+              return (
+                <TabPanel
+                  value={value}
+                  index={index}
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {item.data}
+                </TabPanel>
+              );
+            })}
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  }
 };
 export default Code;

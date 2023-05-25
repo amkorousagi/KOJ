@@ -40,6 +40,7 @@ const CreateProblem = ({
   const [result, setResult] = React.useState("");
   const [execution_time_limit, setExecution_time_limit] = React.useState(1000);
   const [blank, setBlank] = React.useState("");
+  const [blank_language, setBlank_language] = React.useState("c");
   useEffect(() => {
     console.log(nProblem);
     setTitle("문제 " + (nProblem + 1));
@@ -86,6 +87,7 @@ const CreateProblem = ({
             result_answer: result,
             execution_time_limit,
             blank,
+            blank_language,
           }),
         })
           .then((res) => {
@@ -221,6 +223,55 @@ const CreateProblem = ({
               setBlank(e.target.value);
             }}
           />
+          <br />
+          <br />
+          <RadioGroup
+            row
+            defaultValue={blank_language}
+            onChange={(e) => {
+              e.preventDefault();
+              setBlank_language(e.target.value);
+            }}
+          >
+            <FormLabel
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              빈칸 언어&nbsp;&nbsp;
+            </FormLabel>
+            <FormControlLabel
+              value="c"
+              label="C"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="cpp"
+              label="C++"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="java"
+              label="Java"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="python"
+              label="Python"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="node"
+              label="Javascript"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+          </RadioGroup>
           <br />
           <br />
         </>

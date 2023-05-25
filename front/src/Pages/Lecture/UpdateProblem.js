@@ -49,10 +49,11 @@ const UpdateProblem = ({
   const [description, setDescription] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [result, setResult] = React.useState("");
-  const [execution_time_limit, setExecution_time_limit] = React.useState(1000);
+  const [execution_time_limit, setExecution_time_limit] = React.useState(0);
   const [existings, setExistings] = React.useState([]);
   const [at, setAt] = React.useState([]);
-
+  const [blank, setBlank] = React.useState("");
+  const [blank_language, setBlank_language] = React.useState("c");
   const updateProblem = () => {
     if (execution_time_limit > 10000) {
       alert("실행시간은 10 초(10000ms)를 초과할 수 없습니다");
@@ -82,6 +83,9 @@ const UpdateProblem = ({
         const update = {
           problem: curProblem._id,
         };
+        if (execution_time_limit) {
+          update.execution_time_limit = execution_time_limit;
+        }
         if (problem_type) {
           update.problem_type = problem_type;
         }
@@ -99,6 +103,12 @@ const UpdateProblem = ({
         }
         if (data.files) {
           update.pdf = [...existings, ...data.files];
+        }
+        if (blank) {
+          update.blank = blank;
+        }
+        if (blank_language) {
+          update.blank_language = blank_language;
         }
 
         fetch(BASE_URL + "/api/updateProblem", {
@@ -284,12 +294,84 @@ const UpdateProblem = ({
             variant="outlined"
             label="결과 정답"
             style={{ width: "100%" }}
-            defaultValue={result}
+            defaultValue={curProblem.result}
             multiline
             onChange={(e) => {
               setResult(e.target.value);
             }}
           />
+          <br />
+          <br />
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  };
+  const blank_fill = () => {
+    if (problem_type === "blank") {
+      return (
+        <>
+          <TextField
+            variant="outlined"
+            label="빈칸 문제"
+            helperText="빈칸을 삽입하고 싶은 곳에 #BLANK# 를 적으세요"
+            style={{ width: "100%" }}
+            defaultValue={curProblem.blank}
+            multiline
+            onChange={(e) => {
+              setBlank(e.target.value);
+            }}
+          />
+          <br />
+          <br />
+          <RadioGroup
+            row
+            defaultValue={curProblem.blank_language}
+            onChange={(e) => {
+              e.preventDefault();
+              setBlank_language(e.target.value);
+            }}
+          >
+            <FormLabel
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              빈칸 언어&nbsp;&nbsp;
+            </FormLabel>
+            <FormControlLabel
+              value="c"
+              label="C"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="cpp"
+              label="C++"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="java"
+              label="Java"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="python"
+              label="Python"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+            <FormControlLabel
+              value="node"
+              label="Javascript"
+              labelPlacement="end"
+              control={<Radio color="primary" />}
+            />
+          </RadioGroup>
           <br />
           <br />
         </>
@@ -497,6 +579,7 @@ const UpdateProblem = ({
             <br />
             <br />
             {result_fill()}
+            {blank_fill()}
             <Button
               variant="contained"
               style={{ margin: "5px" }}

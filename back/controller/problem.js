@@ -38,6 +38,7 @@ export async function createProblem({
   result_answer,
   execution_time_limit,
   blank,
+  blank_language,
 }) {
   const problem = new Problem({
     practice,
@@ -49,6 +50,7 @@ export async function createProblem({
     result_answer,
     execution_time_limit,
     blank,
+    blank_language,
   });
   return await problem.save();
 }
@@ -67,6 +69,7 @@ export async function updateProblem({
   result_answer,
   execution_time_limit,
   blank,
+  blank_language,
 }) {
   const update = {};
   if (problem_type) {
@@ -92,6 +95,9 @@ export async function updateProblem({
   }
   if (blank) {
     update.blank = blank;
+  }
+  if (blank_language) {
+    update.blank_language = blank_language;
   }
 
   return await Problem.findByIdAndUpdate(problem, update, { new: true });

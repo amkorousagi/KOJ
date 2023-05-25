@@ -16,6 +16,7 @@ updateProblemRoute.post(
       pdf,
       result_answer,
       blank,
+      blank_language,
     } = req.body;
 
     // 유효성 검증 , id.. problem_type
@@ -29,6 +30,7 @@ updateProblemRoute.post(
       pdf,
       result_answer,
       blank,
+      blank_language,
     });
   })
 );
