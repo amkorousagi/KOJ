@@ -48,7 +48,7 @@ const UpdateProblem = ({
   const [score, setScore] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [files, setFiles] = React.useState([]);
-  const [result, setResult] = React.useState("");
+  const [result_answer, setResult_answer] = React.useState("");
   const [execution_time_limit, setExecution_time_limit] = React.useState(0);
   const [existings, setExistings] = React.useState([]);
   const [at, setAt] = React.useState([]);
@@ -98,8 +98,8 @@ const UpdateProblem = ({
         if (score) {
           update.score = score;
         }
-        if (result) {
-          update.result_answer = result;
+        if (result_answer) {
+          update.result_answer = result_answer;
         }
         if (data.files) {
           update.pdf = [...existings, ...data.files];
@@ -294,10 +294,10 @@ const UpdateProblem = ({
             variant="outlined"
             label="결과 정답"
             style={{ width: "100%" }}
-            defaultValue={curProblem.result}
+            defaultValue={curProblem.result_answer}
             multiline
             onChange={(e) => {
-              setResult(e.target.value);
+              setResult_answer(e.target.value);
             }}
           />
           <br />
