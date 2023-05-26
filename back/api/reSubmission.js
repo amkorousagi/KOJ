@@ -82,7 +82,7 @@ reSubmissionRoute.post(
       });
       const problem_score = await createScore({
         problem: updated_submission.problem,
-        student: req.user._id,
+        student: updated_submission.student,
         submission: submission._id,
       });
       return await updateScore({
