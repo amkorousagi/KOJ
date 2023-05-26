@@ -23,6 +23,7 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs/index.js";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/index.js";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker/index.js";
+import { calcScore } from "../../../../back/controller/problem_score.js";
 
 const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
   const [name, setName] = React.useState("실습 " + (nPractice + 1));
@@ -73,6 +74,8 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           "backface-visibility": "hidden",
+          maxHeight: "calc(100vh - 200px)",
+          overflowY: "auto",
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
