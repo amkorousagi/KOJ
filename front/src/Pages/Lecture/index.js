@@ -293,7 +293,7 @@ const Lecture = ({ userId, userType }) => {
           );
         }
         let collapse_testcase = <></>;
-        if (userType === "professor") {
+        if (userType === "professor" && p.problem_type !== "result") {
           collapse_testcase = (
             <Collapse in={openTest[p._id]} timeout="auto" unmountOnExit>
               <List
