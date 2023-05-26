@@ -251,6 +251,7 @@ app.get(
       }
 
       if (problem.problem_type === "blank") {
+        language = problem.blank_language;
         //replace blank to string
         let code_string = problem.blank;
         for (const b of submission.blank) {
@@ -266,9 +267,43 @@ app.get(
           );
           code_names.push("main.c");
         } else if (language == "cpp") {
+          await fs.promises.writeFile(
+            path.join(
+              __dirname +
+                "/submission/" +
+                req.params.submission_id +
+                "/main.cpp"
+            ),
+            code_string
+          );
+          code_names.push("main.cpp");
         } else if (language == "java") {
+          await fs.promises.writeFile(
+            path.join(
+              __dirname +
+                "/submission/" +
+                req.params.submission_id +
+                "/Main.java"
+            ),
+            code_string
+          );
+          code_names.push("Main.java");
         } else if (language == "python") {
+          await fs.promises.writeFile(
+            path.join(
+              __dirname + "/submission/" + req.params.submission_id + "/main.py"
+            ),
+            code_string
+          );
+          code_names.push("main.py");
         } else if (language == "node") {
+          await fs.promises.writeFile(
+            path.join(
+              __dirname + "/submission/" + req.params.submission_id + "/main.js"
+            ),
+            code_string
+          );
+          code_names.push("main.js");
         }
       }
       const testcases = await Testcase.find({ problem: problem._id });

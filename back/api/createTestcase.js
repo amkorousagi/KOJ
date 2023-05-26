@@ -21,6 +21,7 @@ createTestcaseRoute.post(
       output_file,
     } = req.body;
 
+    await checkOwner({ problem, owner: req.user._id });
     // 유효성 검증 , id.. problem_type
     const testcase = await createTestcase({
       problem,
@@ -34,7 +35,6 @@ createTestcaseRoute.post(
       output_file,
     });
 
-    await checkOwner({ problem, owner: req.user._id });
     // koj : create testcase env
     const result = await fetch(
       KOJ_URL + "/build_judge_environment/" + testcase._id,

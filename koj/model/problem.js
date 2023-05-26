@@ -10,6 +10,7 @@ const problemSchema = mongoose.Schema({
   result_answer: String,
   execution_time_limit: Number,
   blank: String,
+  blank_language: String,
 });
 
 const Problem = mongoose.model("Problem", problemSchema);
