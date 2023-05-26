@@ -717,6 +717,9 @@ const Lecture = ({ userId, userType }) => {
                       </div>
                       <hr />
                     </Typography>
+                    {currentProblem.description}
+                    <br />
+                    <hr />
                     {currentPDF.map((item) => {
                       return (
                         <object
