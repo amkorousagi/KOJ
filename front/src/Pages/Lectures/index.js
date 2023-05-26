@@ -32,7 +32,10 @@ const Lectures = ({ userType, userId }) => {
     }
     fetch(BASE_URL + "/api/readLecture", {
       method: "POST",
-      headers: { Authorization: "bearer " + localStorage.getItem("token") },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "bearer " + localStorage.getItem("token"),
+      },
       body: JSON.stringify(body),
     })
       .then((res) => {
