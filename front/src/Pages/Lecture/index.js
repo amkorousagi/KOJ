@@ -378,7 +378,7 @@ const Lecture = ({ userId, userType }) => {
               &nbsp;&nbsp;&nbsp;&nbsp;
               <ListItemText primary={p.title} />
               {editAndDelete2}
-              {userType === "professor" ? (
+              {userType === "professor" && p.problem_type !== "result" ? (
                 openTest[p._id] ? (
                   <ExpandLess />
                 ) : (
