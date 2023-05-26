@@ -37,10 +37,11 @@ export async function updateScore({ problem_score_id, score }) {
 }
 
 export async function calcScore({ problem, success }) {
-  const problem = await Problem.findById(problem);
-  if (problem.problem_type === "result") {
-    return success[0] ? problem.score : 0;
+  const p = await Problem.findById(problem);
+  if (p.problem_type === "result") {
+    return success[0] ? p.score : 0;
   }
+
   const testcases = await Testcase.find({ problem });
   const scores = testcases.map((item) => item.score);
   let score = 0;
