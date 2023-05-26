@@ -66,7 +66,6 @@ const UpdateTestcase = ({
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
-
     const input_file = await fetch(FILE_URL, {
       method: "post",
       headers: {

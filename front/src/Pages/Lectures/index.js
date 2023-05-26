@@ -18,6 +18,8 @@ const Lectures = ({ userType, userId }) => {
   const [pre, setPre] = React.useState([]);
 
   useEffect(() => {
+    console.log(userType);
+    console.log(userId);
     const body = {};
     if (userType === "professor") {
       body["lecturer"] = userId;

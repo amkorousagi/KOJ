@@ -24,7 +24,7 @@ export async function createLecture({ lecturer, title, semester }) {
 export async function readLecture({ lecturer, student }) {
   let lectures = [];
   if (lecturer) {
-    return await Lecture.find({ lecturer });
+    return await Lecture.find({ lecturer }).populate("lecturer");
   } else if (student) {
     const enrollments = await Enrollment.find({ student });
     lectures = await Promise.all(
