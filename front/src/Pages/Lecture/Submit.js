@@ -235,6 +235,8 @@ const Submit = ({ open, handleClose, openScore, problem_id, problem }) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
+            maxHeight: "calc(100vh - 200px)",
+            overflowY: "auto",
           }}
         >
           <Card variant="outlined">

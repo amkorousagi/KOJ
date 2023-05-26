@@ -205,6 +205,8 @@ const Score = ({ open, handleClose, problemId, userId }) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             "backface-visibility": "hidden",
+            maxHeight: "calc(100vh - 200px)",
+            overflowY: "auto",
           }}
         >
           <Card variant="outlined">

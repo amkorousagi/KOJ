@@ -24,7 +24,7 @@ const upload = multer({
       const ex = file.originalname.split(".").pop();
       const f = new File({
         description: req.body[file.originalname],
-        name: file.originalname,
+        name: req.body[file.originalname], //file.originalname,
         extension: ex ? "." + ex : "",
         mimetype: file.mimetype,
       });

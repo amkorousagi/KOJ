@@ -434,6 +434,8 @@ const UpdateTestcase = ({
           transform: "translate(-50%, -50%) scale(2, 2)",
           backfaceVisibility: "hidden",
           zoom: 0.5,
+          maxHeight: "calc(100vh - 200px)",
+          overflowY: "auto",
         }}
       >
         <Card variant="outlined" style={{ minWidth: "500px" }}>
