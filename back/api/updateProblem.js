@@ -17,6 +17,7 @@ updateProblemRoute.post(
       result_answer,
       blank,
       blank_language,
+      execution_time_limit,
     } = req.body;
 
     // 유효성 검증 , id.. problem_type
@@ -31,6 +32,7 @@ updateProblemRoute.post(
       result_answer,
       blank,
       blank_language,
+      execution_time_limit,
     });
   })
 );
