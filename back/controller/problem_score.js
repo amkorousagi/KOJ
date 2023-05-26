@@ -27,7 +27,7 @@ export async function updateScore({ problem_score_id, score }) {
   return await Problem_score.findByIdAndUpdate(
     problem_score_id,
     {
-      score: problem_score.score < score ? score : problem_score.score,
+      score, // problem_score.score < score ? score : problem_score.score, // 최근걸로 바꿔여함.
       updated_date: Date.now(),
     },
     {

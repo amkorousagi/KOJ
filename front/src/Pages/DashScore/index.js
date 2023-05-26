@@ -518,17 +518,7 @@ const DashScore = ({ userId, userType }) => {
                     })
                     .then((data) => {
                       console.log(data);
-                      setScores(
-                        data.data.sort((a, b) => {
-                          if (a.created_date > b.created_date) {
-                            return 1;
-                          }
-                          if (a.created_date < b.created_date) {
-                            return -1;
-                          }
-                          return 0;
-                        })
-                      );
+                      setScores(data.data);
                     })
                     .catch((err) => {
                       console.log(err);
