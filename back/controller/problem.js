@@ -72,31 +72,31 @@ export async function updateProblem({
   blank_language,
 }) {
   const update = {};
-  if (problem_type) {
+  if (problem_type !== null) {
     update.problem_type = problem_type;
   }
-  if (title) {
+  if (title !== null) {
     update.title = title;
   }
-  if (description) {
+  if (description !== null) {
     update.description = description;
   }
-  if (score) {
+  if (score !== null) {
     update.score = score;
   }
-  if (pdf) {
+  if (pdf !== null) {
     update.pdf = pdf;
   }
-  if (result_answer) {
+  if (result_answer !== null) {
     update.result_answer = result_answer;
   }
-  if (execution_time_limit) {
+  if (execution_time_limit !== null) {
     update.execution_time_limit = execution_time_limit;
   }
-  if (blank) {
+  if (blank !== null) {
     update.blank = blank;
   }
-  if (blank_language) {
+  if (blank_language !== null) {
     update.blank_language = blank_language;
   }
 

@@ -43,17 +43,17 @@ const UpdateProblem = ({
   curProblem,
 }) => {
   console.log(curProblem);
-  const [title, setTitle] = React.useState("");
-  const [problem_type, setProblem_type] = React.useState("");
-  const [score, setScore] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [title, setTitle] = React.useState(null);
+  const [problem_type, setProblem_type] = React.useState(null);
+  const [score, setScore] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
   const [files, setFiles] = React.useState([]);
-  const [result_answer, setResult_answer] = React.useState("");
-  const [execution_time_limit, setExecution_time_limit] = React.useState(0);
+  const [result_answer, setResult_answer] = React.useState(null);
+  const [execution_time_limit, setExecution_time_limit] = React.useState(null);
   const [existings, setExistings] = React.useState([]);
   const [at, setAt] = React.useState([]);
-  const [blank, setBlank] = React.useState("");
-  const [blank_language, setBlank_language] = React.useState("c");
+  const [blank, setBlank] = React.useState(null);
+  const [blank_language, setBlank_language] = React.useState(null);
   const updateProblem = () => {
     if (execution_time_limit > 10000) {
       alert("실행시간은 10 초(10000ms)를 초과할 수 없습니다");
@@ -83,31 +83,31 @@ const UpdateProblem = ({
         const update = {
           problem: curProblem._id,
         };
-        if (execution_time_limit) {
+        if (execution_time_limit !== null) {
           update.execution_time_limit = execution_time_limit;
         }
-        if (problem_type) {
+        if (problem_type !== null) {
           update.problem_type = problem_type;
         }
-        if (title) {
+        if (title !== null) {
           update.title = title;
         }
-        if (description) {
+        if (description !== null) {
           update.description = description;
         }
-        if (score) {
+        if (score !== null) {
           update.score = score;
         }
-        if (result_answer) {
+        if (result_answer !== null) {
           update.result_answer = result_answer;
         }
-        if (data.files) {
+        if (true) {
           update.pdf = [...existings, ...data.files];
         }
-        if (blank) {
+        if (blank !== null) {
           update.blank = blank;
         }
-        if (blank_language) {
+        if (blank_language !== null) {
           update.blank_language = blank_language;
         }
 
