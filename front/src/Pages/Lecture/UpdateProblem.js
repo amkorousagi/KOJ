@@ -285,7 +285,7 @@ const UpdateProblem = ({
         preview = document.querySelector(".preview");
       }
     }, 500);
-  }, []);
+  }, [open]);
   const result_fill = () => {
     if (curProblem.problem_type === "result") {
       return (

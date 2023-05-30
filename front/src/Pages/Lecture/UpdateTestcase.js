@@ -344,7 +344,7 @@ const UpdateTestcase = ({
         preview2 = document.querySelector(".preview2");
       }
     }, 500);
-  }, []);
+  }, [open]);
   useEffect(() => {
     Promise.all(
       previewInput.map(async (item, index) => {

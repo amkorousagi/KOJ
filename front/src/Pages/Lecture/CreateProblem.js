@@ -185,7 +185,7 @@ const CreateProblem = ({
         preview = document.querySelector(".preview");
       }
     }, 500);
-  }, []);
+  }, [open]);
   const result_fill = () => {
     if (problem_type === "result") {
       return (

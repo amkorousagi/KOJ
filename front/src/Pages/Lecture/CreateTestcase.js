@@ -249,7 +249,7 @@ const CreateTestcase = ({
         preview2 = document.querySelector(".preview2");
       }
     }, 500);
-  }, []);
+  }, [open]);
 
   return (
     <Modal open={open} onClose={handleClose}>

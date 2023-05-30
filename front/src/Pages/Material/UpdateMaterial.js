@@ -93,7 +93,7 @@ const UpdateMaterial = ({
         preview = document.querySelector(".preview");
       }
     }, 500);
-  }, []);
+  }, [open]);
   //lecture id 보내기
   const updateMaterial = () => {
     //먼저 파일 업로드
