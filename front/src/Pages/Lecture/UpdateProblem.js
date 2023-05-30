@@ -525,11 +525,7 @@ const UpdateProblem = ({
               label="실행시간"
               style={{ width: "100%" }}
               type="number"
-              defaultValue={
-                curProblem.execution_time_limit
-                  ? curProblem.execution_time_limit
-                  : 1000
-              }
+              defaultValue={curProblem.execution_time_limit}
               onChange={(e) => {
                 setExecution_time_limit(e.target.value);
               }}
