@@ -252,7 +252,7 @@ const UpdateProblem = ({
           }
 
           const curFiles = fileInput.files;
-          setFiles(curFiles);
+          //setFiles(curFiles);
           if (curFiles.length === 0) {
             const para = document.createElement("p");
             para.textContent = "선택된 파일 없음";
@@ -265,6 +265,7 @@ const UpdateProblem = ({
               const listItem = document.createElement("li");
               const para = document.createElement("p");
               if (validFileType(file)) {
+                setFiles([...files, file]);
                 para.textContent = `File name ${
                   file.name
                 }, file size ${returnFileSize(file.size)}.`;
