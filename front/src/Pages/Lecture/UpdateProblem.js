@@ -102,7 +102,11 @@ const UpdateProblem = ({
           update.result_answer = result_answer;
         }
         if (true) {
-          update.pdf = [...existings, ...data.files];
+          if (data.files === undefined) {
+            update.pdf = [...existings];
+          } else {
+            update.pdf = [...existings, ...data.files];
+          }
         }
         if (blank !== null) {
           update.blank = blank;
