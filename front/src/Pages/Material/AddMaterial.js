@@ -88,7 +88,7 @@ const AddMaterial = ({
         preview = document.querySelector(".preview");
       }
     }, 500);
-  }, []);
+  }, [open]);
   //lecture id 보내기
   const createMaterial = () => {
     //먼저 파일 업로드
