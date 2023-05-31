@@ -162,7 +162,9 @@ const UpdateProblem = ({
           const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
             method: "get",
           });
-          const filename = decodeURIComponent(response.headers.get("pragma"));
+          const filename = decodeURIComponent(
+            decodeURIComponent(response.headers.get("pragma"))
+          );
           console.log({ filename });
           console.log({ response });
           return (
