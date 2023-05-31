@@ -52,10 +52,7 @@ const UpdateTestcase = ({
   const [previewOutput, setPreviewOutput] = React.useState([]);
   const [atInput, setAtInput] = React.useState([]);
   const [atOutput, setAtOutput] = React.useState([]);
-  useEffect(() => {
-    setAtInput([]);
-    setAtOutput([]);
-  }, [open]);
+
   const updateTestcase = async () => {
     //먼저 파일 업로드
     //파일 코드를 받으면 보내기
