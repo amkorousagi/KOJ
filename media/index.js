@@ -123,7 +123,7 @@ app.get("/download/:filename", async (req, res) => {
     "attachment; filename=" + encodeURIComponent(file.name)
   );
   res.setHeader("Content-type", mimetype);
-  res.setHeader("Pragma", file.name);
+  res.setHeader("Pragma", encodeURIComponent(file.name));
   const filestream = fs.createReadStream(filePath);
   filestream.pipe(res);
 });
