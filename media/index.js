@@ -24,7 +24,7 @@ const upload = multer({
       const ex = file.originalname.split(".").pop();
       const f = new File({
         description: req.body[file.originalname],
-        name: req.body[file.originalname], //file.originalname,
+        name: encodeURIComponent(file.originalname), //file.originalname,
         extension: ex ? "." + ex : "",
         mimetype: file.mimetype,
       });
@@ -118,12 +118,9 @@ app.get("/download/:filename", async (req, res) => {
   let filePath = __dirname + "/file/" + req.params.filename + file.extension;
 
   const mimetype = mime.getType(filePath);
-  res.setHeader(
-    "Content-disposition",
-    "attachment; filename=" + encodeURIComponent(file.name)
-  );
+  res.setHeader("Content-disposition", "attachment; filename=" + file.name);
   res.setHeader("Content-type", mimetype);
-  res.setHeader("Pragma", encodeURIComponent(file.name));
+  res.setHeader("Pragma", file.name);
   const filestream = fs.createReadStream(filePath);
   filestream.pipe(res);
 });
