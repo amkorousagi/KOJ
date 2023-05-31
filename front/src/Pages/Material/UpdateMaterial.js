@@ -30,6 +30,7 @@ const UpdateMaterial = ({
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
   const [attachments, setAttachments] = React.useState([]);
+
   useEffect(() => {
     setTitle(currentMaterial.title);
     setBody(currentMaterial.body);

@@ -161,6 +161,10 @@ const UpdateTestcase = ({
       });
   };
   useEffect(() => {
+    setAtInput([]);
+    setAtOutput([]);
+  }, [open]);
+  useEffect(() => {
     if (curTestcase !== undefined && curTestcase !== {}) {
       if (
         curTestcase.input_file !== undefined &&
@@ -223,7 +227,7 @@ const UpdateTestcase = ({
           });
       }
     }
-  }, [curTestcase]);
+  }, [curTestcase, open]);
   useEffect(() => {
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
