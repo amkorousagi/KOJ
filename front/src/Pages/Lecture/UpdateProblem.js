@@ -150,6 +150,9 @@ const UpdateProblem = ({
       setExistings([...curProblem.pdf]);
     }
     console.log({ curProblem });
+  }, [curProblem]);
+
+  useEffect(() => {
     console.log({ existings });
     if (existings !== undefined && Object.keys(existings).length !== 0) {
       console.log({ existings });
@@ -203,12 +206,8 @@ const UpdateProblem = ({
     } else {
       setAt([]);
     }
-  }, [curProblem]);
+  }, [existings]);
   useEffect(() => {
-    console.log({ existings });
-    if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
-      setExistings([...curProblem.pdf]);
-    }
     console.log({ existings });
 
     let fileInput = document.querySelector(".fileInput");
