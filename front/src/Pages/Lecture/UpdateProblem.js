@@ -158,12 +158,13 @@ const UpdateProblem = ({
       console.log({ existings });
 
       Promise.all(
-        curProblem.pdf.map(async (fileId) => {
+        existings.map(async (fileId) => {
           const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
             method: "get",
           });
           const filename = response.headers.get("pragma");
-
+          console.log({ filename });
+          console.log({ response });
           return (
             <ListItem>
               <Button
