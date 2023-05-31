@@ -199,8 +199,12 @@ const UpdateMaterial = ({
           update.body = body;
         }
         //이거는 파일입력시에만 활성화되니까 좋음. 이전형태였으면 오류났음
-        if (data.files) {
-          update.attachments = data.files;
+        if (true) {
+          if (data.files === undefined) {
+            update.attachments = [...existings];
+          } else {
+            update.attachments = [...existings, ...data.files];
+          }
         }
         console.log(data);
         fetch(BASE_URL + "/api/updateMaterial", {
