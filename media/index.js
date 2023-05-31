@@ -118,7 +118,10 @@ app.get("/download/:filename", async (req, res) => {
   let filePath = __dirname + "/file/" + req.params.filename + file.extension;
 
   const mimetype = mime.getType(filePath);
-  res.setHeader("Content-disposition", "attachment; filename=" + file.name);
+  res.setHeader(
+    "Content-disposition",
+    "attachment; filename=" + encodeURIComponent(file.name)
+  );
   res.setHeader("Content-type", mimetype);
   res.setHeader("Pragma", file.name);
   const filestream = fs.createReadStream(filePath);
