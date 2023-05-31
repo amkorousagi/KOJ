@@ -116,9 +116,9 @@ app.get("/string/:filename", async (req, res) => {
 app.get("/download/:filename", async (req, res) => {
   const file = await File.findById(req.params.filename);
   let filePath = __dirname + "/file/" + req.params.filename + file.extension;
-  console.log(file.name);
-  console.log(encodeURIComponent(file.name));
-  console.log(decodeURIComponent(file.name));
+  //console.log(file.name);
+  //console.log(encodeURIComponent(file.name));
+  //console.log(decodeURIComponent(file.name));
   const mimetype = mime.getType(filePath);
   res.setHeader(
     "Content-disposition",

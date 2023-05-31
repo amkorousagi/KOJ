@@ -37,7 +37,9 @@ const MaterialDetail = ({ open, handleClose, currentMaterial }) => {
           const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
             method: "get",
           });
-          const filename = response.headers.get("pragma");
+          const filename = decodeURIComponent(
+            decodeURIComponent(response.headers.get("pragma"))
+          );
 
           return (
             <ListItemButton
