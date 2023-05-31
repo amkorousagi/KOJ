@@ -15,10 +15,18 @@ import {
   FormLabel,
   Typography,
   IconButton,
+  ListItem,
+  List,
 } from "@material-ui/core";
-import { Add, Close, Save } from "@mui/icons-material";
+import {
+  Add,
+  AttachFileOutlined,
+  Close,
+  DeleteOutlined,
+  Save,
+} from "@mui/icons-material";
 import React, { useEffect } from "react";
-import { BASE_URL, FILE_URL } from "../../config.js";
+import { BASE_URL, DOWNLOAD_URL, FILE_URL } from "../../config.js";
 
 const UpdateMaterial = ({
   open,
@@ -30,12 +38,73 @@ const UpdateMaterial = ({
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
   const [attachments, setAttachments] = React.useState([]);
+  const [existings, setExistings] = React.useState([]);
+  const [at, setAt] = React.useState([]);
 
   useEffect(() => {
     setTitle(currentMaterial.title);
     setBody(currentMaterial.body);
     setAttachments(currentMaterial.attachments);
+    setExistings(currentMaterial.attachments);
   }, [currentMaterial]);
+  useEffect(() => {
+    console.log({ existings });
+    if (existings !== undefined && Object.keys(existings).length !== 0) {
+      console.log({ existings });
+
+      Promise.all(
+        existings.map(async (fileId) => {
+          const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
+            method: "get",
+          });
+          const filename = decodeURIComponent(
+            decodeURIComponent(response.headers.get("pragma"))
+          );
+          console.log({ filename });
+          console.log({ response });
+          return (
+            <ListItem>
+              <Button
+                onClick={async () => {
+                  const file = await response.blob();
+                  const downloadUrl = window.URL.createObjectURL(file);
+                  const anchorElement = document.createElement("a");
+                  document.body.appendChild(anchorElement);
+                  anchorElement.download = filename; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
+                  anchorElement.href = downloadUrl; // href에 url 달아주기
+
+                  anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
+                  console.log(anchorElement);
+                  document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
+                  window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
+                }}
+              >
+                {filename}
+              </Button>
+              <AttachFileOutlined />
+              <IconButton
+                onClick={() => {
+                  console.log(existings);
+                  setExistings(
+                    existings.filter((e) => {
+                      return e !== fileId;
+                    })
+                  );
+                  console.log(existings);
+                }}
+              >
+                <DeleteOutlined />
+              </IconButton>
+            </ListItem>
+          );
+        })
+      ).then((values) => {
+        setAt(values);
+      });
+    } else {
+      setAt([]);
+    }
+  }, [existings]);
   useEffect(() => {
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
@@ -223,16 +292,20 @@ const UpdateMaterial = ({
             />
             <br />
             <br />
-            <FormLabel>첨부 파일</FormLabel>
+            <FormLabel>기존 파일</FormLabel>
+            <br />
+            <br />
+            <List className="attachments">{at}</List>
+            <br />
+            <br />
+            <FormLabel>새 파일</FormLabel>
             <br />
             <br />
             <Button variant="outlined" component="label">
               첨부파일 선택
               <input className="fileInput" type="file" hidden multiple />
             </Button>
-            <div className="preview">
-              <p>기존 파일</p>
-            </div>
+            <div className="preview"></div>
             <br />
             <br />
             <Button
