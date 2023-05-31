@@ -143,78 +143,73 @@ const UpdateProblem = ({
         console.log(err);
       });
   };
-  /*
-  useLayoutEffect(() => {
-    let fileInput = document.querySelector(".fileInput");
-    let preview = document.querySelector(".preview");
 
-    const fileTypes = [
-      "application/pdf", // 한컴 pdf 확인
-    ];
-    function validFileType(file) {
-      return fileTypes.includes(file.type);
-    }
-    function returnFileSize(number) {
-      if (number < 1024) {
-        return number + "bytes";
-      } else if (number >= 1024 && number < 1048576) {
-        return (number / 1024).toFixed(1) + "KB";
-      } else if (number >= 1048576) {
-        return (number / 1048576).toFixed(1) + "MB";
-      }
-    }
-    function updateImageDisplay() {
-      while (preview.firstChild) {
-        preview.removeChild(preview.firstChild);
-      }
-
-      const curFiles = fileInput.files;
-      setFiles(curFiles);
-      if (curFiles.length === 0) {
-        const para = document.createElement("p");
-        para.textContent = "선택된 파일 없음";
-        preview.appendChild(para);
-      } else {
-        const list = document.createElement("ol");
-        preview.appendChild(list);
-
-        for (const file of curFiles) {
-          const listItem = document.createElement("li");
-          const para = document.createElement("p");
-          if (validFileType(file)) {
-            para.textContent = `File name ${
-              file.name
-            }, file size ${returnFileSize(file.size)}.`;
-            //const image = document.createElement("img");
-            //image.src = URL.createObjectURL(file);
-
-            //listItem.appendChild(image);
-            listItem.appendChild(para);
-          } else {
-            para.textContent = `File name ${file.name} 가 유효한 파일 형식이 아닙니다. 다시 선택하십시오.`;
-            listItem.appendChild(para);
-          }
-
-          list.appendChild(listItem);
-        }
-      }
-    }
-    fileInput.addEventListener("change", updateImageDisplay);
-  }, []);
-  */
   useEffect(() => {
-    console.log(curProblem);
+    console.log({ curProblem });
     if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
       setExistings([...curProblem.pdf]);
     }
-    console.log(curProblem);
+    console.log({ curProblem });
+    console.log({ existings });
+    if (existings !== undefined && Object.keys(existings).length !== 0) {
+      console.log({ existings });
+
+      Promise.all(
+        curProblem.pdf.map(async (fileId) => {
+          const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
+            method: "get",
+          });
+          const filename = response.headers.get("pragma");
+
+          return (
+            <ListItem>
+              <Button
+                onClick={async () => {
+                  const file = await response.blob();
+                  const downloadUrl = window.URL.createObjectURL(file);
+                  const anchorElement = document.createElement("a");
+                  document.body.appendChild(anchorElement);
+                  anchorElement.download = filename; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
+                  anchorElement.href = downloadUrl; // href에 url 달아주기
+
+                  anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
+                  console.log(anchorElement);
+                  document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
+                  window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
+                }}
+              >
+                {filename}
+              </Button>
+              <AttachFileOutlined />
+              <IconButton
+                onClick={() => {
+                  console.log(existings);
+                  setExistings(
+                    existings.filter((e) => {
+                      return e !== fileId;
+                    })
+                  );
+                  console.log(existings);
+                }}
+              >
+                <DeleteOutlined />
+              </IconButton>
+            </ListItem>
+          );
+        })
+      ).then((values) => {
+        setAt(values);
+      });
+    } else {
+      setAt([]);
+    }
   }, [curProblem]);
   useEffect(() => {
-    console.log(existings);
+    console.log({ existings });
     if (curProblem !== undefined && Object.keys(curProblem).length !== 0) {
       setExistings([...curProblem.pdf]);
     }
-    console.log(existings);
+    console.log({ existings });
 
     let fileInput = document.querySelector(".fileInput");
     let preview = document.querySelector(".preview");
@@ -385,61 +380,7 @@ const UpdateProblem = ({
       return <></>;
     }
   };
-  useEffect(() => {
-    console.log(existings);
-    if (existings !== undefined && Object.keys(existings).length !== 0) {
-      console.log(existings);
 
-      Promise.all(
-        curProblem.pdf.map(async (fileId) => {
-          const response = await fetch(DOWNLOAD_URL + "/" + fileId, {
-            method: "get",
-          });
-          const filename = response.headers.get("pragma");
-
-          return (
-            <ListItem>
-              <Button
-                onClick={async () => {
-                  const file = await response.blob();
-                  const downloadUrl = window.URL.createObjectURL(file);
-                  const anchorElement = document.createElement("a");
-                  document.body.appendChild(anchorElement);
-                  anchorElement.download = filename; // a tag에 download 속성을 줘서 클릭할 때 다운로드가 일어날 수 있도록 하기
-                  anchorElement.href = downloadUrl; // href에 url 달아주기
-
-                  anchorElement.click(); // 코드 상으로 클릭을 해줘서 다운로드를 트리거
-                  console.log(anchorElement);
-                  document.body.removeChild(anchorElement); // cleanup - 쓰임을 다한 a 태그 삭제
-                  window.URL.revokeObjectURL(downloadUrl); // cleanup - 쓰임을 다한 url 객체 삭제
-                }}
-              >
-                {filename}
-              </Button>
-              <AttachFileOutlined />
-              <IconButton
-                onClick={() => {
-                  console.log(existings);
-                  setExistings(
-                    existings.filter((e) => {
-                      return e !== fileId;
-                    })
-                  );
-                  console.log(existings);
-                }}
-              >
-                <DeleteOutlined />
-              </IconButton>
-            </ListItem>
-          );
-        })
-      ).then((values) => {
-        setAt(values);
-      });
-    } else {
-      setAt([]);
-    }
-  }, [existings]);
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
