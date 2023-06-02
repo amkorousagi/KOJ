@@ -8,7 +8,7 @@ KOJ is KNU Online Judge
 
 ## KOJ Architecture
 
-<img src="./img/KOJ.drawio.svg"/>
+<img src="./img/KOJ_architecture.drawio.svg"/>
 
 ## How to start KOJ
 
@@ -26,7 +26,7 @@ docker compose up -d
 
 if window, use docker-compose
 
-## NOTE
+## Before starting KOJ
 
 0. check if installing docker
 
@@ -53,7 +53,7 @@ chown 999:999 mongodb.key
 sudo ufw allow 3011:3015/tcp
 ```
 
-4. check if creating user in mongo
+4. check if creating user and initialize in mongo
 
 ```bash
 docker exec -it <mongo container id> bash
