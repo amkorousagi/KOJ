@@ -49,7 +49,7 @@ KOJ provide online judge system for academic lecture
 
 - /data : backup for restarting docker containers
 
-## KOJ directory structure
+## KOJ Directory Structure
 
 ```
 KOJ
@@ -120,13 +120,13 @@ KOJ
 
 # Getting Started
 
-## KOJ environment
+## KOJ Environment
 
 KOJ does not have to worry any environment or dependency issue.
 
 KOJ is designed to run an independent Docker environement. Docker provides a containerization platform that ensures consistency and eliminates dependency issues across differenet OS.
 
-## Before starting KOJ
+## Before Starting KOJ
 
 0. check if installing docker
 
@@ -181,7 +181,7 @@ db.getMongo().setReadPref('secondary') # execute each mongodb node
 docker compose down # require restarting for applying options
 ```
 
-## How to start KOJ
+## How to Start KOJ
 
 0. check above "Before starting KOJ"
 
