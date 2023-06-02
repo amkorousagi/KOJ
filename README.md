@@ -1,15 +1,17 @@
-# KOJ
+# KOJ Overview
+
+## KOJ Introduction
 
 KOJ is KNU Online Judge
 KOJ provide online judge system for academic lecture
 
-## KOJ goal
+## KOJ Goal
 
 - provide student grade management/analytics platform for professor
 - provide adaptive feedback platform for student
 - provide log data analytics platform for researcher
 
-## KOJ Usecase
+## KOJ Role
 
 <img src="./img/KOJ.drawio.svg"/>
 
@@ -21,9 +23,13 @@ KOJ provide online judge system for academic lecture
 
 <img src="./img/KOJ_ER.drawio.svg"/>
 
-## KOJ Page flow diagram
+## KOJ UI flow diagram
 
-<img src="./img/KOJ_UI_flow.drawio.svg"/>
+**comming soon**
+
+## KOJ Feature diagram
+
+<img src="./img/KOJ.drawio.svg"/>
 
 ## KOJ file controll
 
@@ -41,7 +47,7 @@ KOJ provide online judge system for academic lecture
   - koj_stdin.txt
   - koj_stdout.txt
 
-- /data : backup files for restarting docker containers
+- /data : backup for restarting docker containers
 
 ## KOJ directory structure
 
@@ -108,33 +114,17 @@ KOJ
 └─mongo3
 ```
 
-# API docs
+## Endpoint Reference
 
 [API Documentation](API.md)
 
+# Getting Started
+
 ## KOJ environment
 
-KOJ does not need to care any environment or dependency issue.
+KOJ does not have to worry any environment or dependency issue.
 
 KOJ is designed to run an independent Docker environement. Docker provides a containerization platform that ensures consistency and eliminates dependency issues across differenet OS.
-
-## How to start KOJ
-
-0. check below "Before starting KOJ"
-
-1. build docker images with shell script included docker build and Dockerfile
-
-```bash
-bash build.sh
-```
-
-2. start running containers with docker compose
-
-```bash
-docker compose up -d
-```
-
-if window, use docker-compose
 
 ## Before starting KOJ
 
@@ -191,6 +181,20 @@ db.getMongo().setReadPref('secondary') # execute each mongodb node
 docker compose down # require restarting for applying options
 ```
 
-## directory structure
+## How to start KOJ
 
-## API docs
+0. check above "Before starting KOJ"
+
+1. build docker images with shell script included docker build and Dockerfile
+
+```bash
+bash build.sh
+```
+
+2. start running containers with docker compose
+
+```bash
+docker compose up -d
+```
+
+if window, use docker-compose

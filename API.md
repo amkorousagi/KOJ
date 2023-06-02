@@ -1,8 +1,6 @@
-# Front
+# Endpoint in Back
 
-# Back
-
-## /token
+## #001 /token
 
 ### Description
 
@@ -15,19 +13,23 @@
 ### Parameters
 
 **Query Parameters**
+
 none
 
 **Path Parmeters**
+
 none
 
 **Request Body**
+
 none
 
 **Header**
-|Header Name|Header Value|
-|---|---|
-|Content-Type|application/json|
-|authorization|bearer token|
+
+| Header Name   | Header Value     |
+| ------------- | ---------------- |
+| Content-Type  | application/json |
+| authorization | bearer token     |
 
 ### Response
 
@@ -35,6 +37,6 @@ none
 | -------- | ---------- |
 | data     | User model |
 
-# Media
+# Endpoint in Media
 
-# Koj
+# Endpoint in Koj
