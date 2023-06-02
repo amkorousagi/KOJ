@@ -84,7 +84,7 @@ KOJ
 
 # API docs
 
-[Documentation](API.md)
+[API Documentation](API.md)
 
 ## How to start KOJ
 
