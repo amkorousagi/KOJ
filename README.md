@@ -17,6 +17,32 @@ KOJ provide online judge system for academic lecture
 
 <img src="./img/KOJ_architecture.drawio.svg"/>
 
+## KOJ ER diagram
+
+<img src="./img/KOJ_ER.drawio.svg"/>
+
+## KOJ Page flow diagram
+
+<img src="./img/KOJ_UI_flow.drawio.svg"/>
+
+## KOJ file controll
+
+- /media/file/(file id).(its extention) : original file
+
+- /koj/submission/(submission id) : copied files for submission
+
+  - code : code text file
+  - executable file : if compile language, executatble object file
+
+- /koj/testcase/(testcase id) : copied files for testcase
+
+  - input/(input filename)
+  - output/(output filename)
+  - koj_stdin.txt
+  - koj_stdout.txt
+
+- /data : backup files for restarting docker containers
+
 ## KOJ directory structure
 
 ```
@@ -85,6 +111,12 @@ KOJ
 # API docs
 
 [API Documentation](API.md)
+
+## KOJ environment
+
+KOJ does not need to care any environment or dependency issue.
+
+KOJ is designed to run an independent Docker environement. Docker provides a containerization platform that ensures consistency and eliminates dependency issues across differenet OS.
 
 ## How to start KOJ
 
