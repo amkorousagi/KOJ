@@ -19,19 +19,19 @@ KOJ provide online judge system for academic lecture
 
 <img src="./img/KOJ_architecture.drawio.svg"/>
 
-## KOJ ER diagram
+## KOJ ER Diagram
 
 <img src="./img/KOJ_ER.drawio.svg"/>
 
-## KOJ UI flow diagram
+## KOJ UI Flow Diagram
 
 **comming soon**
 
-## KOJ Feature diagram
+## KOJ Feature Diagram
 
 <img src="./img/KOJ_Feature.drawio.svg"/>
 
-## KOJ file controll
+## KOJ File Controll Structure
 
 - /media/file/(file id).(its extention) : original file
 
