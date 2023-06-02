@@ -29,7 +29,7 @@ KOJ provide online judge system for academic lecture
 
 ## KOJ Feature diagram
 
-<img src="./img/KOJ.drawio.svg"/>
+<img src="./img/KOJ_Feature.drawio.svg"/>
 
 ## KOJ file controll
 
