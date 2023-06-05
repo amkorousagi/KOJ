@@ -90,6 +90,18 @@ ALL (BACK)/token
 | -------- | ----------- |
 | data     | User object |
 
+```json
+{
+  "data": {
+    "id": "myId",
+    "student_id": "20231234",
+    "password": "myPassword",
+    "name": "myName",
+    "user_type": "student"
+  }
+}
+```
+
 ---
 
 # #002 (BACK_IP)/api/login
