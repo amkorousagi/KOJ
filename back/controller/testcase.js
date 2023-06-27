@@ -83,7 +83,7 @@ export async function updateTestcase({
   output_file,
 }) {
   const update = {};
-  if (title) {
+  if (title != null) {
     update.title = title;
   }
   if (score) {
@@ -92,10 +92,10 @@ export async function updateTestcase({
   if (hidden !== undefined) {
     update.hidden = hidden;
   }
-  if (input_text) {
+  if (input_text != null) {
     update.input_text = input_text;
   }
-  if (output_text) {
+  if (output_text != null) {
     update.output_text = output_text;
   }
   if (input_file) {
