@@ -40,12 +40,12 @@ const UpdateTestcase = ({
   nTestcase,
   curTestcase,
 }) => {
-  const [title, setTitle] = React.useState("");
-  const [score, setScore] = React.useState("");
-  const [hidden, setHidden] = React.useState("");
-  const [input_text, setInput_text] = React.useState("");
-  const [arg_text, setArg_text] = React.useState("");
-  const [output_text, setOutput_text] = React.useState("");
+  const [title, setTitle] = React.useState(null);
+  const [score, setScore] = React.useState(null);
+  const [hidden, setHidden] = React.useState(null);
+  const [input_text, setInput_text] = React.useState(null);
+  const [arg_text, setArg_text] = React.useState(null);
+  const [output_text, setOutput_text] = React.useState(null);
   const [files, setFiles] = React.useState([]);
   const [files2, setFiles2] = React.useState([]);
   const [previewInput, setPreviewInput] = React.useState([]);
@@ -111,22 +111,22 @@ const UpdateTestcase = ({
     const update = {
       testcase: curTestcase._id,
     };
-    if (title) {
+    if (title != null) {
       update.title = title;
     }
-    if (score) {
+    if (score != null) {
       update.score = score;
     }
-    if (hidden) {
+    if (hidden != null) {
       update.hidden = hidden === "public" ? false : true;
     }
-    if (input_text) {
+    if (input_text != null) {
       update.input_text = input_text;
     }
-    if (arg_text) {
+    if (arg_text != null) {
       update.arg_text = arg_text;
     }
-    if (output_text) {
+    if (output_text != null) {
       update.output_text = output_text;
     }
     if (input_file) {
