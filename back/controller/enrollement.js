@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Enrollment from "../model/enrollment";
 import Practice from "../model/practice";
+import Lecture from "../model/lecture";
 
 export async function checkOwner({ lecture, owner }) {
   let l;
