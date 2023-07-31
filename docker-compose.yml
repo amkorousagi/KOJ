@@ -21,6 +21,7 @@ services:
     container_name: koj
     restart: always
     depends_on:
+      - haproxy
       - mongo1
       - mongo2
       - mongo3
@@ -41,6 +42,7 @@ services:
     container_name: media
     restart: always
     depends_on:
+      - haproxy
       - mongo1
       - mongo2
       - mongo3
@@ -60,6 +62,7 @@ services:
     container_name: back
     restart: always
     depends_on:
+      - haproxy
       - mongo1
       - mongo2
       - mongo3
@@ -127,6 +130,10 @@ services:
     image: haproxy:2.4
     restart: always
     container_name: haproxy
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
     ports:
       - 3015:27017
     volumes:
