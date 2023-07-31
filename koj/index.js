@@ -593,9 +593,11 @@ app.get(
             result_exit_code,
             result_signal,
           });
+          /*
           if (result_exit_code !== 0) {
             throw new Error("runtime error");
           }
+          */
           /*
         const resultPromise = agent.runFile(
           path.join(
@@ -652,7 +654,15 @@ app.get(
                     output_file.name
                 )
               );
-              if (answer.equals(makedFile)) {
+              console.log({ answer, makedFile });
+              if (
+                answer
+                  .replace(/^\s+|\s+$/gm, "")
+                  .replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
+                makedFile
+                  .replace(/^\s+|\s+$/gm, "")
+                  .replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
+              ) {
                 if (
                   result.stdout
                     .replace(/^\s+|\s+$/gm, "")
