@@ -657,21 +657,20 @@ app.get(
                 { encoding: "utf8" }
               );
               console.log(typeof answer);
-              console.log({ answer, makedFile });
+              console.log({
+                answer: answer.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
+                makedFile: makedFile
+                  .trim()
+                  .replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
+              });
               if (
-                answer
-                  .replace(/^\s+|\s+$/gm, "")
-                  .replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
-                makedFile
-                  .replace(/^\s+|\s+$/gm, "")
-                  .replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
+                answer.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
+                makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
               ) {
                 if (
-                  result.stdout
-                    .replace(/^\s+|\s+$/gm, "")
-                    .replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
+                  result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
                   t.output_text
-                    .replace(/^\s+|\s+$/gm, "")
+                    .trim() //.replace(/^\s+|\s+$/gm, "")
                     .replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
                 ) {
                   success.push(true);
