@@ -636,50 +636,99 @@ app.get(
                 )
               )
             ) {
-              const answer = fs.readFileSync(
-                path.join(
-                  __dirname +
-                    "/testcase/" +
-                    t._id +
-                    "/output/" +
-                    output_file.name
-                ),
-                { encoding: "utf8" }
-              );
-              const makedFile = fs.readFileSync(
-                path.join(
-                  __dirname +
-                    "/submission/" +
-                    req.params.submission_id +
-                    "/" +
-                    output_file.name
-                ),
-                { encoding: "utf8" }
-              );
-              console.log(typeof answer);
-              console.log({
-                answer: answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
-                makedFile: makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
-              });
-              if (
-                answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-                makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n")
-              ) {
+              let answer;
+              let makedFile;
+              if (output_file.extension === ".txt") {
+                answer = fs.readFileSync(
+                  path.join(
+                    __dirname +
+                      "/testcase/" +
+                      t._id +
+                      "/output/" +
+                      output_file.name
+                  ),
+                  { encoding: "utf8" }
+                );
+                makedFile = fs.readFileSync(
+                  path.join(
+                    __dirname +
+                      "/submission/" +
+                      req.params.submission_id +
+                      "/" +
+                      output_file.name
+                  ),
+                  { encoding: "utf8" }
+                );
+
+                console.log(typeof answer);
+                console.log({
+                  answer: answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
+                  makedFile: makedFile
+                    .trim()
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n"),
+                });
                 if (
-                  result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-                  t.output_text
-                    .trim() //.replace(/^\s+|\s+$/gm, "")
-                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                  answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
+                  makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n")
                 ) {
-                  success.push(true);
-                  feedback.push("good");
+                  if (
+                    result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
+                    t.output_text
+                      .trim() //.replace(/^\s+|\s+$/gm, "")
+                      .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                  ) {
+                    success.push(true);
+                    feedback.push("good");
+                  } else {
+                    success.push(false);
+                    feedback.push("bad");
+                  }
                 } else {
                   success.push(false);
                   feedback.push("bad");
                 }
               } else {
-                success.push(false);
-                feedback.push("bad");
+                answer = fs.readFileSync(
+                  path.join(
+                    __dirname +
+                      "/testcase/" +
+                      t._id +
+                      "/output/" +
+                      output_file.name
+                  )
+                );
+                makedFile = fs.readFileSync(
+                  path.join(
+                    __dirname +
+                      "/submission/" +
+                      req.params.submission_id +
+                      "/" +
+                      output_file.name
+                  )
+                );
+
+                console.log(typeof answer);
+                console.log({
+                  answer,
+                  makedFile,
+                });
+                if (answer.equals(makedFile)) {
+                  if (
+                    result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
+                    t.output_text
+                      .trim() //.replace(/^\s+|\s+$/gm, "")
+                      .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                  ) {
+                    success.push(true);
+                    feedback.push("good");
+                  } else {
+                    success.push(false);
+                    feedback.push("bad");
+                  }
+                } else {
+                  success.push(false);
+                  feedback.push("bad");
+                }
               }
             } else {
               success.push(false);
