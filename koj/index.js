@@ -658,20 +658,18 @@ app.get(
               );
               console.log(typeof answer);
               console.log({
-                answer: answer.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
-                makedFile: makedFile
-                  .trim()
-                  .replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
+                answer: answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
+                makedFile: makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
               });
               if (
-                answer.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
-                makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
+                answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
+                makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n")
               ) {
                 if (
-                  result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
+                  result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
                   t.output_text
                     .trim() //.replace(/^\s+|\s+$/gm, "")
-                    .replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                 ) {
                   success.push(true);
                   feedback.push("good");
@@ -689,18 +687,18 @@ app.get(
             }
           } else {
             console.log({
-              r: result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
+              r: result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
             });
             console.log({
-              t: t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\\r\\n"),
+              t: t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
             });
             if (
               result.stdout
                 .replace(/^\s+|\s+$/gm, "")
-                .replace(/(?:\r\n|\r|\n)/g, "\\r\\n") ==
+                .replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
               t.output_text
                 .replace(/^\s+|\s+$/gm, "")
-                .replace(/(?:\r\n|\r|\n)/g, "\\r\\n")
+                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
             ) {
               success.push(true);
               feedback.push("good");
