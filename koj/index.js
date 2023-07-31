@@ -642,7 +642,8 @@ app.get(
                     "/testcase/" +
                     t._id +
                     "/output/" +
-                    output_file.name
+                    output_file.name,
+                  "utf8"
                 )
               );
               const makedFile = fs.readFileSync(
@@ -651,7 +652,8 @@ app.get(
                     "/submission/" +
                     req.params.submission_id +
                     "/" +
-                    output_file.name
+                    output_file.name,
+                  "utf8"
                 )
               );
               console.log({ answer, makedFile });
