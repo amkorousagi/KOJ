@@ -10,7 +10,7 @@ updatePracticeRoute.post(
     const { practice, title, start_date, end_date } = req.body;
 
     // 유효성 검증 , id..
-    await checkOwner({ practice, owner: req.user_id });
+    await checkOwner({ practice, owner: req.user._id });
     return await updatePractice({ practice, title, start_date, end_date });
   })
 );
