@@ -643,7 +643,8 @@ app.get(
                     t._id +
                     "/output/" +
                     output_file.name
-                )
+                ),
+                { encoding: "utf8" }
               );
               const makedFile = fs.readFileSync(
                 path.join(
@@ -652,7 +653,8 @@ app.get(
                     req.params.submission_id +
                     "/" +
                     output_file.name
-                )
+                ),
+                { encoding: "utf8" }
               );
               console.log(typeof answer);
               console.log({ answer, makedFile });
