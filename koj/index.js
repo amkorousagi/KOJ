@@ -622,6 +622,7 @@ app.get(
             exit_code: result_exit_code,
           };
           console.log(result);
+          console.log({ t });
           if (t.output_file.length != 0) {
             const output_file = await File.findById(t.output_file[0]);
             console.log(output_file);
@@ -742,12 +743,8 @@ app.get(
               t: t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
             });
             if (
-              result.stdout
-                .replace(/^\s+|\s+$/gm, "")
-                .replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-              t.output_text
-                .replace(/^\s+|\s+$/gm, "")
-                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+              result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
+              t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n")
             ) {
               success.push(true);
               feedback.push("good");
