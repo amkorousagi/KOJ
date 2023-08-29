@@ -317,7 +317,7 @@ const CreateProblem = ({
               variant="outlined"
               label="문제명"
               style={{ width: "100%" }}
-              defaultValue={title}
+              value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}

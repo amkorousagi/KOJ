@@ -288,7 +288,7 @@ const CreateTestcase = ({
               variant="outlined"
               label="테스트케이스명"
               style={{ width: "100%" }}
-              defaultValue={title}
+              value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}

@@ -33,31 +33,35 @@ const CreatePractice = ({ open, handleClose, lecture_id, nPractice }) => {
   }, [nPractice]);
   //lecture id 보내기
   const createPractice = () => {
-    fetch(BASE_URL + "/api/createPractice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        lecture: lecture_id,
-        title: name,
-        start_date: startDate.format(),
-        end_date: endDate.format(),
-      }),
-    })
-      .then((res) => {
-        return res.json();
+    if (startDate <= endDate) {
+      fetch(BASE_URL + "/api/createPractice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          lecture: lecture_id,
+          title: name,
+          start_date: startDate.format(),
+          end_date: endDate.format(),
+        }),
       })
-      .then((data) => {
-        console.log(data);
-        if (data.success) {
-          handleClose();
-          window.location.reload();
-        } else {
-          console.log("error");
-        }
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            handleClose();
+            window.location.reload();
+          } else {
+            console.log("error");
+          }
+        });
+    } else {
+      alert("종료날짜가 시작날짜보다 이릅니다.");
+    }
   };
 
   return (

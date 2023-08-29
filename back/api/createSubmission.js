@@ -15,7 +15,7 @@ const createSubmissionRoute = express();
 createSubmissionRoute.post(
   "/",
   responseHandler(async (req) => {
-    const { problem, code, language, entry, result, blank } = req.body;
+    const { problem, code, language, entry, result, blank, state } = req.body;
 
     const submission = await initSubmission({
       problem,
@@ -95,10 +95,14 @@ createSubmissionRoute.post(
       problem,
       success: updated_submission.success,
     });
-    return await updateScore({
-      problem_score_id: problem_score._id,
-      score,
-    });
+    if (state === "progress") {
+      return await updateScore({
+        problem_score_id: problem_score._id,
+        score,
+      });
+    } else {
+      return { message: "cannot get score about problem not in progress" };
+    }
   })
 );
 

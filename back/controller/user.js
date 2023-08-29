@@ -47,13 +47,31 @@ export async function insertManyUser(users) {
   let result;
   try {
     result = await User.insertMany(users, { session });
-    await session.commitTransaction();
+    result = await Promise.allSettled(
+      users.map(async (item) => {
+        try {
+          console.log(item);
+          let saved;
+          const existing = await User.findOne({ id: item.id });
+          console.log(existing);
+          if (existing) {
+            console.log("ex us", item.id);
+            saved = existing;
+          } else {
+            const user = new User({ ...item });
+            saved = await user.save({ session });
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      })
+    );
   } catch (err) {
-    //학번 같은 유저 있으면 넣지 말기
-    //console.log(err);
+    console.log(err);
     await session.abortTransaction();
     throw new Error(err.message);
   } finally {
+    await session.commitTransaction();
     await session.endSession();
   }
   return result;

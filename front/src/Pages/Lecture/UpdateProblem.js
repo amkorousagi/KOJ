@@ -289,7 +289,28 @@ const UpdateProblem = ({
     }, 500);
   }, [open]);
   const result_fill = () => {
-    if (curProblem.problem_type === "result") {
+    if (problem_type === null) {
+      if (curProblem.problem_type === "result") {
+        return (
+          <>
+            <TextField
+              variant="outlined"
+              label="결과 정답"
+              style={{ width: "100%" }}
+              defaultValue={curProblem.result_answer}
+              multiline
+              onChange={(e) => {
+                setResult_answer(e.target.value);
+              }}
+            />
+            <br />
+            <br />
+          </>
+        );
+      } else {
+        return <></>;
+      }
+    } else if (problem_type === "result") {
       return (
         <>
           <TextField
@@ -311,7 +332,78 @@ const UpdateProblem = ({
     }
   };
   const blank_fill = () => {
-    if (curProblem.problem_type === "blank") {
+    if (problem_type === null) {
+      if (curProblem.problem_type === "blank") {
+        return (
+          <>
+            <TextField
+              variant="outlined"
+              label="빈칸 문제"
+              helperText="빈칸을 삽입하고 싶은 곳에 #BLANK# 를 적으세요"
+              style={{ width: "100%" }}
+              defaultValue={curProblem.blank}
+              multiline
+              onChange={(e) => {
+                setBlank(e.target.value);
+              }}
+            />
+            <br />
+            <br />
+            <RadioGroup
+              row
+              defaultValue={curProblem.blank_language}
+              onChange={(e) => {
+                e.preventDefault();
+                setBlank_language(e.target.value);
+              }}
+            >
+              <FormLabel
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                빈칸 언어&nbsp;&nbsp;
+              </FormLabel>
+              <FormControlLabel
+                value="c"
+                label="C"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="cpp"
+                label="C++"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="java"
+                label="Java"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="python"
+                label="Python"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="node"
+                label="Javascript"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+            </RadioGroup>
+            <br />
+            <br />
+          </>
+        );
+      } else {
+        return <></>;
+      }
+    } else if (problem_type === "blank") {
       return (
         <>
           <TextField

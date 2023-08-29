@@ -57,7 +57,14 @@ const Entry = ({ language, files, setEntry }) => {
   }
 };
 
-const Submit = ({ open, handleClose, openScore, problem_id, problem }) => {
+const Submit = ({
+  open,
+  handleClose,
+  openScore,
+  problem_id,
+  problem,
+  state,
+}) => {
   const [language, setLanguage] = React.useState("c");
   const [files, setFiles] = React.useState([]);
   const [entry, setEntry] = React.useState("");
@@ -156,6 +163,11 @@ const Submit = ({ open, handleClose, openScore, problem_id, problem }) => {
     }
   };
   const submitFile = async () => {
+    if (state === "before") {
+      alert("진행중인 문제가 아닙니다.");
+      return;
+    }
+
     if (language === "java" && [...files].length > 1) {
       if (entry === "") {
         alert("엔트리 파일을 설정하세요.(main()있는 파일)");
@@ -206,6 +218,7 @@ const Submit = ({ open, handleClose, openScore, problem_id, problem }) => {
         entry,
         result,
         blank,
+        state,
       }),
     })
       .then((res) => {
@@ -232,8 +245,10 @@ const Submit = ({ open, handleClose, openScore, problem_id, problem }) => {
           style={{
             textAlign: "center",
             position: "absolute",
-            top: "50%",
-            left: "50%",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             transform: "translate(-50%, -50%)",
             maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
