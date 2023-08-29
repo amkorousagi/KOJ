@@ -8,8 +8,8 @@ import {
   ListSubheader,
 } from "@material-ui/core";
 import { Add, Delete, Edit, ExpandLess, ExpandMore } from "@mui/icons-material";
-import { BASE_URL } from "../../config";
-import { USER_TYPE } from "../../type";
+import { BASE_URL } from "../../config.js";
+import { USER_TYPE } from "../../type.js";
 
 const SideMenu = ({
   state,
