@@ -83,9 +83,8 @@ const UpdatePractice = ({
           position: "absolute",
           top: "50%",
           left: "50%",
-          transform: "translate(-50%, -50%) scale(2, 2)",
+          transform: "translate(-50%, -50%)",
           "backface-visibility": "hidden",
-          zoom: 0.5,
           maxHeight: "calc(100vh - 200px)",
           overflowY: "auto",
         }}
