@@ -199,7 +199,7 @@ const Score = () => {
   const { submissionId } = useParams();
   const [submission, setSubmission] = React.useState({});
   const [testcases, setTestcases] = React.useState([]);
-
+  console.log(submissionId);
   useEffect(() => {
     fetch(BASE_URL + "/api/readSubmission", {
       method: "POST",
@@ -242,7 +242,7 @@ const Score = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [submissionId]);
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
