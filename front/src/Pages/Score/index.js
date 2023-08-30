@@ -41,7 +41,13 @@ const HighlightDiff = ({ answer, result }) => {
       }
       if (a[j] !== r[j]) {
         lineDifferences.push(
-          <span key={j} style={{ backgroundColor: "yellow", color: "red" }}>
+          <span
+            key={j}
+            style={{
+              backgroundColor: "yellow !important",
+              color: "red !important",
+            }}
+          >
             {r[j]}
           </span>
         );
