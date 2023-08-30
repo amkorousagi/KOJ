@@ -72,7 +72,10 @@ const Lecture = ({ userId, userType }) => {
   const { lectureId, lectureTitle } = useParams();
   //console.log(lectureId);
   const [open, setOpen] = React.useState(
-    JSON.parse(localStorage.getItem("open"))
+    localStorage.getItem("open") === "null" ||
+      localStorage.getItem("open") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("open"))
   );
   const [openModal, setOpenModal] = React.useState(false);
   const [openModal2, setOpenModal2] = React.useState(false);
@@ -91,7 +94,10 @@ const Lecture = ({ userId, userType }) => {
   const [problemData, setProblemData] = React.useState({});
   const [testcaseData, setTestcaseData] = React.useState({});
   const [openTest, setOpenTest] = React.useState(
-    JSON.parse(localStorage.getItem("openTest"))
+    localStorage.getItem("openTest") === "null" ||
+      localStorage.getItem("openTest") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("openTest"))
   );
   const [curTestcase, setCurTestcase] = React.useState({});
   const [curPractice, setCurPractice] = React.useState({});

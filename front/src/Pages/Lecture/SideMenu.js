@@ -386,13 +386,14 @@ const SideMenu = ({
                 })
                 .catch((err) => console.log(err));
 
-              handleClick(index);
+              handleClick(item._id);
             }}
           >
+            <ListItemText primary={item.title} />
             {editAndDelete3}
-            {open[index] ? <ExpandLess /> : <ExpandMore />}
+            {open[item._id] ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={open[index]} timeout="auto" unmountOnExit>
+          <Collapse in={open[item._id]} timeout="auto" unmountOnExit>
             <List
               disablePadding
               subheader={
