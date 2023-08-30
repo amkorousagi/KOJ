@@ -390,7 +390,7 @@ const SideMenu = ({
               handleClick(index);
             }}
           >
-            <ListItemText primary={item.title} />
+            {item && <ListItemText primary={item.title} />}
             {editAndDelete3}
             {open[index] ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
