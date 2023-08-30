@@ -192,7 +192,7 @@ const Menu2 = ({ isLogined, userType }) => {
     if (userType === "student") {
       return (
         <Box justifyContent="flex-end">
-          <a href="/scores">
+          <a href="/dashscores">
             <Typography
               style={{
                 fontFamily: "Nanum Gothic",
@@ -200,7 +200,7 @@ const Menu2 = ({ isLogined, userType }) => {
                 fontSize: "20px",
               }}
             >
-              채점 기록
+              나의 성적
             </Typography>
           </a>
         </Box>

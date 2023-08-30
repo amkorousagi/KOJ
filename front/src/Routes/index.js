@@ -75,6 +75,10 @@ const Router = () => {
                 element={<Lectures userType={userType} userId={userId} />}
               />
               <Route
+                path="/dashscores"
+                element={<DashScores userType={userType} userId={userId} />}
+              />
+              <Route
                 path="/materials"
                 element={<Materials userType={userType} userId={userId} />}
               />
