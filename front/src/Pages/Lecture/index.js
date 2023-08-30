@@ -170,6 +170,65 @@ const Lecture = ({ userId, userType }) => {
         console.log(err);
       });
   }, []);
+  useEffect(() => {
+    const asyncHelper = async () => {
+      let newProblemData = {};
+      let newTestData = {};
+      let testcasePromises = [];
+      const problemPromises = practiceData.map((item) => {
+        return fetch(BASE_URL + "/api/readProblem", {
+          method: "POST",
+          headers: {
+            Authorization: "bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            practice: item._id,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            console.log("problame data ", data);
+            const cc = {};
+            cc[item._id] = data.data;
+
+            testcasePromises = testcasePromises.concat(
+              cc[item._id].map((p) => {
+                return fetch(BASE_URL + "/api/readTestcase", {
+                  method: "POST",
+                  headers: {
+                    Authorization: "bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    problem: p._id,
+                  }),
+                })
+                  .then((res) => {
+                    return res.json();
+                  })
+                  .then((data) => {
+                    //console.log(data);
+                    const dd = {};
+                    dd[p._id] = data.data;
+                    newTestData = { ...newTestData, ...dd };
+                  })
+                  .catch((err) => console.log(err));
+              })
+            );
+            newProblemData = { ...newProblemData, ...cc };
+          })
+          .catch((err) => console.log(err));
+      });
+      await Promise.all(problemPromises);
+      setProblemData(newProblemData);
+      await Promise.all(testcasePromises);
+      setTestcaseData(newTestData);
+    };
+    asyncHelper();
+  }, [practiceData]);
   let add3 = <></>;
   if (userType === "professor") {
     add3 = (
