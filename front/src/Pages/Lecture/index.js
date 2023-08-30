@@ -285,6 +285,8 @@ const Lecture = ({ userId, userType }) => {
                 userId={userId}
                 userType={userType}
                 practiceData={practiceData.filter((item) => {
+                  console.log(item);
+                  console.log(Date.now() < item.start_date);
                   return Date.now() < item.start_date;
                 })}
                 problemData={problemData}
