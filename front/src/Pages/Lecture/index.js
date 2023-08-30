@@ -311,7 +311,11 @@ const Lecture = ({ userId, userType }) => {
           setOpenModal4(false);
         }}
         curPracice={curPractice}
-        nProblem={problemData[curPractice._id].length}
+        nProblem={
+          problemData[curPractice._id] !== undefined
+            ? problemData[curPractice._id].length
+            : 0
+        }
       />
       <CreateTestcase
         open={openModal5}
@@ -320,7 +324,11 @@ const Lecture = ({ userId, userType }) => {
         }}
         problemId={curProblem._id}
         problemTitle={curProblem.title}
-        nTestcase={testcaseData[curProblem._id].length}
+        nTestcase={
+          testcaseData[curProblem._id] !== undefined
+            ? testcaseData[curProblem._id].length
+            : 0
+        }
       />
       <UpdatePractice
         open={openUpdatePractice}
@@ -337,7 +345,11 @@ const Lecture = ({ userId, userType }) => {
           setOpenUpdateProblem(false);
         }}
         curPracice={curPractice}
-        nProblem={problemData[curPractice._id].length}
+        nProblem={
+          problemData[curPractice._id] !== undefined
+            ? problemData[curPractice._id].length
+            : 0
+        }
         curProblem={curProblem}
       />
       <UpdateTestcase
@@ -347,7 +359,11 @@ const Lecture = ({ userId, userType }) => {
         }}
         problemId={curProblem._id}
         problemTitle={curProblem.title}
-        nTestcase={testcaseData[curProblem._id].length}
+        nTestcase={
+          testcaseData[curProblem._id] !== undefined
+            ? testcaseData[curProblem._id].length
+            : 0
+        }
         curTestcase={curTestcase}
       />
       <Grid container>
