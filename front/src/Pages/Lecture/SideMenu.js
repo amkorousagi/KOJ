@@ -359,6 +359,10 @@ const SideMenu = ({
       );
     } else {
       console.log({ item });
+      const itemLog = (item) => {
+        console.log(item);
+        return true;
+      };
       return (
         <>
           <ListItem
@@ -390,7 +394,7 @@ const SideMenu = ({
               handleClick(index);
             }}
           >
-            {item && <ListItemText primary={item.title} />}
+            {itemLog(item) ? <ListItemText primary={item.title} /> : <></>}
             {editAndDelete3}
             {open[index] ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
