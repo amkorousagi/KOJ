@@ -152,7 +152,15 @@ const Score = () => {
                   label="실제 표준출력"
                   multiline
                   fullWidth
-                  defaultValue={item.stdout[i] ? item.stdout[i] : "없음"}
+                  InputProps={{
+                    inputComponent: () => (
+                      <HighlightDiff
+                        answer={testcases[i].output_text}
+                        result={item.stdout[i] ? item.stdout[i] : "없음"}
+                      />
+                    ),
+                  }}
+                  defaultValue={" "}
                 />
                 <br />
                 <br />
@@ -165,14 +173,7 @@ const Score = () => {
                   label="표준오류"
                   multiline
                   fullWidth
-                  InputProps={{
-                    inputComponent: () => (
-                      <HighlightDiff
-                        answer={testcases[i].output_text}
-                        result={item.stderr[i] ? item.stderr[i] : "없음"}
-                      />
-                    ),
-                  }}
+                  defaultValue={item.stderr[i] ? item.stderr[i] : "없음"}
                 />
                 <br />
                 <br />
