@@ -355,7 +355,7 @@ const Submit = ({
                     </Button>
                     {"\n\n"}
                     or Drag&Drop file(s) {"\n\n"}
-                    or Copy&Paste Code
+                    or Copy&Paste Code {"\n\n"}
                     {blank_input()}
                   </p>
                 </div>
