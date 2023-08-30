@@ -166,7 +166,7 @@ const Score = () => {
                   multiline
                   fullWidth
                   InputProps={{
-                    inputComponent: (
+                    inputComponent: () => (
                       <HighlightDiff
                         answer={testcases[i].output_text}
                         result={item.stderr[i] ? item.stderr[i] : "없음"}
