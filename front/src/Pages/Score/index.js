@@ -29,15 +29,26 @@ const HighlightDiff = ({ answer, result }) => {
 
   for (let i = 0; i < resultLine.length; i++) {
     if (answerLine.length <= i) {
-      break;
+      differences.push(<div key={i}>{resultLine[i]}</div>);
+      continue;
     }
     const a = answerLine[i];
     const r = resultLine[i];
-
     const lineDifferences = [];
     for (let j = 0; j < r.length; j++) {
       if (a.length <= j) {
-        break;
+        lineDifferences.push(
+          <span
+            key={j}
+            style={{
+              backgroundColor: "yellow",
+              color: "red",
+            }}
+          >
+            {r[j]}
+          </span>
+        );
+        continue;
       }
       if (a[j] !== r[j]) {
         lineDifferences.push(

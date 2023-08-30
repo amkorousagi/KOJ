@@ -33,36 +33,40 @@ const UpdatePractice = ({
   //lecture id 보내기
 
   const updatePractice = () => {
-    const update = { practice: curPractice._id };
-    if (name) {
-      update.title = name;
-    }
-    if (startDate) {
-      update.start_date = startDate;
-    }
-    if (endDate) {
-      update.end_date = endDate;
-    }
-    fetch(BASE_URL + "/api/updatePractice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify(update),
-    })
-      .then((res) => {
-        return res.json();
+    if (startDate <= endDate) {
+      const update = { practice: curPractice._id };
+      if (name) {
+        update.title = name;
+      }
+      if (startDate) {
+        update.start_date = startDate;
+      }
+      if (endDate) {
+        update.end_date = endDate;
+      }
+      fetch(BASE_URL + "/api/updatePractice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify(update),
       })
-      .then((data) => {
-        console.log(data);
-        if (data.success) {
-          handleClose();
-          window.location.reload();
-        } else {
-          console.log("error");
-        }
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            handleClose();
+            window.location.reload();
+          } else {
+            console.log("error");
+          }
+        });
+    } else {
+      alert("종료날짜가 시작날짜보다 이릅니다.");
+    }
   };
 
   return (
