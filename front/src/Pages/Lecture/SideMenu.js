@@ -358,6 +358,7 @@ const SideMenu = ({
         </>
       );
     } else {
+      console.log({ item });
       return (
         <>
           <ListItem
