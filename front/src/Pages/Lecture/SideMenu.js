@@ -45,51 +45,63 @@ const SideMenu = ({
   setState,
 }) => {
   useEffect(() => {
-    practiceData.map((item) => {
-      fetch(BASE_URL + "/api/readProblem", {
-        method: "POST",
-        headers: {
-          Authorization: "bearer " + localStorage.getItem("token"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          practice: item._id,
-        }),
-      })
-        .then((res) => {
-          return res.json();
+    const asyncHelper = async () => {
+      let newProblemData = {};
+      let newTestData = {};
+      let testcasePromises = [];
+      const problemPromises = practiceData.map((item) => {
+        return fetch(BASE_URL + "/api/readProblem", {
+          method: "POST",
+          headers: {
+            Authorization: "bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            practice: item._id,
+          }),
         })
-        .then((data) => {
-          console.log("problame data ", data);
-          const cc = {};
-          cc[item._id] = data.data;
-          cc[item._id].map((p) => {
-            fetch(BASE_URL + "/api/readTestcase", {
-              method: "POST",
-              headers: {
-                Authorization: "bearer " + localStorage.getItem("token"),
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                problem: p._id,
-              }),
-            })
-              .then((res) => {
-                return res.json();
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            console.log("problame data ", data);
+            const cc = {};
+            cc[item._id] = data.data;
+
+            testcasePromises = testcasePromises.concat(
+              cc[item._id].map((p) => {
+                return fetch(BASE_URL + "/api/readTestcase", {
+                  method: "POST",
+                  headers: {
+                    Authorization: "bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    problem: p._id,
+                  }),
+                })
+                  .then((res) => {
+                    return res.json();
+                  })
+                  .then((data) => {
+                    //console.log(data);
+                    const dd = {};
+                    dd[p._id] = data.data;
+                    newTestData = { ...newTestData, ...dd };
+                  })
+                  .catch((err) => console.log(err));
               })
-              .then((data) => {
-                //console.log(data);
-                const dd = {};
-                dd[p._id] = data.data;
-                setTestcaseData({ ...testcaseData, ...dd });
-              })
-              .catch((err) => console.log(err));
-          });
-          setProblemData({ ...problemData, ...cc });
-        })
-        .catch((err) => console.log(err));
-      console.log({ item });
-    });
+            );
+            newProblemData = { ...newProblemData, ...cc };
+          })
+          .catch((err) => console.log(err));
+      });
+      await Promise.all(problemPromises);
+      setProblemData(newProblemData);
+      await Promise.all(testcasePromises);
+      setTestcaseData(newTestData);
+    };
+    asyncHelper();
   }, [practiceData]);
 
   const practices = practiceData.map((item, index) => {
