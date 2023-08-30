@@ -44,8 +44,8 @@ const HighlightDiff = ({ answer, result }) => {
           <span
             key={j}
             style={{
-              backgroundColor: "yellow !important",
-              color: "red !important",
+              backgroundColor: "yellow",
+              color: "red",
             }}
           >
             {r[j]}
