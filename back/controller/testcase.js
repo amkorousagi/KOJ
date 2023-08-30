@@ -65,7 +65,7 @@ export async function createTestcase({
 
 export async function readTestcase({ problem, user_type }) {
   if (user_type == USER_TYPE.STUDENT) {
-    return await Testcase.find({ problem, hidden: false });
+    return await Testcase.find({ problem }); // hidden 도 볼수 있게 - 프런트에서 막기
   } else {
     return await Testcase.find({ problem });
   }
