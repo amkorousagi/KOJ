@@ -285,9 +285,7 @@ const Lecture = ({ userId, userType }) => {
                 userId={userId}
                 userType={userType}
                 practiceData={practiceData.filter((item) => {
-                  console.log(item);
-                  console.log(Date.now() < item.start_date);
-                  return Date.now() < item.start_date;
+                  return Date.now() < new Date(item.start_date);
                 })}
                 problemData={problemData}
                 testcaseData={testcaseData}
@@ -332,7 +330,8 @@ const Lecture = ({ userId, userType }) => {
                 userType={userType}
                 practiceData={practiceData.filter((item) => {
                   return (
-                    item.start_date <= Date.now() && Date.now() <= item.end_date
+                    new Date(item.start_date) <= Date.now() &&
+                    Date.now() <= new Date(item.end_date)
                   );
                 })}
                 problemData={problemData}
@@ -377,7 +376,7 @@ const Lecture = ({ userId, userType }) => {
                 userId={userId}
                 userType={userType}
                 practiceData={practiceData.filter((item) => {
-                  return item.end_date < Date.now();
+                  return new Date(item.end_date) < Date.now();
                 })}
                 problemData={problemData}
                 testcaseData={testcaseData}
