@@ -63,6 +63,28 @@ const SideMenu = ({
           console.log("problame data ", data);
           const cc = {};
           cc[item._id] = data.data;
+          cc[item._id].map((p) => {
+            fetch(BASE_URL + "/api/readTestcase", {
+              method: "POST",
+              headers: {
+                Authorization: "bearer " + localStorage.getItem("token"),
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                problem: p._id,
+              }),
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((data) => {
+                //console.log(data);
+                const dd = {};
+                dd[p._id] = data.data;
+                setTestcaseData({ ...testcaseData, ...dd });
+              })
+              .catch((err) => console.log(err));
+          });
           setProblemData({ ...problemData, ...cc });
         })
         .catch((err) => console.log(err));
@@ -70,30 +92,6 @@ const SideMenu = ({
     });
   }, [practiceData]);
 
-  useEffect(() => {
-    problemData.map((p) => {
-      fetch(BASE_URL + "/api/readTestcase", {
-        method: "POST",
-        headers: {
-          Authorization: "bearer " + localStorage.getItem("token"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          problem: p._id,
-        }),
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          //console.log(data);
-          const dd = {};
-          dd[p._id] = data.data;
-          setTestcaseData({ ...testcaseData, ...dd });
-        })
-        .catch((err) => console.log(err));
-    });
-  }, [problemData]);
   const practices = practiceData.map((item, index) => {
     console.log(problemData[item._id]);
     let problems;
