@@ -67,6 +67,10 @@ const Router = () => {
           <BrowserRouter>
             <Routes>
               <Route
+                path="/"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
+              <Route
                 path="/lectures"
                 element={<Lectures userType={userType} userId={userId} />}
               />
@@ -105,6 +109,10 @@ const Router = () => {
           <BrowserRouter>
             <Routes>
               <Route
+                path="/"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
+              <Route
                 path="/lectures"
                 element={<Lectures userType={userType} userId={userId} />}
               />
@@ -142,6 +150,10 @@ const Router = () => {
         >
           <BrowserRouter>
             <Routes>
+              <Route
+                path="/"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
               <Route
                 path="/lectures"
                 element={<Lectures userType={userType} userId={userId} />}
@@ -189,6 +201,10 @@ const Router = () => {
         >
           <BrowserRouter>
             <Routes>
+              <Route
+                path="/"
+                element={<Lectures userType={userType} userId={userId} />}
+              />
               <Route
                 path="/lectures"
                 element={<Lectures userType={userType} userId={userId} />}
