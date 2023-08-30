@@ -32,6 +32,7 @@ import {
 } from "@mui/icons-material";
 import { BASE_URL, FILE_URL } from "../../config.js";
 import { maxWidth } from "@mui/system";
+import { USER_TYPE } from "../../type.js";
 
 const Dash = ({ scores, requestPractice }) => {
   console.log(scores);
@@ -438,7 +439,14 @@ const DashScore = ({ userId, userType }) => {
       .then((data) => {
         console.log(data);
         console.log(JSON.stringify(data.data));
-        setScores(data.data);
+        if (userType === USER_TYPE.STUDENT) {
+          data.data.dashscore = data.data.dashscore.filter(
+            (item) => item.student === userId
+          );
+          setScores(data.data);
+        } else {
+          setScores(data.data);
+        }
       })
       .catch((err) => {
         console.log(err);
