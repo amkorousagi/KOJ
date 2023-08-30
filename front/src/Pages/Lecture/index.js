@@ -586,23 +586,27 @@ const Lecture = ({ userId, userType }) => {
                     {curProblem.description}
                     <br />
                     <hr />
-                    {curProblem.pdf.map((item) => {
-                      return (
-                        <object
-                          data={FILE_URL + "/" + item}
-                          type="application/pdf"
-                          width="100%"
-                          style={{ aspectRatio: 2 / 3 }}
-                        >
-                          <embed
-                            src={FILE_URL + "/" + item}
+                    {curProblem.pdf !== undefined ? (
+                      curProblem.pdf.map((item) => {
+                        return (
+                          <object
+                            data={FILE_URL + "/" + item}
                             type="application/pdf"
                             width="100%"
                             style={{ aspectRatio: 2 / 3 }}
-                          />
-                        </object>
-                      );
-                    })}
+                          >
+                            <embed
+                              src={FILE_URL + "/" + item}
+                              type="application/pdf"
+                              width="100%"
+                              style={{ aspectRatio: 2 / 3 }}
+                            />
+                          </object>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
                   </CardContent>
                 </Card>
               </Box>
