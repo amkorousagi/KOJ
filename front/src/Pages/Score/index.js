@@ -53,7 +53,7 @@ const HighlightDiff = ({ answer, result }) => {
     differences.push(<div key={i}>{lineDifferences}</div>);
   }
 
-  return <div>{differences}</div>;
+  return <div style={{ color: "black" }}>{differences}</div>;
 };
 
 const Score = () => {
@@ -145,8 +145,7 @@ const Score = () => {
                 <br />
                 <br />
                 <TextField
-                  InputLabelProps={{ style: { color: "black" } }}
-                  inputProps={{ style: { color: "black" } }}
+                  InputLabelProps={{ style: { color: "black" }, shrink: true }}
                   disabled
                   variant="outlined"
                   label="실제 표준출력"
@@ -160,7 +159,6 @@ const Score = () => {
                       />
                     ),
                   }}
-                  defaultValue={" "}
                 />
                 <br />
                 <br />
