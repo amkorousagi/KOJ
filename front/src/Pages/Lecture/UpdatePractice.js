@@ -18,9 +18,10 @@ import {
 import { Add, Close, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../../config.js";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs/index.js";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/index.js";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker/index.js";
 const UpdatePractice = ({
   open,
   handleClose,
