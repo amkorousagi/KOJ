@@ -90,6 +90,17 @@ const Dash = ({ scores, requestPractice }) => {
                   style={{
                     position: "sticky",
                     top: 0,
+                    left: 0,
+                    backgroundColor: "#F0F0F0",
+                    zIndex: 11,
+                  }}
+                >
+                  학번
+                </TableCell>
+                <TableCell
+                  style={{
+                    position: "sticky",
+                    top: 0,
                     left: 45,
                     backgroundColor: "#F0F0F0",
                     zIndex: 11,
@@ -152,6 +163,22 @@ const Dash = ({ scores, requestPractice }) => {
                       {scores.meta.students.reduce((acc, cur) => {
                         if (cur._id === item.student) {
                           return cur.name;
+                        } else {
+                          return acc + "";
+                        }
+                      }, "")}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        position: "sticky",
+                        background: "white",
+                        left: 0,
+                        zIndex: 10,
+                      }}
+                    >
+                      {scores.meta.students.reduce((acc, cur) => {
+                        if (cur._id === item.student) {
+                          return cur.id;
                         } else {
                           return acc + "";
                         }
@@ -258,6 +285,17 @@ const Dash = ({ scores, requestPractice }) => {
                   style={{
                     position: "sticky",
                     top: 0,
+                    left: 0,
+                    backgroundColor: "#F0F0F0",
+                    zIndex: 11,
+                  }}
+                >
+                  학번
+                </TableCell>
+                <TableCell
+                  style={{
+                    position: "sticky",
+                    top: 0,
                     left: 45,
                     backgroundColor: "#F0F0F0",
                     zIndex: 11,
@@ -339,6 +377,22 @@ const Dash = ({ scores, requestPractice }) => {
                       {scores.meta.students.reduce((acc, cur) => {
                         if (cur._id === item.student) {
                           return cur.name;
+                        } else {
+                          return acc + "";
+                        }
+                      }, "")}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        position: "sticky",
+                        left: 0,
+                        zIndex: 10,
+                        backgroundColor: "white",
+                      }}
+                    >
+                      {scores.meta.students.reduce((acc, cur) => {
+                        if (cur._id === item.student) {
+                          return cur.id;
                         } else {
                           return acc + "";
                         }
