@@ -21,15 +21,18 @@ const SideMenu = ({
   testcaseData,
   openTest,
   open,
+  setCurPractice,
+  setCurProblem,
   setCurTestcase,
+  setCurrentScore,
   setOpenUpdateTestcase,
-  setCurrentProblem,
+
   setOpenUpdateProblem,
   setOpenModal5,
-  setCurrentScore,
+
   setTestcaseData,
   setOpenTest,
-  setCurPractice,
+
   setOpenUpdatePractice,
   setOpenModal4,
   setProblemData,
@@ -59,7 +62,7 @@ const SideMenu = ({
                     onClick={() => {
                       setState(state);
                       setCurPractice(item);
-                      setCurrentProblem(p);
+                      setCurProblem(p);
                       setCurTestcase(t);
                       setOpenUpdateTestcase(true);
                     }}
@@ -102,7 +105,7 @@ const SideMenu = ({
                 onClick={() => {
                   setState(state);
                   setCurPractice(item);
-                  setCurrentProblem(p);
+                  setCurProblem(p);
                   setCurTestcase(t);
                   setOpenUpdateTestcase(true);
                 }}
@@ -127,7 +130,7 @@ const SideMenu = ({
                 onClick={() => {
                   setState(state);
                   setCurPractice(item);
-                  setCurrentProblem(p);
+                  setCurProblem(p);
                   setOpenUpdateProblem(true);
                 }}
               >
@@ -173,7 +176,7 @@ const SideMenu = ({
                   onClick={() => {
                     setState(state);
                     setCurPractice(item);
-                    setCurrentProblem(p);
+                    setCurProblem(p);
                     setOpenModal5(true);
                   }}
                 >
@@ -208,7 +211,7 @@ const SideMenu = ({
               onClick={() => {
                 setState(state);
                 setCurPractice(item);
-                setCurrentProblem(p);
+                setCurProblem(p);
                 fetch(BASE_URL + "/api/readProblemScore", {
                   method: "POST",
                   headers: {

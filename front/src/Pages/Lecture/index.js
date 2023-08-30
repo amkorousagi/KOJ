@@ -509,7 +509,10 @@ const Lecture = ({ userId, userType }) => {
               >
                 <Card variant="outlined">
                   <CardContent>
-                    <LectureDate curPracice={curPractice} />
+                    <LectureDate
+                      pracStart={curPractice.start_date}
+                      pracEnd={curPractice.end_date}
+                    />
                   </CardContent>
                 </Card>
                 &nbsp;&nbsp;
