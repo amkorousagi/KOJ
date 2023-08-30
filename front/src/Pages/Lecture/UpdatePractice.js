@@ -18,6 +18,8 @@ import {
 import { Add, Close, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../../config.js";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const UpdatePractice = ({
   open,
@@ -112,28 +114,39 @@ const UpdatePractice = ({
             />
             <br />
             <br />
-            <TextField
-              key={curPractice.start_date}
-              variant="outlined"
-              label="시작 시간"
-              style={{ width: "100%" }}
-              defaultValue={curPractice.start_date}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-              }}
-            />
-            <br />
-            <br />
-            <TextField
-              key={curPractice.end_date}
-              variant="outlined"
-              label="종료 시간"
-              style={{ width: "100%" }}
-              defaultValue={curPractice.end_date}
-              onChange={(e) => {
-                setEndDate(e.target.value);
-              }}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                label="시작 날짜"
+                value={startDate}
+                onChange={(newValue) => {
+                  setStartDate(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                    {...params}
+                  />
+                )}
+              />
+
+              <br />
+              <br />
+              <DateTimePicker
+                label="종료 날짜"
+                value={endDate}
+                onChange={(newValue) => {
+                  setEndDate(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    variant="outlined"
+                    style={{ width: "100%" }}
+                    {...params}
+                  />
+                )}
+              />
+            </LocalizationProvider>
             <br />
             <br />
             <Button
