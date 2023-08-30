@@ -310,7 +310,8 @@ const Lecture = ({ userId, userType }) => {
         handleClose={() => {
           setOpenModal4(false);
         }}
-        curPracice={curPractice}
+        practiceId={curPractice._id}
+        practiceTitle={curPractice.title}
         nProblem={
           problemData[curPractice._id] !== undefined
             ? problemData[curPractice._id].length
@@ -344,7 +345,8 @@ const Lecture = ({ userId, userType }) => {
         handleClose={() => {
           setOpenUpdateProblem(false);
         }}
-        curPracice={curPractice}
+        practiceId={curPractice._id}
+        practiceTitle={curPractice.title}
         nProblem={
           problemData[curPractice._id] !== undefined
             ? problemData[curPractice._id].length

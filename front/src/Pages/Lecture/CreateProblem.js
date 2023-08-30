@@ -24,7 +24,13 @@ import { Add, Close, Label, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
 
-const CreateProblem = ({ open, handleClose, curPractice, nProblem }) => {
+const CreateProblem = ({
+  open,
+  handleClose,
+  practiceId,
+  practiceTitle,
+  nProblem,
+}) => {
   console.log(nProblem);
   const [title, setTitle] = React.useState("문제 " + (nProblem + 1));
   const [problem_type, setProblem_type] = React.useState("solve");
@@ -72,7 +78,7 @@ const CreateProblem = ({ open, handleClose, curPractice, nProblem }) => {
             Authorization: "bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify({
-            practice: curPractice._id,
+            practice: practiceId,
             problem_type,
             title,
             description,
@@ -302,7 +308,7 @@ const CreateProblem = ({ open, handleClose, curPractice, nProblem }) => {
           <br />
           <Typography style={{ fontFamily: "Nanum Gothic" }}>
             <div style={{ textAlign: "center", fontWeight: 700, marginTop: 5 }}>
-              {curPractice.title} 문제 생성
+              {practiceTitle} 문제 생성
             </div>
           </Typography>
           <hr />
