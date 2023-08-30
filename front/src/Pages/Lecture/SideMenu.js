@@ -44,7 +44,7 @@ const SideMenu = ({
   setState,
 }) => {
   const practices = practiceData.map((item, index) => {
-    //console.log(item);
+    console.log({ item });
 
     console.log(problemData[item._id]);
     let problems;
