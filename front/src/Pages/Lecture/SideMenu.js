@@ -44,6 +44,26 @@ const SideMenu = ({
   setState,
 }) => {
   const practices = practiceData.map((item, index) => {
+    fetch(BASE_URL + "/api/readProblem", {
+      method: "POST",
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        practice: item._id,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log("problame data ", data);
+        const cc = {};
+        cc[item._id] = data.data;
+        setProblemData({ ...problemData, ...cc });
+      })
+      .catch((err) => console.log(err));
     console.log({ item });
 
     console.log(problemData[item._id]);
@@ -52,6 +72,26 @@ const SideMenu = ({
       problems = <></>;
     } else {
       problems = problemData[item._id].map((p) => {
+        fetch(BASE_URL + "/api/readTestcase", {
+          method: "POST",
+          headers: {
+            Authorization: "bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            problem: p._id,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            //console.log(data);
+            const dd = {};
+            dd[p._id] = data.data;
+            setTestcaseData({ ...testcaseData, ...dd });
+          })
+          .catch((err) => console.log(err));
         //console.log(p);
         let testcases;
         if (testcaseData[p._id] === undefined) {
@@ -238,26 +278,6 @@ const SideMenu = ({
                   .catch((err) => {
                     console.log(err);
                   });
-                fetch(BASE_URL + "/api/readTestcase", {
-                  method: "POST",
-                  headers: {
-                    Authorization: "bearer " + localStorage.getItem("token"),
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    problem: p._id,
-                  }),
-                })
-                  .then((res) => {
-                    return res.json();
-                  })
-                  .then((data) => {
-                    //console.log(data);
-                    const dd = {};
-                    dd[p._id] = data.data;
-                    setTestcaseData({ ...testcaseData, ...dd });
-                  })
-                  .catch((err) => console.log(err));
 
                 const o = { ...openTest };
                 if (o[p._id] === undefined) {
@@ -365,26 +385,6 @@ const SideMenu = ({
             onClick={() => {
               setPracStart(item.start_date);
               setPracEnd(item.end_date);
-              fetch(BASE_URL + "/api/readProblem", {
-                method: "POST",
-                headers: {
-                  Authorization: "bearer " + localStorage.getItem("token"),
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  practice: item._id,
-                }),
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((data) => {
-                  console.log("problame data ", data);
-                  const cc = {};
-                  cc[item._id] = data.data;
-                  setProblemData({ ...problemData, ...cc });
-                })
-                .catch((err) => console.log(err));
 
               handleClick(item._id);
             }}
