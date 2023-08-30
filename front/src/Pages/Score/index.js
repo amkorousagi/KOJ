@@ -21,6 +21,41 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config.js";
 
+const HighlightDiff = ({ answer, result }) => {
+  const differences = [];
+
+  const answerLine = answer.split("\n");
+  const resultLine = result.split("\n");
+
+  for (let i = 0; i < resultLine.length; i++) {
+    if (answerLine.length <= i) {
+      break;
+    }
+    const a = answerLine[i];
+    const r = resultLine[i];
+
+    const lineDifferences = [];
+    for (let j = 0; j < r.length; j++) {
+      if (a.length <= j) {
+        break;
+      }
+      if (a[j] !== r[j]) {
+        lineDifferences.push(
+          <span key={j} style={{ backgroundColor: "yellow", color: "red" }}>
+            {r[j]}
+          </span>
+        );
+      } else {
+        lineDifferences.push(r[j]);
+      }
+    }
+
+    differences.push(<div key={i}>{lineDifferences}</div>);
+  }
+
+  return <div>{differences}</div>;
+};
+
 const Score = () => {
   const { submissionId } = useParams();
   const [submission, setSubmission] = React.useState({});
@@ -72,7 +107,7 @@ const Score = () => {
 
   const content = () => {
     const item = submission;
-    let c = <>테스트케이스가 존재하지 않습니다.</>;
+    let c = <>채점된 테스트케이스가 존재하지 않습니다.</>;
     console.log(item);
     console.log(testcases);
     if (item.success !== undefined && testcases.length !== 0) {
@@ -130,7 +165,14 @@ const Score = () => {
                   label="표준오류"
                   multiline
                   fullWidth
-                  defaultValue={item.stderr[i] ? item.stderr[i] : "없음"}
+                  InputProps={{
+                    inputComponent: (
+                      <HighlightDiff
+                        answer={testcases[i].output_text}
+                        result={item.stderr[i] ? item.stderr[i] : "없음"}
+                      />
+                    ),
+                  }}
                 />
                 <br />
                 <br />
