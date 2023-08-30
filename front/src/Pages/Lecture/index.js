@@ -280,18 +280,18 @@ const Lecture = ({ userId, userType }) => {
             <StudentExcel lectureId={lectureId} />
             <List
               subheader={
-                <ListSubheader>{`${lectureTitle}(시작전)`}</ListSubheader>
+                <ListSubheader>{`${lectureTitle}(종료후)`}</ListSubheader>
               }
               style={{
                 width: "100%",
               }}
             >
               <SideMenu
-                state={"before"}
+                state={"after"}
                 userId={userId}
                 userType={userType}
                 practiceData={practiceData.filter((item) => {
-                  return Date.now() < new Date(item.start_date);
+                  return new Date(item.end_date) < Date.now();
                 })}
                 problemData={problemData}
                 testcaseData={testcaseData}
@@ -322,6 +322,7 @@ const Lecture = ({ userId, userType }) => {
               />
             </List>
             <hr />
+
             <List
               subheader={
                 <ListSubheader>{`${lectureTitle}(진행중)`}</ListSubheader>
@@ -371,18 +372,18 @@ const Lecture = ({ userId, userType }) => {
             <hr />
             <List
               subheader={
-                <ListSubheader>{`${lectureTitle}(종료후)`}</ListSubheader>
+                <ListSubheader>{`${lectureTitle}(시작전)`}</ListSubheader>
               }
               style={{
                 width: "100%",
               }}
             >
               <SideMenu
-                state={"after"}
+                state={"before"}
                 userId={userId}
                 userType={userType}
                 practiceData={practiceData.filter((item) => {
-                  return new Date(item.end_date) < Date.now();
+                  return Date.now() < new Date(item.start_date);
                 })}
                 problemData={problemData}
                 testcaseData={testcaseData}
