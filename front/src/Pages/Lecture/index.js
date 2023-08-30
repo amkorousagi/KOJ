@@ -123,7 +123,12 @@ const Lecture = ({ userId, userType }) => {
       : JSON.parse(localStorage.getItem("currentScore"))
   );
 
-  const [state, setState] = React.useState("before");
+  const [state, setState] = React.useState(
+    localStorage.getItem("state") === "null" ||
+      localStorage.getItem("state") === null
+      ? "before"
+      : JSON.parse(localStorage.getItem("state"))
+  );
   const openOnlyModal2 = () => {
     setOpenModal(false);
     setOpenModal2(true);
@@ -155,11 +160,41 @@ const Lecture = ({ userId, userType }) => {
   }, [curPractice]);
   useEffect(() => {
     localStorage.setItem("curProblem", JSON.stringify(curProblem));
+    fetch(BASE_URL + "/api/readProblemScore", {
+      method: "POST",
+      headers: {
+        Authorization: "bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        problem: curProblem._id,
+        student: userId,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        //console.log("readProblemScore ", data);
+        if (data.data === undefined || data.data.length === 0) {
+          setCurrentScore(0);
+        } else {
+          setCurrentScore(data.data[0].score);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [curProblem]);
   useEffect(() => {
     localStorage.setItem("curTestcase", JSON.stringify(curTestcase));
   }, [curTestcase]);
-
+  useEffect(() => {
+    localStorage.setItem("currentScore", JSON.stringify(currentScore));
+  }, [currentScore]);
+  useEffect(() => {
+    localStorage.setItem("state", JSON.stringify(state));
+  }, [state]);
   // lecutre 없는 practice 만들어짐
   // 제대로 read하는지 확인
   useEffect(() => {

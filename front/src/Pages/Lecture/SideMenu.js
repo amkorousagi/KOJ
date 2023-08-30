@@ -59,7 +59,8 @@ const SideMenu = ({
               editAndDelete = (
                 <>
                   <IconButton
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setState(state);
                       setCurPractice(item);
                       setCurProblem(p);
@@ -71,26 +72,28 @@ const SideMenu = ({
                   </IconButton>
                   <IconButton
                     onClick={() => {
-                      fetch(BASE_URL + "/api/deleteTestcase", {
-                        method: "POST",
-                        headers: {
-                          Authorization:
-                            "bearer " + localStorage.getItem("token"),
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                          testcase: t._id,
-                        }),
-                      })
-                        .then((res) => {
-                          return res.json();
+                      if (window.confirm("정말로 삭제하시겠습니까?")) {
+                        fetch(BASE_URL + "/api/deleteTestcase", {
+                          method: "POST",
+                          headers: {
+                            Authorization:
+                              "bearer " + localStorage.getItem("token"),
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({
+                            testcase: t._id,
+                          }),
                         })
-                        .then((data) => {
-                          window.location.reload();
-                        })
-                        .catch((err) => {
-                          console.log(err);
-                        });
+                          .then((res) => {
+                            return res.json();
+                          })
+                          .then((data) => {
+                            window.location.reload();
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
+                      }
                     }}
                   >
                     <Delete />
@@ -102,7 +105,8 @@ const SideMenu = ({
             tc = (
               <Button
                 style={{ width: "100%", textAlign: "left" }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setState(state);
                   setCurPractice(item);
                   setCurProblem(p);
@@ -127,7 +131,8 @@ const SideMenu = ({
           editAndDelete2 = (
             <>
               <IconButton
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setState(state);
                   setCurPractice(item);
                   setCurProblem(p);
@@ -138,25 +143,28 @@ const SideMenu = ({
               </IconButton>
               <IconButton
                 onClick={() => {
-                  fetch(BASE_URL + "/api/deleteProblem", {
-                    method: "POST",
-                    headers: {
-                      Authorization: "bearer " + localStorage.getItem("token"),
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      problem: p._id,
-                    }),
-                  })
-                    .then((res) => {
-                      return res.json();
+                  if (window.confirm("정말로 삭제하시겠습니까?")) {
+                    fetch(BASE_URL + "/api/deleteProblem", {
+                      method: "POST",
+                      headers: {
+                        Authorization:
+                          "bearer " + localStorage.getItem("token"),
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        problem: p._id,
+                      }),
                     })
-                    .then((data) => {
-                      window.location.reload();
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
+                      .then((res) => {
+                        return res.json();
+                      })
+                      .then((data) => {
+                        window.location.reload();
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }
                 }}
               >
                 <Delete />
@@ -173,7 +181,8 @@ const SideMenu = ({
                   variant="contained"
                   style={{ margin: "5px" }}
                   startIcon={<Add />}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setState(state);
                     setCurPractice(item);
                     setCurProblem(p);
@@ -271,7 +280,8 @@ const SideMenu = ({
       editAndDelete3 = (
         <>
           <IconButton
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setState(state);
               setCurPractice(item);
               setOpenUpdatePractice(true);
@@ -281,25 +291,27 @@ const SideMenu = ({
           </IconButton>
           <IconButton
             onClick={() => {
-              fetch(BASE_URL + "/api/deletePractice", {
-                method: "POST",
-                headers: {
-                  Authorization: "bearer " + localStorage.getItem("token"),
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  practice: item._id,
-                }),
-              })
-                .then((res) => {
-                  return res.json();
+              if (window.confirm("정말로 삭제하시겠습니까?")) {
+                fetch(BASE_URL + "/api/deletePractice", {
+                  method: "POST",
+                  headers: {
+                    Authorization: "bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    practice: item._id,
+                  }),
                 })
-                .then((data) => {
-                  window.location.reload();
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+                  .then((res) => {
+                    return res.json();
+                  })
+                  .then((data) => {
+                    window.location.reload();
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
             }}
           >
             <Delete />
@@ -316,7 +328,8 @@ const SideMenu = ({
               variant="contained"
               style={{ margin: "5px" }}
               startIcon={<Add />}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setState(state);
                 setCurPractice(item);
                 setOpenModal4(true);
@@ -344,7 +357,6 @@ const SideMenu = ({
             onClick={() => {
               setState(state);
               setCurPractice(item);
-
               handleClick(item._id);
             }}
           >
