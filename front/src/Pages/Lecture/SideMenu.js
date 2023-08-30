@@ -25,21 +25,13 @@ const SideMenu = ({
   setOpenUpdateTestcase,
   setCurrentProblem,
   setOpenUpdateProblem,
-  setNTestcase,
   setOpenModal5,
-  setCurrentPDF,
-  setCurPracTitle,
-  setMaxScore,
   setCurrentScore,
   setTestcaseData,
   setOpenTest,
   setCurPractice,
   setOpenUpdatePractice,
-  setNProblem,
-  setCurPracId,
   setOpenModal4,
-  setPracStart,
-  setPracEnd,
   setProblemData,
   handleClick,
   setState,
@@ -65,6 +57,9 @@ const SideMenu = ({
                 <>
                   <IconButton
                     onClick={() => {
+                      setState(state);
+                      setCurPractice(item);
+                      setCurrentProblem(p);
                       setCurTestcase(t);
                       setOpenUpdateTestcase(true);
                     }}
@@ -105,6 +100,9 @@ const SideMenu = ({
               <Button
                 style={{ width: "100%", textAlign: "left" }}
                 onClick={() => {
+                  setState(state);
+                  setCurPractice(item);
+                  setCurrentProblem(p);
                   setCurTestcase(t);
                   setOpenUpdateTestcase(true);
                 }}
@@ -128,6 +126,7 @@ const SideMenu = ({
               <IconButton
                 onClick={() => {
                   setState(state);
+                  setCurPractice(item);
                   setCurrentProblem(p);
                   setOpenUpdateProblem(true);
                 }}
@@ -172,8 +171,8 @@ const SideMenu = ({
                   style={{ margin: "5px" }}
                   startIcon={<Add />}
                   onClick={() => {
-                    setNTestcase(testcases.length);
                     setState(state);
+                    setCurPractice(item);
                     setCurrentProblem(p);
                     setOpenModal5(true);
                   }}
@@ -208,10 +207,8 @@ const SideMenu = ({
               button
               onClick={() => {
                 setState(state);
+                setCurPractice(item);
                 setCurrentProblem(p);
-                setCurrentPDF(p.pdf);
-                setCurPracTitle(item.title);
-                setMaxScore(p.score);
                 fetch(BASE_URL + "/api/readProblemScore", {
                   method: "POST",
                   headers: {
@@ -272,6 +269,7 @@ const SideMenu = ({
         <>
           <IconButton
             onClick={() => {
+              setState(state);
               setCurPractice(item);
               setOpenUpdatePractice(true);
             }}
@@ -316,9 +314,8 @@ const SideMenu = ({
               style={{ margin: "5px" }}
               startIcon={<Add />}
               onClick={() => {
-                setNProblem(problems.length);
-                setCurPracId(item._id);
-                setCurPracTitle(item.title);
+                setState(state);
+                setCurPractice(item);
                 setOpenModal4(true);
               }}
             >
@@ -342,8 +339,8 @@ const SideMenu = ({
           <ListItem
             button
             onClick={() => {
-              setPracStart(item.start_date);
-              setPracEnd(item.end_date);
+              setState(state);
+              setCurPractice(item);
 
               handleClick(item._id);
             }}

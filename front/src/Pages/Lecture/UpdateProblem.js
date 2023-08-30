@@ -37,8 +37,7 @@ import { BASE_URL, DOWNLOAD_URL, FILE_URL } from "../../config.js";
 const UpdateProblem = ({
   open,
   handleClose,
-  practiceId,
-  practiceTitle,
+  curPractice,
   nProblem,
   curProblem,
 }) => {

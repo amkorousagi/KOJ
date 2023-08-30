@@ -77,6 +77,13 @@ const Lecture = ({ userId, userType }) => {
       ? {}
       : JSON.parse(localStorage.getItem("open"))
   );
+  const [openTest, setOpenTest] = React.useState(
+    localStorage.getItem("openTest") === "null" ||
+      localStorage.getItem("openTest") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("openTest"))
+  );
+
   const [openModal, setOpenModal] = React.useState(false);
   const [openModal2, setOpenModal2] = React.useState(false);
   const [openModal3, setOpenModal3] = React.useState(false);
@@ -86,28 +93,36 @@ const Lecture = ({ userId, userType }) => {
   const [openUpdatePractice, setOpenUpdatePractice] = React.useState(false);
   const [openUpdateProblem, setOpenUpdateProblem] = React.useState(false);
   const [openUpdateTestcase, setOpenUpdateTestcase] = React.useState(false);
+
   const [practiceData, setPracticeData] = React.useState([]);
-  const [currentProblem, setCurrentProblem] = React.useState({});
-  const [currentPDF, setCurrentPDF] = React.useState([]);
-  const [curPracId, setCurPracId] = React.useState("");
-  const [curPracTitle, setCurPracTitle] = React.useState("");
   const [problemData, setProblemData] = React.useState({});
   const [testcaseData, setTestcaseData] = React.useState({});
-  const [openTest, setOpenTest] = React.useState(
-    localStorage.getItem("openTest") === "null" ||
-      localStorage.getItem("openTest") === null
+
+  const [curPractice, setCurPractice] = React.useState(
+    localStorage.getItem("curPractice") === "null" ||
+      localStorage.getItem("curPractice") === null
       ? {}
-      : JSON.parse(localStorage.getItem("openTest"))
+      : JSON.parse(localStorage.getItem("curPractice"))
   );
-  const [curTestcase, setCurTestcase] = React.useState({});
-  const [curPractice, setCurPractice] = React.useState({});
-  const [nProblem, setNProblem] = React.useState(0);
-  const [nPractice, setNPractice] = React.useState(0);
-  const [nTestcase, setNTestcase] = React.useState(0);
-  const [pracStart, setPracStart] = React.useState("");
-  const [pracEnd, setPracEnd] = React.useState("");
-  const [currentScore, setCurrentScore] = React.useState(0);
-  const [maxScore, setMaxScore] = React.useState(0);
+  const [curProblem, setCurProblem] = React.useState(
+    localStorage.getItem("curProblem") === "null" ||
+      localStorage.getItem("curProblem") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("curProblem"))
+  );
+  const [curTestcase, setCurTestcase] = React.useState(
+    localStorage.getItem("curTestcase") === "null" ||
+      localStorage.getItem("curTestcase") === null
+      ? {}
+      : JSON.parse(localStorage.getItem("curTestcase"))
+  );
+  const [currentScore, setCurrentScore] = React.useState(
+    localStorage.getItem("currentScore") === "null" ||
+      localStorage.getItem("currentScore") === null
+      ? 0
+      : JSON.parse(localStorage.getItem("currentScore"))
+  );
+
   const [state, setState] = React.useState("before");
   const openOnlyModal2 = () => {
     setOpenModal(false);
@@ -117,8 +132,8 @@ const Lecture = ({ userId, userType }) => {
     setOpenModal2(!openModal2);
   };
   const handleOpenModal = () => {
-    if (currentProblem._id === undefined || currentProblem === {}) {
-      console.log(currentProblem);
+    if (curProblem._id === undefined || curProblem === {}) {
+      console.log(curProblem);
       alert("문제를 선택하세요.");
       return;
     }
@@ -135,6 +150,16 @@ const Lecture = ({ userId, userType }) => {
   useEffect(() => {
     localStorage.setItem("openTest", JSON.stringify(openTest));
   }, [openTest]);
+  useEffect(() => {
+    localStorage.setItem("curPractice", JSON.stringify(curPractice));
+  }, [curPractice]);
+  useEffect(() => {
+    localStorage.setItem("curProblem", JSON.stringify(curProblem));
+  }, [curProblem]);
+  useEffect(() => {
+    localStorage.setItem("curTestcase", JSON.stringify(curTestcase));
+  }, [curTestcase]);
+
   // lecutre 없는 practice 만들어짐
   // 제대로 read하는지 확인
   useEffect(() => {
@@ -164,7 +189,6 @@ const Lecture = ({ userId, userType }) => {
             return 0;
           })
         );
-        setNPractice(data.data.length);
       })
       .catch((err) => {
         console.log(err);
@@ -261,8 +285,8 @@ const Lecture = ({ userId, userType }) => {
         open={openModal}
         openScore={openOnlyModal2}
         handleClose={handleOpenModal}
-        problem_id={currentProblem._id}
-        problem={currentProblem}
+        problem_id={curProblem._id}
+        problem={curProblem}
         state={state}
       />
       <Score
@@ -271,7 +295,7 @@ const Lecture = ({ userId, userType }) => {
           setOpenModal2(false);
         }}
         userId={userId}
-        problemId={currentProblem._id}
+        problemId={curProblem._id}
       />
       <CreatePractice
         open={openModal3}
@@ -279,25 +303,24 @@ const Lecture = ({ userId, userType }) => {
           setOpenModal3(false);
         }}
         lecture_id={lectureId}
-        nPractice={nPractice}
+        nPractice={practiceData.length}
       />
       <CreateProblem
         open={openModal4}
         handleClose={() => {
           setOpenModal4(false);
         }}
-        practiceId={curPracId}
-        practiceTitle={curPracTitle}
-        nProblem={nProblem}
+        curPracice={curPractice}
+        nProblem={problemData[curPractice._id].length}
       />
       <CreateTestcase
         open={openModal5}
         handleClose={() => {
           setOpenModal5(false);
         }}
-        problemId={currentProblem._id}
-        problemTitle={currentProblem.title}
-        nTestcase={nTestcase}
+        problemId={curProblem._id}
+        problemTitle={curProblem.title}
+        nTestcase={testcaseData[curProblem._id].length}
       />
       <UpdatePractice
         open={openUpdatePractice}
@@ -305,7 +328,7 @@ const Lecture = ({ userId, userType }) => {
           setOpenUpdatePractice(false);
         }}
         lecture_id={lectureId}
-        nPractice={nPractice}
+        nPractice={practiceData.length}
         curPractice={curPractice}
       />
       <UpdateProblem
@@ -313,19 +336,18 @@ const Lecture = ({ userId, userType }) => {
         handleClose={() => {
           setOpenUpdateProblem(false);
         }}
-        practiceId={curPracId}
-        practiceTitle={curPracTitle}
-        nProblem={nProblem}
-        curProblem={currentProblem}
+        curPracice={curPractice}
+        nProblem={problemData[curPractice._id].length}
+        curProblem={curProblem}
       />
       <UpdateTestcase
         open={openUpdateTestcase}
         handleClose={() => {
           setOpenUpdateTestcase(false);
         }}
-        problemId={currentProblem._id}
-        problemTitle={currentProblem.title}
-        nTestcase={nTestcase}
+        problemId={curProblem._id}
+        problemTitle={curProblem.title}
+        nTestcase={testcaseData[curProblem._id].length}
         curTestcase={curTestcase}
       />
       <Grid container>
@@ -358,23 +380,15 @@ const Lecture = ({ userId, userType }) => {
                 open={open}
                 setCurTestcase={setCurTestcase}
                 setOpenUpdateTestcase={setOpenUpdateTestcase}
-                setCurrentProblem={setCurrentProblem}
+                setCurProblem={setCurProblem}
                 setOpenUpdateProblem={setOpenUpdateProblem}
-                setNTestcase={setNTestcase}
                 setOpenModal5={setOpenModal5}
-                setCurrentPDF={setCurrentPDF}
-                setCurPracTitle={setCurPracTitle}
-                setMaxScore={setMaxScore}
                 setCurrentScore={setCurrentScore}
                 setTestcaseData={setTestcaseData}
                 setOpenTest={setOpenTest}
                 setCurPractice={setCurPractice}
                 setOpenUpdatePractice={setOpenUpdatePractice}
-                setNProblem={setNProblem}
-                setCurPracId={setCurPracId}
                 setOpenModal4={setOpenModal4}
-                setPracStart={setPracStart}
-                setPracEnd={setPracEnd}
                 setProblemData={setProblemData}
                 handleClick={handleClick}
                 setState={setState}
@@ -406,23 +420,15 @@ const Lecture = ({ userId, userType }) => {
                 open={open}
                 setCurTestcase={setCurTestcase}
                 setOpenUpdateTestcase={setOpenUpdateTestcase}
-                setCurrentProblem={setCurrentProblem}
+                setCurProblem={setCurProblem}
                 setOpenUpdateProblem={setOpenUpdateProblem}
-                setNTestcase={setNTestcase}
                 setOpenModal5={setOpenModal5}
-                setCurrentPDF={setCurrentPDF}
-                setCurPracTitle={setCurPracTitle}
-                setMaxScore={setMaxScore}
                 setCurrentScore={setCurrentScore}
                 setTestcaseData={setTestcaseData}
                 setOpenTest={setOpenTest}
                 setCurPractice={setCurPractice}
                 setOpenUpdatePractice={setOpenUpdatePractice}
-                setNProblem={setNProblem}
-                setCurPracId={setCurPracId}
                 setOpenModal4={setOpenModal4}
-                setPracStart={setPracStart}
-                setPracEnd={setPracEnd}
                 setProblemData={setProblemData}
                 handleClick={handleClick}
                 setState={setState}
@@ -450,23 +456,15 @@ const Lecture = ({ userId, userType }) => {
                 open={open}
                 setCurTestcase={setCurTestcase}
                 setOpenUpdateTestcase={setOpenUpdateTestcase}
-                setCurrentProblem={setCurrentProblem}
+                setCurProblem={setCurProblem}
                 setOpenUpdateProblem={setOpenUpdateProblem}
-                setNTestcase={setNTestcase}
                 setOpenModal5={setOpenModal5}
-                setCurrentPDF={setCurrentPDF}
-                setCurPracTitle={setCurPracTitle}
-                setMaxScore={setMaxScore}
                 setCurrentScore={setCurrentScore}
                 setTestcaseData={setTestcaseData}
                 setOpenTest={setOpenTest}
                 setCurPractice={setCurPractice}
                 setOpenUpdatePractice={setOpenUpdatePractice}
-                setNProblem={setNProblem}
-                setCurPracId={setCurPracId}
                 setOpenModal4={setOpenModal4}
-                setPracStart={setPracStart}
-                setPracEnd={setPracEnd}
                 setProblemData={setProblemData}
                 handleClick={handleClick}
                 setState={setState}
@@ -493,7 +491,7 @@ const Lecture = ({ userId, userType }) => {
               >
                 <Card variant="outlined">
                   <CardContent>
-                    <LectureDate pracStart={pracStart} pracEnd={pracEnd} />
+                    <LectureDate curPracice={curPractice} />
                   </CardContent>
                 </Card>
                 &nbsp;&nbsp;
@@ -506,7 +504,7 @@ const Lecture = ({ userId, userType }) => {
                   <CardContent>
                     <div style={{ marginTop: 5 }}>
                       문제 점수
-                      <hr /> {currentScore}/{maxScore}
+                      <hr /> {currentScore}/{curProblem.score}
                     </div>
                   </CardContent>
                 </Card>
@@ -565,14 +563,14 @@ const Lecture = ({ userId, userType }) => {
                   <CardContent>
                     <Typography style={{ fontFamily: "Nanum Gothic" }}>
                       <div style={{ textAlign: "center", fontWeight: 700 }}>
-                        {currentProblem.title} of {curPracTitle}
+                        {curProblem.title} of {curPractice.title}
                       </div>
                       <hr />
                     </Typography>
-                    {currentProblem.description}
+                    {curProblem.description}
                     <br />
                     <hr />
-                    {currentPDF.map((item) => {
+                    {curProblem.pdf.map((item) => {
                       return (
                         <object
                           data={FILE_URL + "/" + item}
