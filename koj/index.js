@@ -250,8 +250,15 @@ app.get(
         return res.json({});
       }
 
-      if (problem.problem_type === "blank") {
-        language = problem.blank_language;
+      if (
+        problem.problem_type === "blank" ||
+        (problem.problem_type === "solve" &&
+          code_names.length === 0 &&
+          submission.blank.length !== 0)
+      ) {
+        if (problem.problem_type === "blank") {
+          language = problem.blank_language;
+        }
         //replace blank to string
         let code_string = problem.blank;
         for (const b of submission.blank) {

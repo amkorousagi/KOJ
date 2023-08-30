@@ -39,7 +39,7 @@ const CreateProblem = ({
   const [files, setFiles] = React.useState([]);
   const [result, setResult] = React.useState("");
   const [execution_time_limit, setExecution_time_limit] = React.useState(1000);
-  const [blank, setBlank] = React.useState("");
+  const [blank, setBlank] = React.useState("#BLANK#");
   const [blank_language, setBlank_language] = React.useState("c");
   useEffect(() => {
     console.log(nProblem);

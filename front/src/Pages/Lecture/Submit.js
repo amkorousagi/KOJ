@@ -82,6 +82,7 @@ const Submit = ({
               size="small"
               multiline
               style={{ display: "inline" }}
+              maxRows={1}
               onChange={(e) => {
                 const o = [...blank];
                 o[index] = e.target.value;
@@ -353,7 +354,9 @@ const Submit = ({
                       />
                     </Button>
                     {"\n\n"}
-                    or Drag&Drop file(s)
+                    or Drag&Drop file(s) {"\n\n"}
+                    or Copy&Paste Code
+                    {blank_input()}
                   </p>
                 </div>
                 <br />
