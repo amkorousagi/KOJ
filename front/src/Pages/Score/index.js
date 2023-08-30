@@ -150,10 +150,6 @@ const Score = () => {
                 <br />
                 <br />
                 <br />
-                <HighlightDiff
-                  answer={testcases[i].output_text}
-                  result={item.stdout[i] ? item.stdout[i] : "없음"}
-                />
                 <TextField
                   InputLabelProps={{ style: { color: "black" }, shrink: true }}
                   disabled
