@@ -34,7 +34,7 @@ const CreateProblem = ({
   console.log(nProblem);
   const [title, setTitle] = React.useState("문제 " + (nProblem + 1));
   const [problem_type, setProblem_type] = React.useState("solve");
-  const [score, setScore] = React.useState(10);
+  const [score, setScore] = React.useState(0);
   const [description, setDescription] = React.useState("");
   const [files, setFiles] = React.useState([]);
   const [result, setResult] = React.useState("");
@@ -382,7 +382,8 @@ const CreateProblem = ({
             <br />
             <TextField
               variant="outlined"
-              label="점수"
+              disabled
+              label="점수(테스트케이스 점수의 합)"
               style={{ width: "100%" }}
               defaultValue={score}
               onChange={(e) => {

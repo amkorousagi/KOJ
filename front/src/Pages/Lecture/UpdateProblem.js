@@ -577,7 +577,7 @@ const UpdateProblem = ({
             <TextField
               key={curProblem.score}
               variant="outlined"
-              label="점수"
+              label="점수(테스트케이스 점수의 합)"
               style={{ width: "100%" }}
               defaultValue={curProblem.score}
               onChange={(e) => {

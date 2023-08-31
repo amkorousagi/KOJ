@@ -60,7 +60,15 @@ export async function createTestcase({
     input_file,
     output_file,
   });
-  return await testcase.save();
+  const result = await testcase.save();
+
+  await ProblemfindByIdAndUpdate(
+    problem,
+    { $inc: { score: score } },
+    { new: true }
+  );
+
+  return result;
 }
 
 export async function readTestcase({ problem, user_type }) {
@@ -82,6 +90,7 @@ export async function updateTestcase({
   input_file,
   output_file,
 }) {
+  const priorTestcase = await Testcase.findById(testcase);
   const update = {};
   if (title != null) {
     update.title = title;
@@ -107,7 +116,17 @@ export async function updateTestcase({
   if (arg_text) {
     update.arg_text = arg_text;
   }
-  return await Testcase.findByIdAndUpdate(testcase, update, { new: true });
+  const result = await Testcase.findByIdAndUpdate(testcase, update, {
+    new: true,
+  });
+
+  await Problem.findByIdAndUpdate(
+    priorTestcase.problem,
+    { $inc: { score: -priorTestcase.score + score } },
+    { new: true }
+  );
+
+  return result;
 }
 
 export async function deleteTestcase({ testcase }) {
