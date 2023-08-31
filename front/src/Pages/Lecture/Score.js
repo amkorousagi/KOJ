@@ -209,7 +209,7 @@ const Score = ({ open, handleClose, problemId, userId }) => {
               transform: "translate(-50%, -50%)",
               backfaceVisibility: "hidden",
               maxHeight: "80vh",
-              overflowY: "auto",
+              //overflowY: "auto",
             }}
           >
             <IconButton
@@ -224,7 +224,7 @@ const Score = ({ open, handleClose, problemId, userId }) => {
             </Typography>
             <hr />
             <CardContent>
-              <TableContainer component={Paper} style={{ maxHeight: "80vh" }}>
+              <TableContainer component={Paper} style={{ maxHeight: "60vh" }}>
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
