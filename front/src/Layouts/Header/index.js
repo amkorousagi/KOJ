@@ -13,6 +13,13 @@ const Profile = ({
   const logout = (e) => {
     setIsLogined(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("open");
+    localStorage.removeItem("openTest");
+    localStorage.removeItem("curPractice");
+    localStorage.removeItem("curProblem");
+    localStorage.removeItem("curTestcase");
+    localStorage.removeItem("currentScore");
+    localStorage.removeItem("state");
     window.open("/", "_self");
   };
 

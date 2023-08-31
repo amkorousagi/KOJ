@@ -16,10 +16,8 @@ import {
 import { BASE_URL } from "../../config.js";
 
 const Login = () => {
-  const [id, setId] = React.useState(localStorage.getItem("id"));
-  const [password, setPassword] = React.useState(
-    localStorage.getItem("password")
-  );
+  const [id, setId] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [errorText, setErrorText] = React.useState("");
 
   const onLogin = async (e) => {
@@ -41,19 +39,17 @@ const Login = () => {
         console.log(data);
         if (data.success) {
           localStorage.setItem("token", data.data.token);
-          localStorage.setItem("id", id);
-          localStorage.setItem("password", password);
-          localStorage.setItem("user_type", data.data.user_type);
-          localStorage.setItem("isLogined", "true");
+          //localStorage.setItem("id", id);
+          //localStorage.setItem("password", password);
           window.open("/lectures", "_self");
         } else {
-          localStorage.setItem("isLogined", "false");
+          //localStorage.setItem("isLogined", "false");
           setErrorText(data.error);
         }
       })
       .catch((err) => {
         console.log(err);
-        localStorage.setItem("isLogined", "false");
+        //localStorage.setItem("isLogined", "false");
       });
   };
 
