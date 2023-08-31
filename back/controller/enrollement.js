@@ -13,6 +13,8 @@ export async function checkOwner({ lecture, owner }) {
     if (l.lecturer.toString() === owner.toString()) {
       return;
     } else {
+      console.log(l.lecturer);
+      console.log(owner);
       throw new Error("not owner");
     }
   } else {
