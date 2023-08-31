@@ -31,6 +31,8 @@ export async function checkOwner({ problem, testcase, owner }) {
     if (l.lecturer.toString() === owner.toString()) {
       return;
     } else {
+      console.log(l.lecturer);
+      console.log(owner);
       throw new Error("not owner");
     }
   } else {
