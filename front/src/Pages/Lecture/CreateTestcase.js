@@ -253,23 +253,24 @@ const CreateTestcase = ({
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        style={{
-          textAlign: "left",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%) scale(2, 2)",
-          backfaceVisibility: "hidden",
-          zoom: 0.5,
-          maxHeight: "calc(100vh - 200px)",
-          overflowY: "auto",
-        }}
-      >
-        <Card variant="outlined" style={{ minWidth: "500px" }}>
+      <Box>
+        <Card
+          variant="outlined"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            textAlign: "left",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            minWidth: "500px",
+            transform: "translate(-50%, -50%)",
+            backfaceVisibility: "hidden",
+            maxHeight: "80vh",
+            overflowY: "auto",
+          }}
+        >
           <IconButton
             style={{ position: "absolute", top: 0, right: 0 }}
             onClick={handleClose}

@@ -21,20 +21,24 @@ const Testcase = ({ open, handleClose, testcase }) => {
   } else {
     return (
       <Modal open={open} onClose={handleClose}>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          style={{
-            textAlign: "center",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            padding: "5px",
-          }}
-        >
-          <Card variant="outlined">
+        <Box>
+          <Card
+            variant="outlined"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            style={{
+              textAlign: "left",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              minWidth: "500px",
+              transform: "translate(-50%, -50%)",
+              backfaceVisibility: "hidden",
+              maxHeight: "80vh",
+              overflowY: "auto",
+            }}
+          >
             <IconButton
               style={{ position: "absolute", top: 0, right: 0 }}
               onClick={handleClose}
