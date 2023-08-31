@@ -64,7 +64,7 @@ export async function createTestcase({
   });
   const result = await testcase.save();
 
-  await ProblemfindByIdAndUpdate(
+  await Problem.findByIdAndUpdate(
     problem,
     { $inc: { score: score } },
     { new: true }
