@@ -486,10 +486,9 @@ const UpdateProblem = ({
           position: "absolute",
           top: "50%",
           left: "50%",
-          transform: "translate(-50%, -50%) scale(2, 2)",
+          transform: "translate(-50%, -50%)",
           backfaceVisibility: "hidden",
-          zoom: 0.5,
-          maxHeight: "calc(100vh - 200px)",
+          maxHeight: "80vh",
           overflowY: "auto",
         }}
       >

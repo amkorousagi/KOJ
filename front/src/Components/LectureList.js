@@ -134,8 +134,13 @@ const UpdateModal = ({ open, onClose, cur }) => {
   }, [cur]);
 
   const updateLecture = () => {
+    if (title === "") {
+      alert("강의 이름을 입력하세요!");
+      return;
+    }
     if (year === "" || season === "") {
       alert("년도 또는 학기를 선택하세요!");
+      return;
     }
     const update = {};
     if (cur._id) {
