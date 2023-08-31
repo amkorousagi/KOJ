@@ -110,7 +110,7 @@ const StudentSubmit = ({ open, handleClose, lectureId }) => {
             console.log(typeof r["이름"]);
             users.push({
               id: r["학번"],
-              password: (r["학번"] + "").substring(r["학번"].length - 4),
+              password: (r["학번"] + "").substring((r["학번"] + "").length - 4),
               name: r["이름"],
               user_type:
                 r["유형"] === "학생" ||
