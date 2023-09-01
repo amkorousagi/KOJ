@@ -7,7 +7,7 @@ RUN npm install -g npm@latest
 
 RUN git clone https://github.com/amkorousagi/KOJ
 WORKDIR /KOJ/media
-RUN npm install --force
+RUN npm install
 RUN npm install -g nodemon
 
 EXPOSE 3013

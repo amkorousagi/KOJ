@@ -3,7 +3,6 @@ import multer from "multer";
 import mongoose from "mongoose";
 import cors from "cors";
 import fetch from "node-fetch";
-//import { c, cpp, node, python, java } from "compile-run";
 import fs from "fs";
 import path from "path";
 import { copyFile } from "cp-file";

@@ -72,7 +72,7 @@ services:
     ports:
       - "3012:3012"
     working_dir: /KOJ/back
-    command: sh -c "npm run dev"
+    command: sh -c "nodemon index.js"
     tty: true
     networks:
       - mongo-net
