@@ -46,7 +46,7 @@ export async function insertManyUser(users) {
   session.startTransaction();
   let result;
   try {
-    result = await User.insertMany(users, { session });
+    // result = await User.insertMany(users, { session });
     result = await Promise.allSettled(
       users.map(async (item) => {
         try {
