@@ -11,7 +11,7 @@ services:
     working_dir: /KOJ/front
     volumes:
       - ./front/src/config.js:/KOJ/front/src/config.js
-    command: sh -c "npm start"
+    command: sh -c "npm run start"
     tty: true
     networks:
       - mongo-net
@@ -72,7 +72,7 @@ services:
     ports:
       - "3012:3012"
     working_dir: /KOJ/back
-    command: sh -c "nodemon index.js"
+    command: sh -c "npm run dev"
     tty: true
     networks:
       - mongo-net
