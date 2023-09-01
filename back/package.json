@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
+  "extensions": [
+    "",
+    ".js"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development && nodemon --experimental-specifier-resolution=node --delay 2000ms index.js",
