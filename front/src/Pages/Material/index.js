@@ -19,7 +19,6 @@ import {
   Delete,
   Edit,
 } from "@mui/icons-material";
-import { ListItemButton } from "@mui/material";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import LectureList from "../../Components/LectureList.js";
@@ -93,7 +92,8 @@ const Material = ({ userType, userId }) => {
   if (userType === "professor" || userType === "admin") {
     add = (
       <>
-        <ListItemButton
+        <ListItem
+          button
           onClick={() => {
             setOpenAdd(true);
           }}
@@ -102,7 +102,7 @@ const Material = ({ userType, userId }) => {
             <Add />
           </ListItemIcon>
           <ListItemText primary="새로운 강의자료 추가" />
-        </ListItemButton>
+        </ListItem>
         <hr />
       </>
     );

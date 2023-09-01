@@ -19,7 +19,6 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Add, AttachFileOutlined, Close, Save } from "@mui/icons-material";
-import { ListItemButton } from "@mui/material";
 import React, { useEffect } from "react";
 import { BASE_URL, DOWNLOAD_URL, FILE_URL } from "../../config.js";
 
@@ -42,7 +41,8 @@ const MaterialDetail = ({ open, handleClose, currentMaterial }) => {
           );
 
           return (
-            <ListItemButton
+            <ListItem
+              button
               onClick={async () => {
                 const file = await response.blob();
                 const downloadUrl = window.URL.createObjectURL(file);
@@ -59,7 +59,7 @@ const MaterialDetail = ({ open, handleClose, currentMaterial }) => {
             >
               {filename}
               <AttachFileOutlined />
-            </ListItemButton>
+            </ListItem>
           );
         })
       ).then((values) => {

@@ -19,6 +19,7 @@ import {
   Radio,
   IconButton,
   List,
+  ListItem,
 } from "@material-ui/core";
 import {
   Add,
@@ -28,7 +29,6 @@ import {
   Label,
   Save,
 } from "@mui/icons-material";
-import { ListItemButton } from "@mui/material";
 import React, { useEffect } from "react";
 import { BASE_URL, DOWNLOAD_URL, FILE_URL, MEDIA_URL } from "../../config.js";
 
@@ -356,7 +356,8 @@ const UpdateTestcase = ({
           const filename = response.headers.get("pragma");
 
           return (
-            <ListItemButton
+            <ListItem
+              button
               onClick={async () => {
                 const file = await response.blob();
                 const downloadUrl = window.URL.createObjectURL(file);
@@ -373,10 +374,10 @@ const UpdateTestcase = ({
             >
               {index + 1}. {item.description}
               <AttachFileOutlined />
-            </ListItemButton>
+            </ListItem>
           );
         } else {
-          return <ListItemButton></ListItemButton>;
+          return <ListItem button></ListItem>;
         }
       })
     ).then((values) => {
@@ -393,7 +394,8 @@ const UpdateTestcase = ({
           const filename = response.headers.get("pragma");
 
           return (
-            <ListItemButton
+            <ListItem
+              button
               onClick={async () => {
                 const file = await response.blob();
                 const downloadUrl = window.URL.createObjectURL(file);
@@ -410,10 +412,10 @@ const UpdateTestcase = ({
             >
               {index + 1}. {item.description}
               <AttachFileOutlined />
-            </ListItemButton>
+            </ListItem>
           );
         } else {
-          return <ListItemButton></ListItemButton>;
+          return <ListItem button></ListItem>;
         }
       })
     ).then((values) => {
