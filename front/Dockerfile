@@ -7,7 +7,7 @@ RUN npm install -g npm@latest
 
 RUN git clone https://github.com/amkorousagi/KOJ
 WORKDIR /KOJ/front
-RUN npm install
+RUN npm install --lagacy-peer-deps
 
 ENV PORT=3011
 ENV HOST=0.0.0.0
