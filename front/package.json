@@ -21,6 +21,7 @@
     "react-scripts": "^5.0.1",
     "xlsx": "^0.18.5"
   },
+  "jsx": "react-jsx",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
