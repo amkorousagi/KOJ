@@ -121,10 +121,10 @@ export async function updateTestcase({
   const result = await Testcase.findByIdAndUpdate(testcase, update, {
     new: true,
   });
-  console.log(-priorTestcase.score + score);
+  console.log(-priorTestcase.score + Number(score));
   await Problem.findByIdAndUpdate(
     priorTestcase.problem,
-    { $inc: { score: -priorTestcase.score + score } },
+    { $inc: { score: -priorTestcase.score + Number(score) } },
     { new: true }
   );
 
