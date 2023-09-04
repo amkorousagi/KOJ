@@ -169,7 +169,7 @@ const Code = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              {"제출한 빈칸"}
+              <Tab label={"제출한 빈칸"} {...allyProps(0)} />
             </Tabs>
 
             <TabPanel
