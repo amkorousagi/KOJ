@@ -12,5 +12,9 @@ WORKDIR /KOJ/koj
 RUN npm install
 RUN npm install -g nodemon
 
+RUN ulimit -v 256000
+RUN ulimit -t 2
+RUN ulimit -u 0
+
 EXPOSE 3014
 CMD nodemon start

@@ -119,7 +119,7 @@ const UpdatePractice = ({
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
                 label="시작 날짜"
-                value={curPractice.start_date}
+                value={dayjs(curPractice.start_date)}
                 onChange={(newValue) => {
                   setStartDate(newValue);
                 }}
@@ -136,7 +136,7 @@ const UpdatePractice = ({
               <br />
               <DateTimePicker
                 label="종료 날짜"
-                value={curPractice.end_date}
+                value={dayjs(curPractice.end_date)}
                 onChange={(newValue) => {
                   setEndDate(newValue);
                 }}
