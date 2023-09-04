@@ -100,6 +100,7 @@ const Code = () => {
             return res.json();
           })
           .then((d) => {
+            console.log(d);
             let code_string = d.data.blank;
             for (const b of data.data.blank) {
               code_string = code_string.replace("#BLANK#", b);
