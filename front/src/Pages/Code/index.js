@@ -120,7 +120,7 @@ const Code = () => {
     setValue(newValue);
   };
   console.log(codes);
-  if (codes) {
+  if (codes.length !== 0) {
     return (
       <Box
         display="flex"
