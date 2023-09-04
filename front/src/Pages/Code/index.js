@@ -89,7 +89,7 @@ const Code = () => {
         await fetch(BASE_URL + "/api/readProblem", {
           method: "POST",
           headers: {
-            Authorization: "bearer" + localStorage.getItem("token"),
+            Authorization: "bearer " + localStorage.getItem("token"),
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
