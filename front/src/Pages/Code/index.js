@@ -51,6 +51,7 @@ const Code = () => {
   const [value, setValue] = React.useState(0);
   const [submission, setSubmission] = React.useState({});
   const [codes, setCodes] = React.useState([]);
+  const [blank, setBlank] = React.useState("");
 
   useEffect(() => {
     fetch(BASE_URL + "/api/readSubmission", {
@@ -84,6 +85,30 @@ const Code = () => {
             });
         }
         setCodes(c);
+
+        await fetch(BASE_URL + "/api/readProblem", {
+          method: "POST",
+          headers: {
+            Authorization: "bearer" + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            problem: data.data.problem,
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((d) => {
+            let code_string = d.data.blank;
+            for (const b of data.data.blank) {
+              code_string = code_string.replace("#BLANK#", b);
+            }
+            setBlank(code_string);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -145,17 +170,14 @@ const Code = () => {
             >
               {"제출한 빈칸"}
             </Tabs>
-            {codes.map((item, index) => {
-              return (
-                <TabPanel
-                  value={value}
-                  index={index}
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
-                  {item.data}
-                </TabPanel>
-              );
-            })}
+
+            <TabPanel
+              value={value}
+              index={0}
+              style={{ whiteSpace: "pre-wrap" }}
+            >
+              {blank}
+            </TabPanel>
           </CardContent>
         </Card>
       </Box>

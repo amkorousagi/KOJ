@@ -132,5 +132,12 @@ export async function updateTestcase({
 }
 
 export async function deleteTestcase({ testcase }) {
-  return await Testcase.findByIdAndDelete(testcase);
+  const deletedTestcase = await Testcase.findById(testcase);
+  const result = await Testcase.findByIdAndDelete(testcase);
+  await Problem.findById(
+    deletedTestcase.problem,
+    { $inc: { score: -deletedTestcase.score } },
+    { new: true }
+  );
+  return result;
 }

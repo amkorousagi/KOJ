@@ -575,6 +575,7 @@ const UpdateProblem = ({
             <br />
             <TextField
               key={curProblem.score}
+              disabled
               variant="outlined"
               label="점수(테스트케이스 점수의 합)"
               style={{ width: "100%" }}

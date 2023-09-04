@@ -55,7 +55,10 @@ export async function createProblem({
   return await problem.save();
 }
 
-export async function readProblem({ practice }) {
+export async function readProblem({ practice, problem }) {
+  if (problem) {
+    return await Problem.findById(problem);
+  }
   return await Problem.find({ practice });
 }
 

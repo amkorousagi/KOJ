@@ -34,7 +34,7 @@ import { BASE_URL, FILE_URL } from "../../config.js";
 import { maxWidth } from "@mui/system";
 import { USER_TYPE } from "../../type.js";
 
-const Dash = ({ scores, requestPractice }) => {
+const Dash = ({ scores, requestPractice, userType }) => {
   console.log(scores);
   // code, 결과, 재채점
   if (Object.keys(scores).length !== 0) {
@@ -217,11 +217,12 @@ const Dash = ({ scores, requestPractice }) => {
           >
             <Button
               variant="outlined"
+              disabled={userType !== USER_TYPE.PROFESSOR}
               onClick={() => {
                 if (
                   window.confirm(
                     item.title +
-                      "문제를 재채점 하시겠습니까.(문제를 푼 모든 학생을 재채점 합니다.)"
+                      "문제를 재채점 하시겠습니까?(문제를 푼 모든 학생을 재채점 합니다.)"
                   )
                 ) {
                   fetch(BASE_URL + "/api/resubmission", {
@@ -317,37 +318,44 @@ const Dash = ({ scores, requestPractice }) => {
                       <TableCell>
                         <Button
                           variant="outlined"
+                          disabled={userType !== USER_TYPE.PROFESSOR}
                           onClick={() => {
-                            fetch(BASE_URL + "/api/resubmission", {
-                              method: "POST",
-                              headers: {
-                                Authorization:
-                                  "bearer " + localStorage.getItem("token"),
-                                "Content-Type": "application/json",
-                              },
-                              body: JSON.stringify({
-                                submissions: [
-                                  item.submission.filter(
-                                    (it) => it.problem === p._id
-                                  )[0].submission,
-                                ],
-                              }),
-                            })
-                              .then((res) => {
-                                return res.json();
+                            if (
+                              window.confirm(
+                                item[p._id] + "문제를 재채점 하시겠습니까?"
+                              )
+                            ) {
+                              fetch(BASE_URL + "/api/resubmission", {
+                                method: "POST",
+                                headers: {
+                                  Authorization:
+                                    "bearer " + localStorage.getItem("token"),
+                                  "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                  submissions: [
+                                    item.submission.filter(
+                                      (it) => it.problem === p._id
+                                    )[0].submission,
+                                  ],
+                                }),
                               })
-                              .then((data) => {
-                                console.log(data);
-                                alert(
-                                  "재채점이 완료되었습니다." +
-                                    item[p._id] +
-                                    "=>" +
-                                    data.data.score
-                                );
-                              })
-                              .catch((err) => {
-                                console.log(err);
-                              });
+                                .then((res) => {
+                                  return res.json();
+                                })
+                                .then((data) => {
+                                  console.log(data);
+                                  alert(
+                                    "재채점이 완료되었습니다." +
+                                      item[p._id] +
+                                      "=>" +
+                                      data.data.score
+                                  );
+                                })
+                                .catch((err) => {
+                                  console.log(err);
+                                });
+                            }
                           }}
                         >
                           {item[p._id]}
@@ -615,7 +623,11 @@ const DashScore = ({ userId, userType }) => {
                       </div>
                       <hr />
                     </Typography>{" "}
-                    <Dash scores={scores} requestPractice={requestPractice} />
+                    <Dash
+                      scores={scores}
+                      requestPractice={requestPractice}
+                      userType={userType}
+                    />
                   </CardContent>
                 </Card>
               </Box>
