@@ -121,7 +121,7 @@ export async function updateTestcase({
   const result = await Testcase.findByIdAndUpdate(testcase, update, {
     new: true,
   });
-
+  console.log(-priorTestcase.score + score);
   await Problem.findByIdAndUpdate(
     priorTestcase.problem,
     { $inc: { score: -priorTestcase.score + score } },
@@ -134,7 +134,8 @@ export async function updateTestcase({
 export async function deleteTestcase({ testcase }) {
   const deletedTestcase = await Testcase.findById(testcase);
   const result = await Testcase.findByIdAndDelete(testcase);
-  await Problem.findById(
+  console.log(-deletedTestcase.score);
+  await Problem.findByIdAndUpdate(
     deletedTestcase.problem,
     { $inc: { score: -deletedTestcase.score } },
     { new: true }
