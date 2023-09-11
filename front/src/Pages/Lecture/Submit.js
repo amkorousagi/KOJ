@@ -135,6 +135,7 @@ const Submit = ({
             alert(
               "솔루션이나 프로젝트 파일이 아닌 소스코드(.c 등)를 제출하세요!"
             );
+            handleClose();
             return;
           }
           if (
@@ -145,6 +146,7 @@ const Submit = ({
             ext !== "js"
           ) {
             alert("유효한 확장자 소스코드를 제출하세요!");
+            handleClose();
             return;
           }
           console.log(`… file[${i}].name = ${file.name}`);
@@ -176,6 +178,23 @@ const Submit = ({
     setFiles(files);
     console.log(files);
     for (const file of files) {
+      const ext = file.name.split(".").pop();
+      if (ext === "sln" || ext === "vcproj") {
+        alert("솔루션이나 프로젝트 파일이 아닌 소스코드(.c 등)를 제출하세요!");
+        handleClose();
+        return;
+      }
+      if (
+        ext !== "c" &&
+        ext !== "cpp" &&
+        ext !== "java" &&
+        ext !== "py" &&
+        ext !== "js"
+      ) {
+        alert("유효한 확장자 소스코드를 제출하세요!");
+        handleClose();
+        return;
+      }
       //console.log(file);
       dz.textContent += `...${file.name}\n`;
     }
