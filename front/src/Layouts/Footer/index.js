@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div style={{ marginTop: "auto" }}>
+    <div style={{ bottom: 0, marginTop: "auto" }}>
       <hr />
       <Typography style={{ fontFamily: "Nanum Gothic" }}>
         &copy; 2022.&nbsp;
