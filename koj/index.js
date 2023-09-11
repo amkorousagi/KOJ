@@ -163,6 +163,15 @@ app.get(
       feedback = [],
       error = [];
     let process = "compile";
+    const Nwords = [
+      "fork",
+      "exec",
+      "popen",
+      "shell",
+      "bash",
+      "socket",
+      "sleep",
+    ];
     try {
       const submission = await Submission.findById(req.params.submission_id);
       const entry = submission.entry;
@@ -206,7 +215,7 @@ app.get(
           return res.json({
             success: [true],
             stdin: [""],
-            stdout: [""],
+            stdout: [submission.result.trim()],
             stderr: [""],
             exit_code: [""],
             error_type: [""],
@@ -220,7 +229,7 @@ app.get(
           return res.json({
             success: [false],
             stdin: [""],
-            stdout: [""],
+            stdout: [submission.result.trim()],
             stderr: [""],
             exit_code: [""],
             error_type: [""],
@@ -246,7 +255,19 @@ app.get(
         language = "node";
       } else {
         console.log("wrong language");
-        return res.json({});
+        return res.json({
+          success: [false],
+          stdin: [""],
+          stdout: [""],
+          stderr: ["wrong language"],
+          exit_code: [""],
+          error_type: [""],
+          cpu_usage: [""],
+          memory_usage: [""],
+          signal: [""],
+          feedback: [""],
+          error: [""],
+        });
       }
 
       if (
@@ -263,6 +284,26 @@ app.get(
         for (const b of submission.blank) {
           code_string = code_string.replace("#BLANK#", b);
         }
+
+        //check Nwords
+        for (const nword of Nwords) {
+          if (code_string.includes(nword)) {
+            return res.json({
+              success: [false],
+              stdin: [""],
+              stdout: [""],
+              stderr: ["do not use keywords that can cause problems on server"],
+              exit_code: [""],
+              error_type: [""],
+              cpu_usage: [""],
+              memory_usage: [""],
+              signal: [""],
+              feedback: [""],
+              error: [""],
+            });
+          }
+        }
+
         //save string to file and add code_names
         if (language == "c") {
           await fs.promises.writeFile(
@@ -320,6 +361,36 @@ app.get(
       try {
         let compile;
         process = "compile";
+
+        //check nword
+        for (const code_name of code_names) {
+          const code_check_string = fs.readFileSync(
+            path.join(
+              __dirname +
+                "/submission/" +
+                req.params.submission_id +
+                "/" +
+                code_name
+            ),
+            { encoding: "utf8" }
+          );
+          if (code_check_string.includes(nword)) {
+            return res.json({
+              success: [false],
+              stdin: [""],
+              stdout: [""],
+              stderr: ["do not use keywords that can cause problems on server"],
+              exit_code: [""],
+              error_type: [""],
+              cpu_usage: [""],
+              memory_usage: [""],
+              signal: [""],
+              feedback: [""],
+              error: [""],
+            });
+          }
+        }
+
         if (language == "c") {
           let code_str = "";
           for (const code_name of code_names) {

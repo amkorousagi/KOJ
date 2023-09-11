@@ -145,7 +145,7 @@ const Submit = ({
             ext !== "py" &&
             ext !== "js"
           ) {
-            alert("유효한 확장자 소스코드를 제출하세요!");
+            alert("유효한 확장자 소스코드(.c 등)를 제출하세요!");
             handleClose();
             return;
           }
@@ -191,7 +191,7 @@ const Submit = ({
         ext !== "py" &&
         ext !== "js"
       ) {
-        alert("유효한 확장자 소스코드를 제출하세요!");
+        alert("유효한 확장자 소스코드(.c 등)를 제출하세요!");
         handleClose();
         return;
       }

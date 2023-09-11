@@ -7,13 +7,16 @@ import Enrollment from "../model/enrollment";
 
 export async function initAdmin() {
   // MUST REMOVE WHEN PRODUCTION
-  const a = new User({
-    id: "admin",
-    password: bcrypt.hashSync("eselab", 10),
-    name: "박세찬",
-    user_type: USER_TYPE.ADMIN,
-  });
-  await a.save();
+  const existing = await User.findOne({ id: "admin" });
+  if (!existing) {
+    const a = new User({
+      id: "admin",
+      password: bcrypt.hashSync("eselab", 10),
+      name: "박세찬",
+      user_type: USER_TYPE.ADMIN,
+    });
+    await a.save();
+  }
 }
 
 export async function findUserById({ id }) {
