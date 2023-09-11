@@ -361,7 +361,7 @@ app.get(
       const testcases = await Testcase.find({ problem: problem._id });
       //console.log(problem);
 
-      console.log("start testcase");
+      console.log("start compile");
 
       try {
         let compile;
@@ -498,17 +498,21 @@ app.get(
             re += data;
           });
           let rc;
-          await new Promise((resolve, reject) => {
-            compile.on("exit", (c) => {
-              console.log("close with " + c);
-              rc = c;
-              resolve();
+          try {
+            await new Promise((resolve, reject) => {
+              compile.on("exit", (c) => {
+                console.log("close with " + c);
+                rc = c;
+                resolve();
+              });
+              compile.on("error", (c) => {
+                console.log("error with " + c);
+                reject();
+              });
             });
-            compile.on("error", (c) => {
-              console.log("error with " + c);
-              reject();
-            });
-          });
+          } catch (errrr) {
+            console.log({ errrr });
+          }
           console.log("ro", ro);
           console.log("re", re);
           if (rc !== 0) {
@@ -547,6 +551,7 @@ app.get(
         });
       }
 
+      console.log("start testcase");
       let cnt = 0;
       for (const t of testcases) {
         let result_output = "";
