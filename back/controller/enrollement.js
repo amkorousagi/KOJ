@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Enrollment from "../model/enrollment";
 import Practice from "../model/practice";
 import Lecture from "../model/lecture";
+import Problem from "../model/problem";
 
 export async function checkOwner({ lecture, owner }) {
   let l;
@@ -57,8 +58,15 @@ export async function readEnrollent({ lecture, student }) {
   }
   return await Enrollment.find(condition);
 }
-export async function checkIsRealStudent({ practice, student }) {
-  const p = await Practice.findById(practice);
+export async function checkIsRealStudent({ practice, problem, student }) {
+  let p;
+  if (problem) {
+    const pp = await Problem.findById(problem);
+    p = await Practice.findById(pp.practice);
+  } else {
+    p = await Practice.findById(practice);
+  }
+
   console.log({ p });
   if (p) {
     const enrollment = await Enrollment.find({ lecture: p.lecture, student });

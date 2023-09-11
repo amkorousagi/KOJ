@@ -17,7 +17,11 @@ readProblemRoute.post(
     if (req.user.user_type == USER_TYPE.PROFESSOR) {
       return await readProblem({ practice, problem });
     } else if (
-      (await checkIsRealStudent({ practice, student: req.user._id })) === true
+      (await checkIsRealStudent({
+        practice,
+        problem,
+        student: req.user._id,
+      })) === true
     ) {
       return await readProblem({ practice, problem });
     } else {
