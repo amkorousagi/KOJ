@@ -363,7 +363,7 @@ const Header = ({ userType, name, isLogined, setIsLogined }) => {
       <div
         className="header"
         style={{
-          position: "sticky",
+          position: "fixed",
           top: 0,
           width: "100%",
           minHeight: 160,

@@ -10,7 +10,7 @@ const Layout = ({ userType, name, isLogined, setIsLogined, children }) => {
         isLogined={isLogined}
         setIsLogined={setIsLogined}
       />
-      <main>{children}</main>
+      <main style={{ position: "sticky" }}>{children}</main>
       <Footer />
     </div>
   );
