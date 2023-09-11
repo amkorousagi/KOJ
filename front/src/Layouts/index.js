@@ -3,27 +3,14 @@ import Header from "./Header/index.js";
 
 const Layout = ({ userType, name, isLogined, setIsLogined, children }) => {
   return (
-    <div
-      style={{
-        minHeight: "100%",
-        display: "flex",
-        flexDirection: "column",
-        boxSizing: "border-box",
-      }}
-    >
+    <div>
       <Header
         userType={userType}
         name={name}
         isLogined={isLogined}
         setIsLogined={setIsLogined}
       />
-      <main
-        style={{
-          boxSizing: "border-box",
-        }}
-      >
-        {children}
-      </main>
+      <main>{children}</main>
       <Footer />
     </div>
   );
