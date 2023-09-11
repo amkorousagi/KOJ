@@ -455,7 +455,14 @@ const DashScore = ({ userId, userType }) => {
       .then((data) => {
         console.log(data);
         console.log(JSON.stringify(data.data));
-        setScores(data.data);
+        if (userType === USER_TYPE.STUDENT) {
+          data.data.dashscore = data.data.dashscore.filter(
+            (item) => item.student === userId
+          );
+          setScores(data.data);
+        } else {
+          setScores(data.data);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -539,7 +546,14 @@ const DashScore = ({ userId, userType }) => {
             .then((data) => {
               console.log(data);
               console.log(JSON.stringify(data.data));
-              setScores(data.data);
+              if (userType === USER_TYPE.STUDENT) {
+                data.data.dashscore = data.data.dashscore.filter(
+                  (item) => item.student === userId
+                );
+                setScores(data.data);
+              } else {
+                setScores(data.data);
+              }
             })
             .catch((err) => {
               console.log(err);
@@ -588,7 +602,14 @@ const DashScore = ({ userId, userType }) => {
                     })
                     .then((data) => {
                       console.log(data);
-                      setScores(data.data);
+                      if (userType === USER_TYPE.STUDENT) {
+                        data.data.dashscore = data.data.dashscore.filter(
+                          (item) => item.student === userId
+                        );
+                        setScores(data.data);
+                      } else {
+                        setScores(data.data);
+                      }
                     })
                     .catch((err) => {
                       console.log(err);

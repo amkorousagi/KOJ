@@ -404,11 +404,11 @@ const Submit = ({
                   </p>
                 </div>
                 <br />
-                <Button variant="contained" onClick={submitFile}>
-                  {" "}
-                  제출하기
-                </Button>
-              </Typography>
+              </Typography>{" "}
+              <Button variant="contained" style={{}} onClick={submitFile}>
+                {" "}
+                제출하기
+              </Button>
               <Typography style={{ color: "red", fontWeight: 800 }}>
                 <br />
                 ※성적은 마지막 제출을 기준으로 산정합니다.
