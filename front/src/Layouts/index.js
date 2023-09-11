@@ -5,7 +5,7 @@ const Layout = ({ userType, name, isLogined, setIsLogined, children }) => {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100%",
         display: "flex",
         flexDirection: "column",
         boxSizing: "border-box",
