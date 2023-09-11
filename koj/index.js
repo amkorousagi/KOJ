@@ -366,9 +366,10 @@ app.get(
       try {
         let compile;
         process = "compile";
-
+        console.log("im compile");
         //check nword
         for (const code_name of code_names) {
+          console.log({ code_name });
           const code_check_string = fs.readFileSync(
             path.join(
               __dirname +
@@ -379,6 +380,7 @@ app.get(
             ),
             { encoding: "utf8" }
           );
+
           if (code_check_string.includes(nword)) {
             return res.json({
               success: [false],
