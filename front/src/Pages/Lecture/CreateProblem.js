@@ -23,6 +23,7 @@ import {
 import { Add, Close, Label, Save } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL, FILE_URL } from "../../config.js";
+import { PROBLEM_TYPE } from "../../type.js";
 
 const CreateProblem = ({
   open,
@@ -382,7 +383,7 @@ const CreateProblem = ({
             <br />
             <TextField
               variant="outlined"
-              disabled
+              disabled={problem_type === PROBLEM_TYPE.RESULT}
               label="점수(테스트케이스 점수의 합)"
               style={{ width: "100%" }}
               defaultValue={score}

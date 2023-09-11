@@ -32,6 +32,7 @@ import {
 } from "@mui/icons-material";
 import React, { useEffect, useLayoutEffect } from "react";
 import { BASE_URL, DOWNLOAD_URL, FILE_URL } from "../../config.js";
+import { PROBLEM_TYPE } from "../../type.js";
 
 const UpdateProblem = ({
   open,
@@ -53,6 +54,9 @@ const UpdateProblem = ({
   const [at, setAt] = React.useState([]);
   const [blank, setBlank] = React.useState(null);
   const [blank_language, setBlank_language] = React.useState(null);
+  useEffect(() => {
+    setScore(0);
+  }, [problem_type]);
   const updateProblem = () => {
     if (execution_time_limit > 10000) {
       alert("실행시간은 10 초(10000ms)를 초과할 수 없습니다");
@@ -575,7 +579,7 @@ const UpdateProblem = ({
             <br />
             <TextField
               key={curProblem.score}
-              disabled
+              disabled={problem_type === PROBLEM_TYPE.RESULT}
               variant="outlined"
               label="점수(테스트케이스 점수의 합)"
               style={{ width: "100%" }}

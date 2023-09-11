@@ -70,6 +70,7 @@ const Code = () => {
       .then(async (data) => {
         console.log(data);
         const c = [];
+
         for (const item of data.data.code) {
           await fetch(CODE_URL + "/" + item, {
             method: "GET",
@@ -105,7 +106,8 @@ const Code = () => {
             for (const b of data.data.blank) {
               code_string = code_string.replace("#BLANK#", b);
             }
-            setBlank(code_string);
+            if (d.data.problem_type !== "result") setBlank(code_string);
+            else setBlank(data.data.stdout);
           })
           .catch((err) => {
             console.log(err);
