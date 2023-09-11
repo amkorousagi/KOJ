@@ -287,7 +287,9 @@ app.get(
 
         //check Nwords
         for (const nword of Nwords) {
+          console.log(nword);
           if (code_string.includes(nword)) {
+            console.log("catch nword");
             return res.json({
               success: [false],
               stdin: [""],
