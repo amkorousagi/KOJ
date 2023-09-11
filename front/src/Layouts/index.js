@@ -3,7 +3,7 @@ import Header from "./Header/index.js";
 
 const Layout = ({ userType, name, isLogined, setIsLogined, children }) => {
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <Header
         userType={userType}
         name={name}
