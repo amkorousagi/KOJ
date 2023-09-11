@@ -136,6 +136,7 @@ const Submit = ({
               "솔루션이나 프로젝트 파일이 아닌 소스코드(.c 등)를 제출하세요!"
             );
             handleClose();
+            window.location.reload();
             return;
           }
           if (
@@ -147,6 +148,7 @@ const Submit = ({
           ) {
             alert("유효한 확장자 소스코드(.c 등)를 제출하세요!");
             handleClose();
+            window.location.reload();
             return;
           }
           console.log(`… file[${i}].name = ${file.name}`);
@@ -175,13 +177,14 @@ const Submit = ({
     const dz = document.getElementById("myDropZone");
     dz.textContent = "";
     const files = e.target.files;
-    setFiles(files);
+
     console.log(files);
     for (const file of files) {
       const ext = file.name.split(".").pop();
       if (ext === "sln" || ext === "vcproj") {
         alert("솔루션이나 프로젝트 파일이 아닌 소스코드(.c 등)를 제출하세요!");
         handleClose();
+        window.location.reload();
         return;
       }
       if (
@@ -193,11 +196,13 @@ const Submit = ({
       ) {
         alert("유효한 확장자 소스코드(.c 등)를 제출하세요!");
         handleClose();
+        window.location.reload();
         return;
       }
       //console.log(file);
       dz.textContent += `...${file.name}\n`;
     }
+    setFiles(files);
   };
   const submitFile = async () => {
     if (state === "before") {

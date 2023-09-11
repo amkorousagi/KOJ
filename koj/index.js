@@ -294,7 +294,10 @@ app.get(
               success: [false],
               stdin: [""],
               stdout: [""],
-              stderr: ["do not use keywords that can cause problems on server"],
+              stderr: [
+                "do not use keywords that can cause problems on server : " +
+                  nword,
+              ],
               exit_code: [""],
               error_type: [""],
               cpu_usage: [""],
@@ -381,7 +384,10 @@ app.get(
               success: [false],
               stdin: [""],
               stdout: [""],
-              stderr: ["do not use keywords that can cause problems on server"],
+              stderr: [
+                "do not use keywords that can cause problems on server : " +
+                  nword,
+              ],
               exit_code: [""],
               error_type: [""],
               cpu_usage: [""],
