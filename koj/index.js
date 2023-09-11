@@ -210,6 +210,8 @@ app.get(
       const problem = await Problem.findById(submission.problem);
 
       if (problem.problem_type === "result") {
+        console.log(submission.result.trim());
+        console.log(problem.result_answer.trim());
         // to do
         if (submission.result.trim() === problem.result_answer.trim()) {
           return res.json({
