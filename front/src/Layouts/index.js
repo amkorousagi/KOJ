@@ -17,7 +17,13 @@ const Layout = ({ userType, name, isLogined, setIsLogined, children }) => {
         isLogined={isLogined}
         setIsLogined={setIsLogined}
       />
-      <main>{children}</main>
+      <main
+        style={{
+          boxSizing: "border-box",
+        }}
+      >
+        {children}
+      </main>
       <Footer />
     </div>
   );
