@@ -14,7 +14,7 @@ RUN npm install -g nodemon
 
 RUN ulimit -v 256000
 RUN ulimit -t 2
-RUN ulimit -u 3
+RUN ulimit -n 10
 
 EXPOSE 3014
 CMD nodemon start
