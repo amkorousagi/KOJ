@@ -380,24 +380,25 @@ app.get(
             ),
             { encoding: "utf8" }
           );
-
-          if (code_check_string.includes(nword)) {
-            return res.json({
-              success: [false],
-              stdin: [""],
-              stdout: [""],
-              stderr: [
-                "do not use keywords that can cause problems on server : " +
-                  nword,
-              ],
-              exit_code: [""],
-              error_type: [""],
-              cpu_usage: [""],
-              memory_usage: [""],
-              signal: [""],
-              feedback: [""],
-              error: [""],
-            });
+          for (const nword of Nwords) {
+            if (code_check_string.includes(nword)) {
+              return res.json({
+                success: [false],
+                stdin: [""],
+                stdout: [""],
+                stderr: [
+                  "do not use keywords that can cause problems on server : " +
+                    nword,
+                ],
+                exit_code: [""],
+                error_type: [""],
+                cpu_usage: [""],
+                memory_usage: [""],
+                signal: [""],
+                feedback: [""],
+                error: [""],
+              });
+            }
           }
         }
         console.log("ccc");
@@ -431,8 +432,8 @@ app.get(
             });
             compile.on("error", (c) => {
               console.log("error with " + c);
-              //reject();
-              resolve();
+              reject();
+              //resolve();
             });
           });
           console.log("ro", ro);
