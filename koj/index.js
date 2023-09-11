@@ -398,6 +398,7 @@ app.get(
             });
           }
         }
+        console.log("ccc");
 
         if (language == "c") {
           let code_str = "";
@@ -428,7 +429,8 @@ app.get(
             });
             compile.on("error", (c) => {
               console.log("error with " + c);
-              reject();
+              //reject();
+              resolve();
             });
           });
           console.log("ro", ro);
@@ -498,21 +500,17 @@ app.get(
             re += data;
           });
           let rc;
-          try {
-            await new Promise((resolve, reject) => {
-              compile.on("exit", (c) => {
-                console.log("close with " + c);
-                rc = c;
-                resolve();
-              });
-              compile.on("error", (c) => {
-                console.log("error with " + c);
-                reject();
-              });
+          await new Promise((resolve, reject) => {
+            compile.on("exit", (c) => {
+              console.log("close with " + c);
+              rc = c;
+              resolve();
             });
-          } catch (errrr) {
-            console.log({ errrr });
-          }
+            compile.on("error", (c) => {
+              console.log("error with " + c);
+              reject();
+            });
+          });
           console.log("ro", ro);
           console.log("re", re);
           if (rc !== 0) {
