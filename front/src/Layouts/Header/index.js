@@ -363,9 +363,10 @@ const Header = ({ userType, name, isLogined, setIsLogined }) => {
       <div
         className="header"
         style={{
-          position: "fixed",
+          position: "sticky",
           top: 0,
           width: "100%",
+          minHeight: 160,
           backgroundColor: "white",
           zIndex: 10,
         }}
@@ -400,12 +401,6 @@ const Header = ({ userType, name, isLogined, setIsLogined }) => {
         </Grid>
         <hr />
       </div>
-      <div
-        style={{
-          height: 160,
-          width: "100%",
-        }}
-      ></div>
     </>
   );
 };
