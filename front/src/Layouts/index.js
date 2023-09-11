@@ -4,7 +4,12 @@ import Header from "./Header/index.js";
 const Layout = ({ userType, name, isLogined, setIsLogined, children }) => {
   return (
     <div
-      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        boxSizing: "border-box",
+      }}
     >
       <Header
         userType={userType}
