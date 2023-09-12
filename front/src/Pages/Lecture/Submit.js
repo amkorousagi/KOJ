@@ -103,6 +103,40 @@ const Submit = ({
       return <></>;
     }
   };
+  const blank_input2 = () => {
+    if (problem.blank !== undefined) {
+      const words = problem.blank.split("#BLANK#");
+      console.log(words);
+      const words_b = blank.map((item, index) => {
+        return (
+          <>
+            <TextField
+              variant="outlined"
+              size="small"
+              multiline
+              fullWidth
+              style={{ display: "inline" }}
+              onChange={(e) => {
+                const o = [...blank];
+                o[index] = e.target.value;
+                setBlank(o);
+              }}
+            />
+            <span>{words[index + 1]}</span>
+          </>
+        );
+      });
+
+      return (
+        <>
+          <span>{words[0]}</span>
+          {words_b}
+        </>
+      );
+    } else {
+      return <></>;
+    }
+  };
   useEffect(() => {
     if (problem.blank !== undefined) {
       let para = problem.blank;
@@ -400,7 +434,7 @@ const Submit = ({
                     {"\n\n"}
                     or Drag&Drop file(s) {"\n\n"}
                     or Copy&Paste Code {"\n\n"}
-                    {blank_input()}
+                    {blank_input2()}
                   </p>
                 </div>
                 <br />
