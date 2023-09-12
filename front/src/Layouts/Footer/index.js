@@ -32,7 +32,7 @@ const Footer = () => {
             한국어
           </a>{" "}
           |{" "}
-          <span
+          <button
             id="translateToEnglishButton"
             onClick={() => {
               var translateWidget = document.getElementById(
@@ -48,7 +48,7 @@ const Footer = () => {
             style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
           >
             English
-          </span>
+          </button>
           <span id="google_translate_element"></span>
         </div>
       </Typography>
