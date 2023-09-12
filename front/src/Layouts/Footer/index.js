@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import React from "react";
 
 const Footer = () => {
@@ -32,23 +32,22 @@ const Footer = () => {
             한국어
           </a>{" "}
           |{" "}
-          <button
+          <Button
+            variant="text"
             id="translateToEnglishButton"
             onClick={() => {
-              var translateWidget = document.getElementById(
-                "google_translate_element"
-              );
-
-              // Find the English language option in the widget and click it to trigger the translation
-              var englishOption = translateWidget.querySelector('[value="en"]');
-              if (englishOption) {
-                englishOption.click();
+              const gtcombo = document.querySelector(".goog-te-combo");
+              if (gtcombo == null) {
+                alert("Error: Could not find Google translate Combolist.");
+                return false;
               }
+              gtcombo.value = "en"; // 변경할 언어 적용
+              gtcombo.dispatchEvent(new Event("change")); // 변경 이벤트 트리거
             }}
             style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
           >
             English
-          </button>
+          </Button>
           <span id="google_translate_element"></span>
         </div>
       </Typography>
