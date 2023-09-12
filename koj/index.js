@@ -171,6 +171,7 @@ app.get(
       "bash",
       "socket",
       "sleep",
+      "system",
     ];
     try {
       const submission = await Submission.findById(req.params.submission_id);
