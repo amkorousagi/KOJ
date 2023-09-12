@@ -144,7 +144,8 @@ const Submit = ({
             ext !== "cpp" &&
             ext !== "java" &&
             ext !== "py" &&
-            ext !== "js"
+            ext !== "js" &&
+            ext !== "h"
           ) {
             alert("유효한 확장자 소스코드(.c 등)를 제출하세요!");
             handleClose();
@@ -192,7 +193,8 @@ const Submit = ({
         ext !== "cpp" &&
         ext !== "java" &&
         ext !== "py" &&
-        ext !== "js"
+        ext !== "js" &&
+        ext !== "h"
       ) {
         alert("유효한 확장자 소스코드(.c 등)를 제출하세요!");
         handleClose();
