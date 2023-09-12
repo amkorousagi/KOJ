@@ -46,11 +46,34 @@ const Lectures = ({ userType, userId }) => {
         const c = [];
         const p = [];
         const y = new Date(Date.now()).getFullYear();
+        const m = new Date(Date.now()).getMonth();
         for (const l of data.data) {
           if (Number(l.semester.substr(0, 4)) < Number(y)) {
-            p.push(l);
-          } else {
+            if (Number(l.semester.substr(0, 4)) + 1 === Number(y) && m < 3) {
+              c.push(l);
+            } else {
+              p.push(l);
+            }
+          } else if (Number(l.semester.substr(0, 4)) > Number(y)) {
             c.push(l);
+          } else {
+            if (l.semester.substr(4) === "1") {
+              if (6 < m) {
+                p.push(l);
+              } else {
+                c.push(l);
+              }
+            } else if (l.semester.substr(4) === "S") {
+              if (8 < m) {
+                p.push(l);
+              } else {
+                c.push(l);
+              }
+            } else if (l.semester.substr(4) === "2") {
+              c.push(l);
+            } else if (l.semester.substr(4) === "W") {
+              c.push(l);
+            }
           }
         }
         setCur(c);
