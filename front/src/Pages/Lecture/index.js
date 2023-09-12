@@ -39,7 +39,7 @@ import StudentExcel from "./StudentExcel.js";
 import SideMenu from "./SideMenu.js";
 
 const LectureDate = ({ pracStart, pracEnd }) => {
-  if (pracStart !== "") {
+  if (pracStart !== "" && pracStart !== undefined) {
     return (
       <div style={{ marginTop: 5 }}>
         실습 시작 <br />
