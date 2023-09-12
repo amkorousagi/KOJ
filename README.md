@@ -25,7 +25,7 @@ KOJ provide online judge system for academic lecture
 
 ## KOJ UI Flow Diagram
 
-<img src="./img/KOJ_UI_flow.drawio.svg"/>
+<img src="./img/KOJ_UI_flow.png"/>
 
 ## KOJ Feature Diagram
 
