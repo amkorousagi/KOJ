@@ -34,6 +34,17 @@ const Footer = () => {
           |{" "}
           <span
             id="translateToEnglishButton"
+            onClick={() => {
+              var translateWidget = document.getElementById(
+                "google_translate_element"
+              );
+
+              // Find the English language option in the widget and click it to trigger the translation
+              var englishOption = translateWidget.querySelector('[value="en"]');
+              if (englishOption) {
+                englishOption.click();
+              }
+            }}
             style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
           >
             English
