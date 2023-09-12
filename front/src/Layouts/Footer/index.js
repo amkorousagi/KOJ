@@ -32,12 +32,12 @@ const Footer = () => {
             한국어
           </a>{" "}
           |{" "}
-          <a
-            href="/lang=en"
+          <span
+            id="google_translate_element"
             style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
           >
             English
-          </a>
+          </span>
         </div>
       </Typography>
     </div>
