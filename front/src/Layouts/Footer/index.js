@@ -25,12 +25,22 @@ const Footer = () => {
         <br />
         <br />
         <div style={{ textAlign: "center" }}>
-          <a
-            href="/lang=ko"
+          <Button
+            variant="text"
+            id="translateToEnglishButton"
+            onClick={() => {
+              const gtcombo = document.querySelector(".goog-te-combo");
+              if (gtcombo == null) {
+                alert("Error: Could not find Google translate Combolist.");
+                return false;
+              }
+              gtcombo.value = "ko"; // 변경할 언어 적용
+              gtcombo.dispatchEvent(new Event("change")); // 변경 이벤트 트리거
+            }}
             style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
           >
             한국어
-          </a>{" "}
+          </Button>{" "}
           |{" "}
           <Button
             variant="text"
@@ -48,7 +58,7 @@ const Footer = () => {
           >
             English
           </Button>
-          <span id="google_translate_element"></span>
+          <div id="google_translate_element"></div>
         </div>
       </Typography>
     </div>
