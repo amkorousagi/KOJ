@@ -19,6 +19,9 @@ const Footer = () => {
         </a>
         &nbsp;All rights reserved.
         <br />
+        버그 제보 / 문의 및 개선 사항은{" "}
+        <a href="mailto:hasmi5452@gmail.com">hasmi5452@gmail.com</a> 으로
+        연락주세요.
         <br />
         <br />
         <div style={{ textAlign: "center" }}>
