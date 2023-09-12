@@ -33,11 +33,12 @@ const Footer = () => {
           </a>{" "}
           |{" "}
           <span
-            id="google_translate_element"
+            id="translateToEnglishButton"
             style={{ fontFamily: "Nanum Gothic", fontWeight: 800 }}
           >
             English
           </span>
+          <span id="google_translate_element"></span>
         </div>
       </Typography>
     </div>

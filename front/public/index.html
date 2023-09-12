@@ -64,10 +64,24 @@
     <script type="text/javascript">
       function googleTranslateElementInit() {
         new google.translate.TranslateElement(
-          { pageLanguage: "en" },
+          { pageLanguage: "ko" },
           "google_translate_element"
         );
       }
+      document
+        .getElementById("translateToEnglishButton")
+        .addEventListener("click", function () {
+          // Get the translation widget
+          var translateWidget = document.getElementById(
+            "google_translate_element"
+          );
+
+          // Find the English language option in the widget and click it to trigger the translation
+          var englishOption = translateWidget.querySelector('[value="en"]');
+          if (englishOption) {
+            englishOption.click();
+          }
+        });
     </script>
 
     <script
