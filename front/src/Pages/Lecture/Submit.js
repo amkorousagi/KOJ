@@ -82,7 +82,6 @@ const Submit = ({
               size="small"
               multiline
               style={{ display: "inline" }}
-              maxRows={1}
               onChange={(e) => {
                 const o = [...blank];
                 o[index] = e.target.value;
