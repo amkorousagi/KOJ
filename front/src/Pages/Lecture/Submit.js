@@ -380,8 +380,7 @@ const Submit = ({
                   onDragOver={dragOverHandler}
                   style={{
                     border: "5px solid blue",
-                    width: "400px",
-                    height: "300px",
+                    minHeight: "300px",
                   }}
                 >
                   <p
