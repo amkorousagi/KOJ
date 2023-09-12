@@ -116,7 +116,7 @@ const Submit = ({
               multiline
               fullWidth
               placeholder="코드를 입력하세요!"
-              style={{ padding: 10 }}
+              style={{ display: "block", padding: 10 }}
               onChange={(e) => {
                 const o = [...blank];
                 o[index] = e.target.value;
