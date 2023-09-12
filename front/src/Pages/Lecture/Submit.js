@@ -81,6 +81,7 @@ const Submit = ({
               variant="outlined"
               size="small"
               multiline
+              placeholder="코드를 입력하세요!"
               style={{ display: "inline" }}
               onChange={(e) => {
                 const o = [...blank];
@@ -116,7 +117,7 @@ const Submit = ({
               multiline
               fullWidth
               placeholder="코드를 입력하세요!"
-              style={{ display: "block", padding: 10 }}
+              style={{ display: "block" }}
               onChange={(e) => {
                 const o = [...blank];
                 o[index] = e.target.value;
@@ -416,6 +417,7 @@ const Submit = ({
                   style={{
                     border: "5px solid blue",
                     minHeight: "300px",
+                    padding: 5,
                   }}
                 >
                   <p
