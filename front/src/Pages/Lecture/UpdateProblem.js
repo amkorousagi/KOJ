@@ -252,6 +252,7 @@ const UpdateProblem = ({
           }
 
           const curFiles = fileInput.files;
+          const validFiles = [];
           //setFiles(curFiles);
           if (curFiles.length === 0) {
             const para = document.createElement("p");
@@ -265,7 +266,8 @@ const UpdateProblem = ({
               const listItem = document.createElement("li");
               const para = document.createElement("p");
               if (validFileType(file)) {
-                setFiles([...files, file]);
+                validFiles.push(file);
+                //setFiles([...files, file]);
                 para.textContent = `File name ${
                   file.name
                 }, file size ${returnFileSize(file.size)}.`;
@@ -281,6 +283,7 @@ const UpdateProblem = ({
 
               list.appendChild(listItem);
             }
+            setFiles(validFiles);
           }
         }
         fileInput.addEventListener("change", updateImageDisplay);
