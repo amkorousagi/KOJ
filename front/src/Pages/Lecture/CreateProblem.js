@@ -43,6 +43,9 @@ const CreateProblem = ({
   const [blank, setBlank] = React.useState("#BLANK#");
   const [blank_language, setBlank_language] = React.useState("c");
   useEffect(() => {
+    setScore(0);
+  }, [problem_type]);
+  useEffect(() => {
     console.log(nProblem);
     setTitle("문제 " + (nProblem + 1));
   }, [nProblem]);
@@ -148,6 +151,7 @@ const CreateProblem = ({
           }
 
           const curFiles = fileInput.files;
+          const validFiles = [];
           //setFiles(curFiles);
           if (curFiles.length === 0) {
             const para = document.createElement("p");
@@ -161,7 +165,8 @@ const CreateProblem = ({
               const listItem = document.createElement("li");
               const para = document.createElement("p");
               if (validFileType(file)) {
-                setFiles([...files, file]);
+                validFiles.push(file);
+                //setFiles([...files, file]);
                 para.textContent = `File name ${
                   file.name
                 }, file size ${returnFileSize(file.size)}.`;
@@ -177,6 +182,7 @@ const CreateProblem = ({
 
               list.appendChild(listItem);
             }
+            setFiles(validFiles);
           }
         }
         console.log("dd");
