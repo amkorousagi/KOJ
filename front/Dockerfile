@@ -5,7 +5,7 @@ RUN apt-get install -y git
 RUN apt-get install -y vim
 RUN npm install -g npm@10.1.0
 
-RUN git clone https://github.com/amkorousagi/KOJ
+COPY ../KOJ /KOJ
 WORKDIR /KOJ/front
 RUN npm install --force
 

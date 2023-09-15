@@ -7,7 +7,7 @@ RUN apt-get install -y default-jre
 RUN apt-get install -y default-jdk
 RUN npm install -g npm@latest
 
-RUN git clone https://github.com/amkorousagi/KOJ
+COPY ../KOJ /KOJ
 WORKDIR /KOJ/koj
 RUN npm install
 RUN npm install -g nodemon
