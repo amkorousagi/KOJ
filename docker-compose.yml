@@ -92,6 +92,7 @@ services:
     networks:
       - mongo-net
     command: mongod --config /etc/mongodb.conf
+    tty: true
 
   mongo2:
     image: mongo
@@ -108,6 +109,7 @@ services:
     networks:
       - mongo-net
     command: mongod --config /etc/mongodb.conf
+    tty: true
 
   mongo3:
     image: mongo
@@ -125,6 +127,7 @@ services:
     networks:
       - mongo-net
     command: mongod --config /etc/mongodb.conf
+    tty: true
 
   haproxy:
     image: haproxy:2.4
