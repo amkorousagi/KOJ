@@ -5,7 +5,7 @@ RUN apt-get install -y git
 RUN apt-get install -y vim
 RUN npm install -g npm@latest
 
-COPY ../KOJ /KOJ
+COPY . /KOJ
 WORKDIR /KOJ/back
 RUN npm install
 RUN npm install -g nodemon
