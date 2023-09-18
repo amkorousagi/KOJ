@@ -390,6 +390,9 @@ app.get(
           console.log(detectedEncoding);
           if (detectedEncoding !== "UTF-8") {
             let text;
+            console.log("compare " + (detectedEncoding === "ISO-8859-1"));
+            console.log(detectedEncoding);
+            console.log("ISO-8859-1");
             if (detectedEncoding === "ISO-8859-1") {
               iconv.decode(code_check_string, "CP949");
             } else {
