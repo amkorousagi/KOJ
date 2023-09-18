@@ -389,7 +389,12 @@ app.get(
           const detectedEncoding = chardet.detect(code_check_string);
           console.log(detectedEncoding);
           if (detectedEncoding !== "UTF-8") {
-            const text = iconv.decode(code_check_string, detectedEncoding);
+            let text;
+            if (detectedEncoding === "ISO-8859-1") {
+              iconv.decode(code_check_string, "CP949");
+            } else {
+              iconv.decode(code_check_string, detectedEncoding);
+            }
             fs.writeFileSync(
               path.join(
                 __dirname +

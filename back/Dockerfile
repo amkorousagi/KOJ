@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:18.17.1
 
 RUN apt-get update
 RUN apt-get install -y git
@@ -7,7 +7,7 @@ RUN npm install -g npm@latest
 
 COPY . /KOJ
 WORKDIR /KOJ/back
-RUN npm install
+RUN npm install --force
 RUN npm install -g nodemon
 
 EXPOSE 3012

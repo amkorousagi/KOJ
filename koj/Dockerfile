@@ -9,7 +9,7 @@ RUN npm install -g npm@latest
 
 COPY . /KOJ
 WORKDIR /KOJ/koj
-RUN npm install
+RUN npm install --force
 RUN npm install -g nodemon
 
 RUN ulimit -v 256000
