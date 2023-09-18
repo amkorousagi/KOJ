@@ -15,6 +15,9 @@ import File from "./model/file.js";
 import { exec, spawn, spawnSync } from "child_process";
 import { PassThrough } from "stream";
 
+import chardet from "chardet";
+import iconv from "iconv-lite";
+
 function errorHandler(cb) {
   return function (req, res, next) {
     cb(req, res, next).catch(next); // promise라서 .catch 가능
@@ -381,9 +384,24 @@ app.get(
                 req.params.submission_id +
                 "/" +
                 code_name
-            ),
-            { encoding: "utf8" }
+            )
           );
+          const detectedEncoding = chardet.detect(code_check_string);
+          console.log(detectedEncoding);
+          if (detectedEncoding !== "UTF-8") {
+            const text = iconv.decode(code_check_string, detectedEncoding);
+            fs.writeFileSync(
+              path.join(
+                __dirname +
+                  "/submission/" +
+                  req.params.submission_id +
+                  "/" +
+                  code_name
+              ),
+              text,
+              "utf-8"
+            );
+          }
           for (const nword of Nwords) {
             if (code_check_string.includes(nword)) {
               return res.json({
@@ -764,14 +782,32 @@ app.get(
                     .replace(/(?:\r\n|\r|\n)/g, "\r\n"),
                 });
                 if (
-                  answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-                  makedFile.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                  answer
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                    .trim()
+                    .split("\r\n")
+                    .map((line) => line.trim())
+                    .join("\r\n") ==
+                  makedFile
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                    .trim()
+                    .split("\r\n")
+                    .map((line) => line.trim())
+                    .join("\r\n")
                 ) {
                   if (
-                    result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-                    t.output_text
-                      .trim() //.replace(/^\s+|\s+$/gm, "")
+                    result.stdout
                       .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                      .trim()
+                      .split("\r\n")
+                      .map((line) => line.trim())
+                      .join("\r\n") ==
+                    t.output_text
+                      .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                      .trim()
+                      .split("\r\n")
+                      .map((line) => line.trim())
+                      .join("\r\n")
                   ) {
                     success.push(true);
                     feedback.push("good");
@@ -810,10 +846,18 @@ app.get(
                 });
                 if (answer.equals(makedFile)) {
                   if (
-                    result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-                    t.output_text
-                      .trim() //.replace(/^\s+|\s+$/gm, "")
+                    result.stdout
                       .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                      .trim()
+                      .split("\r\n")
+                      .map((line) => line.trim())
+                      .join("\r\n") ==
+                    t.output_text
+                      .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                      .trim()
+                      .split("\r\n")
+                      .map((line) => line.trim())
+                      .join("\r\n")
                   ) {
                     success.push(true);
                     feedback.push("good");
@@ -832,14 +876,34 @@ app.get(
             }
           } else {
             console.log({
-              r: result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
+              r: result.stdout
+                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                .trim()
+                .split("\r\n")
+                .map((line) => line.trim())
+                .join("\r\n"),
             });
             console.log({
-              t: t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
+              t: t.output_text
+                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                .trim()
+                .split("\r\n")
+                .map((line) => line.trim())
+                .join("\r\n"),
             });
             if (
-              result.stdout.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-              t.output_text.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n")
+              result.stdout
+                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                .trim()
+                .split("\r\n")
+                .map((line) => line.trim())
+                .join("\r\n") ==
+              t.output_text
+                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                .trim()
+                .split("\r\n")
+                .map((line) => line.trim())
+                .join("\r\n")
             ) {
               success.push(true);
               feedback.push("good");
