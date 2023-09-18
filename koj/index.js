@@ -394,9 +394,9 @@ app.get(
             console.log(detectedEncoding);
             console.log("ISO-8859-1");
             if (detectedEncoding === "ISO-8859-1") {
-              iconv.decode(code_check_string, "CP949");
+              text = iconv.decode(code_check_string, "CP949");
             } else {
-              iconv.decode(code_check_string, detectedEncoding);
+              text = iconv.decode(code_check_string, detectedEncoding);
             }
             fs.writeFileSync(
               path.join(
