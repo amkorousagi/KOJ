@@ -323,7 +323,7 @@ const Dash = ({ scores, requestPractice, userType }) => {
                         <Button
                           style={{
                             backgroundColor:
-                              item[p._id] < p.score ? "transparent" : "#4caf50",
+                              item[p._id] < p.score ? "transparent" : "#aef45b",
                           }}
                           variant="outlined"
                           onClick={() => {
