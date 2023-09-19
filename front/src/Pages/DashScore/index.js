@@ -22,6 +22,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Add,
+  ChangeHistory,
   Close,
   DisabledByDefault,
   DoDisturb,
@@ -130,7 +131,7 @@ const Dash = ({ scores, requestPractice, userType }) => {
                   );
                   console.log(p);
                   if (item[p._id] < sub_total) {
-                    icon = <DoDisturb />;
+                    icon = <ChangeHistory />;
                   } else {
                     icon = <PanoramaFishEye />;
                   }
@@ -145,7 +146,8 @@ const Dash = ({ scores, requestPractice, userType }) => {
                   } else {
                     return (
                       <TableCell>
-                        <Close />({0})
+                        <Close />
+                        (미제출)
                       </TableCell>
                     );
                   }
@@ -217,8 +219,10 @@ const Dash = ({ scores, requestPractice, userType }) => {
           >
             <Button
               variant="outlined"
-              disabled={userType !== USER_TYPE.PROFESSOR}
               onClick={() => {
+                if (userType !== USER_TYPE.PROFESSOR) {
+                  return;
+                }
                 if (
                   window.confirm(
                     item.title +
@@ -317,9 +321,15 @@ const Dash = ({ scores, requestPractice, userType }) => {
                     return (
                       <TableCell>
                         <Button
+                          style={{
+                            backgroundColor:
+                              item[p._id] < p.score ? "transparent" : "#4caf50",
+                          }}
                           variant="outlined"
-                          disabled={userType !== USER_TYPE.PROFESSOR}
                           onClick={() => {
+                            if (userType !== USER_TYPE.PROFESSOR) {
+                              return;
+                            }
                             if (
                               window.confirm(
                                 item[p._id] + "문제를 재채점 하시겠습니까?"
@@ -358,7 +368,12 @@ const Dash = ({ scores, requestPractice, userType }) => {
                             }
                           }}
                         >
-                          {item[p._id]}
+                          {item[p._id] < p.score ? (
+                            <ChangeHistory />
+                          ) : (
+                            <PanoramaFishEye />
+                          )}
+                          ({item[p._id]})
                         </Button>
                       </TableCell>
                     );
@@ -366,7 +381,8 @@ const Dash = ({ scores, requestPractice, userType }) => {
                     return (
                       <TableCell>
                         <Button variant="outlined" disabled>
-                          {0}
+                          <Close />
+                          미제출
                         </Button>
                       </TableCell>
                     );
@@ -636,6 +652,10 @@ const DashScore = ({ userId, userType }) => {
                 alignItems="center"
                 style={{ textAlign: "left", margin: "5px" }}
               >
+                <Typography>
+                  <PanoramaFishEye />는 정답, <ChangeHistory />는 오답,{" "}
+                  <Close />는 미제출
+                </Typography>
                 <Card variant="outlined">
                   <CardContent>
                     <Typography style={{ fontFamily: "Nanum Gothic" }}>
