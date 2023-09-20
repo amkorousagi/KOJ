@@ -55,7 +55,11 @@ const UpdateProblem = ({
   const [blank, setBlank] = React.useState(null);
   const [blank_language, setBlank_language] = React.useState(null);
   useEffect(() => {
-    setScore(0);
+    if (problem_type === PROBLEM_TYPE.RESULT) {
+      setScore(0);
+    } else {
+      setScore(null);
+    }
   }, [problem_type]);
   const updateProblem = () => {
     if (execution_time_limit > 10000) {

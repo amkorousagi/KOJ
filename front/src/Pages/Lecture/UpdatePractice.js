@@ -36,7 +36,11 @@ const UpdatePractice = ({
   //lecture id 보내기
 
   const updatePractice = () => {
-    if (startDate <= endDate) {
+    if (
+      (startDate !== "" && endDate !== "" && startDate <= endDate) ||
+      startDate === "" ||
+      endDate === ""
+    ) {
       const update = { practice: curPractice._id };
       if (name) {
         update.title = name;
