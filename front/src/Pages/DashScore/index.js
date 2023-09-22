@@ -486,7 +486,7 @@ const DashScore = ({ userId, userType }) => {
               return -1;
             }
             if (a.studentMeta.name > b.studentMeta.name) {
-              return -1;
+              return 1;
             }
             return 0;
           });
@@ -563,7 +563,7 @@ const DashScore = ({ userId, userType }) => {
               return -1;
             }
             if (a.studentMeta.name > b.studentMeta.name) {
-              return -1;
+              return 1;
             }
             return 0;
           });
@@ -622,7 +622,7 @@ const DashScore = ({ userId, userType }) => {
                     return -1;
                   }
                   if (a.studentMeta.name > b.studentMeta.name) {
-                    return -1;
+                    return 1;
                   }
                   return 0;
                 });
@@ -700,7 +700,7 @@ const DashScore = ({ userId, userType }) => {
                               return -1;
                             }
                             if (a.studentMeta.name > b.studentMeta.name) {
-                              return -1;
+                              return 1;
                             }
                             return 0;
                           }
