@@ -471,17 +471,19 @@ const DashScore = ({ userId, userType }) => {
       .then((data) => {
         //console.log(data);
         //console.log(JSON.stringify(data.data));
-        data.data.dashscore = data.data.dashscore.map((item) => {
-          return {
-            ...item,
-            student: data.data.meta.students.filter(
-              (it) => item.student === it.student
-            )[0],
-          };
-        });
-        data.data.dashscore = data.data.dashscore.sort((a, b) => {
-          return a.student.name < b.student.name;
-        });
+        if (data.data.dashscore.length !== 0) {
+          data.data.dashscore = data.data.dashscore.map((item) => {
+            return {
+              ...item,
+              student: data.data.meta.students.filter(
+                (it) => item.student === it.student
+              )[0],
+            };
+          });
+          data.data.dashscore = data.data.dashscore.sort((a, b) => {
+            return a.student.name < b.student.name;
+          });
+        }
         if (userType === USER_TYPE.STUDENT) {
           data.data.dashscore = data.data.dashscore.filter(
             (item) => item.student === userId
@@ -539,17 +541,19 @@ const DashScore = ({ userId, userType }) => {
       .then((data) => {
         //console.log(data);
         //console.log(JSON.stringify(data.data));
-        data.data.dashscore = data.data.dashscore.map((item) => {
-          return {
-            ...item,
-            student: data.data.meta.students.filter(
-              (it) => item.student === it.student
-            )[0],
-          };
-        });
-        data.data.dashscore = data.data.dashscore.sort((a, b) => {
-          return a.student.name < b.student.name;
-        });
+        if (data.data.dashscore.length !== 0) {
+          data.data.dashscore = data.data.dashscore.map((item) => {
+            return {
+              ...item,
+              student: data.data.meta.students.filter(
+                (it) => item.student === it.student
+              )[0],
+            };
+          });
+          data.data.dashscore = data.data.dashscore.sort((a, b) => {
+            return a.student.name < b.student.name;
+          });
+        }
         if (userType === USER_TYPE.STUDENT) {
           data.data.dashscore = data.data.dashscore.filter(
             (item) => item.student === userId
@@ -588,17 +592,19 @@ const DashScore = ({ userId, userType }) => {
             .then((data) => {
               //console.log(data);
               //console.log(JSON.stringify(data.data));
-              data.data.dashscore = data.data.dashscore.map((item) => {
-                return {
-                  ...item,
-                  student: data.data.meta.students.filter(
-                    (it) => item.student === it.student
-                  )[0],
-                };
-              });
-              data.data.dashscore = data.data.dashscore.sort((a, b) => {
-                return a.student.name < b.student.name;
-              });
+              if (data.data.dashscore.length !== 0) {
+                data.data.dashscore = data.data.dashscore.map((item) => {
+                  return {
+                    ...item,
+                    student: data.data.meta.students.filter(
+                      (it) => item.student === it.student
+                    )[0],
+                  };
+                });
+                data.data.dashscore = data.data.dashscore.sort((a, b) => {
+                  return a.student.name < b.student.name;
+                });
+              }
               if (userType === USER_TYPE.STUDENT) {
                 data.data.dashscore = data.data.dashscore.filter(
                   (item) => item.student === userId
@@ -654,17 +660,23 @@ const DashScore = ({ userId, userType }) => {
                     })
                     .then((data) => {
                       //console.log(data);
-                      data.data.dashscore = data.data.dashscore.map((item) => {
-                        return {
-                          ...item,
-                          student: data.data.meta.students.filter(
-                            (it) => item.student === it.student
-                          )[0],
-                        };
-                      });
-                      data.data.dashscore = data.data.dashscore.sort((a, b) => {
-                        return a.student.name < b.student.name;
-                      });
+                      if (data.data.dashscore.length !== 0) {
+                        data.data.dashscore = data.data.dashscore.map(
+                          (item) => {
+                            return {
+                              ...item,
+                              student: data.data.meta.students.filter(
+                                (it) => item.student === it.student
+                              )[0],
+                            };
+                          }
+                        );
+                        data.data.dashscore = data.data.dashscore.sort(
+                          (a, b) => {
+                            return a.student.name < b.student.name;
+                          }
+                        );
+                      }
                       if (userType === USER_TYPE.STUDENT) {
                         data.data.dashscore = data.data.dashscore.filter(
                           (item) => item.student === userId
