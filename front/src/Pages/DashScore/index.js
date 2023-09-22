@@ -469,8 +469,19 @@ const DashScore = ({ userId, userType }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-        console.log(JSON.stringify(data.data));
+        //console.log(data);
+        //console.log(JSON.stringify(data.data));
+        data.data.dashscore = data.data.dashscore.map((item) => {
+          return {
+            ...item,
+            student: data.data.meta.students.filter(
+              (it) => item.student === it.student
+            )[0],
+          };
+        });
+        data.data.dashscore = data.data.dashscore.sort((a, b) => {
+          return a.student.name < b.student.name;
+        });
         if (userType === USER_TYPE.STUDENT) {
           data.data.dashscore = data.data.dashscore.filter(
             (item) => item.student === userId
@@ -502,7 +513,11 @@ const DashScore = ({ userId, userType }) => {
       })
       .then((data) => {
         //console.log(data);
-        setPracticeData(data.data);
+        setPracticeData(
+          data.data.sort((a, b) => {
+            return a.start_date < b.start_date;
+          })
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -522,8 +537,19 @@ const DashScore = ({ userId, userType }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-        console.log(JSON.stringify(data.data));
+        //console.log(data);
+        //console.log(JSON.stringify(data.data));
+        data.data.dashscore = data.data.dashscore.map((item) => {
+          return {
+            ...item,
+            student: data.data.meta.students.filter(
+              (it) => item.student === it.student
+            )[0],
+          };
+        });
+        data.data.dashscore = data.data.dashscore.sort((a, b) => {
+          return a.student.name < b.student.name;
+        });
         if (userType === USER_TYPE.STUDENT) {
           data.data.dashscore = data.data.dashscore.filter(
             (item) => item.student === userId
@@ -560,8 +586,19 @@ const DashScore = ({ userId, userType }) => {
               return res.json();
             })
             .then((data) => {
-              console.log(data);
-              console.log(JSON.stringify(data.data));
+              //console.log(data);
+              //console.log(JSON.stringify(data.data));
+              data.data.dashscore = data.data.dashscore.map((item) => {
+                return {
+                  ...item,
+                  student: data.data.meta.students.filter(
+                    (it) => item.student === it.student
+                  )[0],
+                };
+              });
+              data.data.dashscore = data.data.dashscore.sort((a, b) => {
+                return a.student.name < b.student.name;
+              });
               if (userType === USER_TYPE.STUDENT) {
                 data.data.dashscore = data.data.dashscore.filter(
                   (item) => item.student === userId
@@ -588,7 +625,6 @@ const DashScore = ({ userId, userType }) => {
           <div
             style={{
               display: "flex",
-              overflow: "auto",
               width: "100%",
               backgroundColor: "#F0F0F0",
             }}
@@ -617,7 +653,18 @@ const DashScore = ({ userId, userType }) => {
                       return res.json();
                     })
                     .then((data) => {
-                      console.log(data);
+                      //console.log(data);
+                      data.data.dashscore = data.data.dashscore.map((item) => {
+                        return {
+                          ...item,
+                          student: data.data.meta.students.filter(
+                            (it) => item.student === it.student
+                          )[0],
+                        };
+                      });
+                      data.data.dashscore = data.data.dashscore.sort((a, b) => {
+                        return a.student.name < b.student.name;
+                      });
                       if (userType === USER_TYPE.STUDENT) {
                         data.data.dashscore = data.data.dashscore.filter(
                           (item) => item.student === userId
