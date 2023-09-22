@@ -129,7 +129,7 @@ const Dash = ({ scores, requestPractice, userType }) => {
                     },
                     0
                   );
-                  console.log(p);
+                  //console.log(p);
                   if (item[p._id] < sub_total) {
                     icon = <ChangeHistory />;
                   } else {
@@ -555,6 +555,7 @@ const DashScore = ({ userId, userType }) => {
           data.data.dashscore = data.data.dashscore.sort((a, b) => {
             return a.studentMeta.name < b.studentMeta.name;
           });
+          console.log(data.data.dashscore);
         }
         if (userType === USER_TYPE.STUDENT) {
           data.data.dashscore = data.data.dashscore.filter(
