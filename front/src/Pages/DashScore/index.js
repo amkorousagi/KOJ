@@ -480,6 +480,7 @@ const DashScore = ({ userId, userType }) => {
               )[0],
             };
           });
+          console.log(data.data.dashscore);
           data.data.dashscore = data.data.dashscore.sort((a, b) => {
             return a.studentMeta.name < b.studentMeta.name;
           });
@@ -550,6 +551,7 @@ const DashScore = ({ userId, userType }) => {
               )[0],
             };
           });
+          console.log(data.data.dashscore);
           data.data.dashscore = data.data.dashscore.sort((a, b) => {
             return a.studentMeta.name < b.studentMeta.name;
           });
@@ -601,6 +603,7 @@ const DashScore = ({ userId, userType }) => {
                     )[0],
                   };
                 });
+                console.log(data.data.dashscore);
                 data.data.dashscore = data.data.dashscore.sort((a, b) => {
                   return a.studentMeta.name < b.studentMeta.name;
                 });
@@ -671,6 +674,7 @@ const DashScore = ({ userId, userType }) => {
                             };
                           }
                         );
+                        console.log(data.data.dashscore);
                         data.data.dashscore = data.data.dashscore.sort(
                           (a, b) => {
                             return a.studentMeta.name < b.studentMeta.name;
