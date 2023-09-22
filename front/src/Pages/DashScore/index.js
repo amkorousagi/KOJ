@@ -476,7 +476,7 @@ const DashScore = ({ userId, userType }) => {
             return {
               ...item,
               studentMeta: data.data.meta.students.filter(
-                (it) => item.student === it.student
+                (it) => item.student === it._id
               )[0],
             };
           });
@@ -547,7 +547,7 @@ const DashScore = ({ userId, userType }) => {
             return {
               ...item,
               studentMeta: data.data.meta.students.filter(
-                (it) => item.student === it.student
+                (it) => item.student === it._id
               )[0],
             };
           });
@@ -599,7 +599,7 @@ const DashScore = ({ userId, userType }) => {
                   return {
                     ...item,
                     studentMeta: data.data.meta.students.filter(
-                      (it) => item.student === it.student
+                      (it) => item.student === it._id
                     )[0],
                   };
                 });
@@ -669,7 +669,7 @@ const DashScore = ({ userId, userType }) => {
                             return {
                               ...item,
                               studentMeta: data.data.meta.students.filter(
-                                (it) => item.student === it.student
+                                (it) => item.student === it._id
                               )[0],
                             };
                           }
