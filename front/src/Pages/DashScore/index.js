@@ -482,7 +482,13 @@ const DashScore = ({ userId, userType }) => {
           });
           console.log(data.data.dashscore);
           data.data.dashscore = data.data.dashscore.sort((a, b) => {
-            return a.studentMeta.name < b.studentMeta.name;
+            if (a.studentMeta.name < b.studentMeta.name) {
+              return -1;
+            }
+            if (a.studentMeta.name > b.studentMeta.name) {
+              return -1;
+            }
+            return 0;
           });
         }
         if (userType === USER_TYPE.STUDENT) {
@@ -553,7 +559,13 @@ const DashScore = ({ userId, userType }) => {
           });
           console.log(data.data.dashscore);
           data.data.dashscore = data.data.dashscore.sort((a, b) => {
-            return a.studentMeta.name < b.studentMeta.name;
+            if (a.studentMeta.name < b.studentMeta.name) {
+              return -1;
+            }
+            if (a.studentMeta.name > b.studentMeta.name) {
+              return -1;
+            }
+            return 0;
           });
           console.log(data.data.dashscore);
         }
@@ -606,7 +618,13 @@ const DashScore = ({ userId, userType }) => {
                 });
                 console.log(data.data.dashscore);
                 data.data.dashscore = data.data.dashscore.sort((a, b) => {
-                  return a.studentMeta.name < b.studentMeta.name;
+                  if (a.studentMeta.name < b.studentMeta.name) {
+                    return -1;
+                  }
+                  if (a.studentMeta.name > b.studentMeta.name) {
+                    return -1;
+                  }
+                  return 0;
                 });
               }
               if (userType === USER_TYPE.STUDENT) {
@@ -678,7 +696,13 @@ const DashScore = ({ userId, userType }) => {
                         console.log(data.data.dashscore);
                         data.data.dashscore = data.data.dashscore.sort(
                           (a, b) => {
-                            return a.studentMeta.name < b.studentMeta.name;
+                            if (a.studentMeta.name < b.studentMeta.name) {
+                              return -1;
+                            }
+                            if (a.studentMeta.name > b.studentMeta.name) {
+                              return -1;
+                            }
+                            return 0;
                           }
                         );
                       }
