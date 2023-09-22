@@ -469,7 +469,7 @@ const DashScore = ({ userId, userType }) => {
         return res.json();
       })
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         //console.log(JSON.stringify(data.data));
         if (data.data.dashscore.length !== 0) {
           data.data.dashscore = data.data.dashscore.map((item) => {
@@ -540,7 +540,7 @@ const DashScore = ({ userId, userType }) => {
         return res.json();
       })
       .then((data) => {
-        //console.log(data);
+        console.log(data);
         //console.log(JSON.stringify(data.data));
         if (data.data.dashscore.length !== 0) {
           data.data.dashscore = data.data.dashscore.map((item) => {
@@ -592,7 +592,7 @@ const DashScore = ({ userId, userType }) => {
               return res.json();
             })
             .then((data) => {
-              //console.log(data);
+              console.log(data);
               //console.log(JSON.stringify(data.data));
               if (data.data.dashscore.length !== 0) {
                 data.data.dashscore = data.data.dashscore.map((item) => {
@@ -662,7 +662,7 @@ const DashScore = ({ userId, userType }) => {
                       return res.json();
                     })
                     .then((data) => {
-                      //console.log(data);
+                      console.log(data);
                       if (data.data.dashscore.length !== 0) {
                         data.data.dashscore = data.data.dashscore.map(
                           (item) => {
