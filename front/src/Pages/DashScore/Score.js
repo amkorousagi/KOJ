@@ -235,7 +235,7 @@ const Score = ({
             </IconButton>
             <br />
             <Typography style={{ textAlign: "center", fontWeight: 800 }}>
-              채점기록
+              채점기록 : {title}
             </Typography>
             <hr />
             <CardContent>

@@ -66,7 +66,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
             } else {
               return acc + "";
             }
-          }) + "문제를 재채점 하시겠습니까?"
+          }, "") + "문제를 재채점 하시겠습니까?"
         )
       ) {
         fetch(BASE_URL + "/api/resubmission", {
@@ -532,7 +532,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                                     } else {
                                       return acc + "";
                                     }
-                                  })
+                                  }, "")
                               );
                             }}
                           >
