@@ -18,7 +18,7 @@ import {
   Paper,
   TableContainer,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Add,
@@ -48,6 +48,43 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleResubmission = useCallback(() => {
+    scores.dashscore.map((item) => {
+      if (userType !== USER_TYPE.PROFESSOR) {
+        return;
+      }
+      if (window.confirm(item[problemId] + "문제를 재채점 하시겠습니까?")) {
+        fetch(BASE_URL + "/api/resubmission", {
+          method: "POST",
+          headers: {
+            Authorization: "bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            submissions: [
+              item.submission.filter((it) => it.problem === problemId)[0]
+                .submission,
+            ],
+          }),
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            console.log(data);
+            alert(
+              "재채점이 완료되었습니다." +
+                item[problemId] +
+                "=>" +
+                data.data.score
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  }, [scores, userType, problemId, userId]);
   console.log(scores);
   // code, 결과, 재채점
   if (Object.keys(scores).length !== 0) {
@@ -442,47 +479,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                   const r = scores.meta.problems.map((p) => {
                     if (item[p._id] !== undefined) {
                       s_total += item[p._id];
-                      const handleResubmission = () => {
-                        if (userType !== USER_TYPE.PROFESSOR) {
-                          return;
-                        }
-                        if (
-                          window.confirm(
-                            item[p._id] + "문제를 재채점 하시겠습니까?"
-                          )
-                        ) {
-                          fetch(BASE_URL + "/api/resubmission", {
-                            method: "POST",
-                            headers: {
-                              Authorization:
-                                "bearer " + localStorage.getItem("token"),
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                              submissions: [
-                                item.submission.filter(
-                                  (it) => it.problem === p._id
-                                )[0].submission,
-                              ],
-                            }),
-                          })
-                            .then((res) => {
-                              return res.json();
-                            })
-                            .then((data) => {
-                              console.log(data);
-                              alert(
-                                "재채점이 완료되었습니다." +
-                                  item[p._id] +
-                                  "=>" +
-                                  data.data.score
-                              );
-                            })
-                            .catch((err) => {
-                              console.log(err);
-                            });
-                        }
-                      };
+
                       return (
                         <TableCell>
                           <Button
@@ -497,7 +494,6 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                               setOpen(true);
                               setProblemId(p._id);
                               setUserId(item.student);
-                              setHandleR(() => handleResubmission);
                               setTitle(
                                 scores.meta.students.reduce((acc, cur) => {
                                   if (cur._id === item.student) {
@@ -601,7 +597,8 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
             handleClose={handleClose}
             problemId={problemId}
             userId={userId}
-            handleResubmission={handleR}
+            handleResubmission={handleResubmission}
+            title={title}
           />
         </>
       );
