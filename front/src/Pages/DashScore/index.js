@@ -44,7 +44,6 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
   const [problemId, setProblemId] = useState("");
   const [userId, setUserId] = useState("");
   const [title, setTitle] = useState("");
-  const [handleR, setHandleR] = useState();
   const handleClose = () => {
     setOpen(false);
   };
@@ -59,7 +58,17 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
       if (item.student !== userId) {
         return;
       }
-      if (window.confirm(item[problemId] + "문제를 재채점 하시겠습니까?")) {
+      if (
+        window.confirm(
+          scores.meta.reduce((acc, cur) => {
+            if (cur._id === problemId) {
+              return cur.title;
+            } else {
+              return acc;
+            }
+          }) + "문제를 재채점 하시겠습니까?"
+        )
+      ) {
         fetch(BASE_URL + "/api/resubmission", {
           method: "POST",
           headers: {
