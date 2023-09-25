@@ -90,7 +90,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                   }}
                   onClick={() => {
                     setScores(
-                      scores.sort((a, b) => {
+                      scores.dashscore.sort((a, b) => {
                         if (a.studentMeta.name < b.studentMeta.name) {
                           return order.by === "asc" ? 1 : -1;
                         }
@@ -128,7 +128,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                   }}
                   onClick={() => {
                     setScores(
-                      scores.sort((a, b) => {
+                      scores.dashscore.sort((a, b) => {
                         if (a.studentMeta.id < b.studentMeta.id) {
                           return order.by === "asc" ? 1 : -1;
                         }
