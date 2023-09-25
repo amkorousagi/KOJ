@@ -43,6 +43,8 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
   const [open, setOpen] = useState(false);
   const [problemId, setProblemId] = useState("");
   const [userId, setUserId] = useState("");
+  const [title, setTitle] = useState("");
+  const [handleR, setHandleR] = useState();
   const handleClose = () => {
     setOpen(false);
   };
@@ -440,7 +442,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                   const r = scores.meta.problems.map((p) => {
                     if (item[p._id] !== undefined) {
                       s_total += item[p._id];
-                      const resubmissionCallback = () => {
+                      const handleResubmission = () => {
                         if (userType !== USER_TYPE.PROFESSOR) {
                           return;
                         }
@@ -495,6 +497,32 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                               setOpen(true);
                               setProblemId(p._id);
                               setUserId(item.student);
+                              setHandleR(handleResubmission);
+                              setTitle(
+                                scores.meta.students.reduce((acc, cur) => {
+                                  if (cur._id === item.student) {
+                                    return cur.name;
+                                  } else {
+                                    return acc + "";
+                                  }
+                                }, "") +
+                                  "(" +
+                                  scores.meta.students.reduce((acc, cur) => {
+                                    if (cur._id === item.student) {
+                                      return cur.id;
+                                    } else {
+                                      return acc + "";
+                                    }
+                                  }, "") +
+                                  ") - " +
+                                  scores.meta.problems.reduce((acc, cur) => {
+                                    if (cur._id === p._id) {
+                                      return cur.title;
+                                    } else {
+                                      return acc + "";
+                                    }
+                                  })
+                              );
                             }}
                           >
                             {item[p._id] < p.score ? (
@@ -573,6 +601,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
             handleClose={handleClose}
             problemId={problemId}
             userId={userId}
+            handleResubmission={handleR}
           />
         </>
       );

@@ -14,7 +14,7 @@ import {
   IconButton,
   Typography,
 } from "@material-ui/core";
-import { Close } from "@mui/icons-material";
+import { Close, RestartAlt } from "@mui/icons-material";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../../config.js";
 
@@ -33,6 +33,8 @@ const Score = ({
   userId,
   problemMeta,
   userMeta,
+  title,
+  handleResubmission,
 }) => {
   const [submissions, setSubmissions] = React.useState([]);
   const submissions_components = submissions.map((item) => {
@@ -219,6 +221,12 @@ const Score = ({
               //overflowY: "auto",
             }}
           >
+            <IconButton
+              style={{ position: "absolute", top: 0, left: 0 }}
+              onClick={handleResubmission}
+            >
+              <RestartAlt />
+            </IconButton>
             <IconButton
               style={{ position: "absolute", top: 0, right: 0 }}
               onClick={handleClose}
