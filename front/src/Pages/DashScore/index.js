@@ -335,12 +335,31 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
             <TableHead>
               <TableRow>
                 <TableCell
+                  button
                   style={{
                     position: "sticky",
                     top: 0,
                     left: 0,
                     backgroundColor: "#F0F0F0",
                     zIndex: 11,
+                  }}
+                  onClick={() => {
+                    setScores({
+                      ...scores,
+                      dashscore: scores.dashscore.sort((a, b) => {
+                        if (a.studentMeta.name < b.studentMeta.name) {
+                          return order.by === "asc" ? 1 : -1;
+                        }
+                        if (a.studentMeta.name > b.studentMeta.name) {
+                          return order.by === "asc" ? -1 : 1;
+                        }
+                        return 0;
+                      }),
+                    });
+                    setOrder({
+                      name: "name",
+                      by: order.by === "asc" ? "desc" : "asc",
+                    });
                   }}
                 >
                   이름
@@ -355,12 +374,31 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                   )}
                 </TableCell>
                 <TableCell
+                  button
                   style={{
                     position: "sticky",
                     top: 0,
                     left: 0,
                     backgroundColor: "#F0F0F0",
                     zIndex: 11,
+                  }}
+                  onClick={() => {
+                    setScores({
+                      ...scores,
+                      dashscore: scores.dashscore.sort((a, b) => {
+                        if (a.studentMeta.id < b.studentMeta.id) {
+                          return order.by === "asc" ? 1 : -1;
+                        }
+                        if (a.studentMeta.id > b.studentMeta.id) {
+                          return order.by === "asc" ? -1 : 1;
+                        }
+                        return 0;
+                      }),
+                    });
+                    setOrder({
+                      name: "id",
+                      by: order.by === "asc" ? "desc" : "asc",
+                    });
                   }}
                 >
                   학번
