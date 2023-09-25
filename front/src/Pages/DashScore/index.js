@@ -89,8 +89,9 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                     zIndex: 11,
                   }}
                   onClick={() => {
-                    setScores(
-                      scores.dashscore.sort((a, b) => {
+                    setScores({
+                      ...scores,
+                      dashscore: scores.dashscore.sort((a, b) => {
                         if (a.studentMeta.name < b.studentMeta.name) {
                           return order.by === "asc" ? 1 : -1;
                         }
@@ -98,8 +99,8 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                           return order.by === "asc" ? -1 : 1;
                         }
                         return 0;
-                      })
-                    );
+                      }),
+                    });
                     setOrder({
                       name: "name",
                       by: order.by === "asc" ? "desc" : "asc",
@@ -127,8 +128,9 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                     zIndex: 11,
                   }}
                   onClick={() => {
-                    setScores(
-                      scores.dashscore.sort((a, b) => {
+                    setScores({
+                      ...scores,
+                      dashscore: scores.dashscore.sort((a, b) => {
                         if (a.studentMeta.id < b.studentMeta.id) {
                           return order.by === "asc" ? 1 : -1;
                         }
@@ -136,8 +138,8 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                           return order.by === "asc" ? -1 : 1;
                         }
                         return 0;
-                      })
-                    );
+                      }),
+                    });
                     setOrder({
                       name: "id",
                       by: order.by === "asc" ? "desc" : "asc",
