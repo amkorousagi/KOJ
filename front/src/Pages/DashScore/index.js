@@ -497,7 +497,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                               setOpen(true);
                               setProblemId(p._id);
                               setUserId(item.student);
-                              setHandleR(handleResubmission);
+                              setHandleR(() => handleResubmission);
                               setTitle(
                                 scores.meta.students.reduce((acc, cur) => {
                                   if (cur._id === item.student) {
