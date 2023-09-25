@@ -84,7 +84,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
           });
       }
     });
-  }, [scores, userType, problemId, userId]);
+  }, [problemId, userId]);
   console.log(scores);
   // code, 결과, 재채점
   if (Object.keys(scores).length !== 0) {
