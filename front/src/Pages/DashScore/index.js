@@ -50,7 +50,13 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
   };
   const handleResubmission = useCallback(() => {
     scores.dashscore.map((item) => {
+      if (item[problemId] !== undefined) {
+        return;
+      }
       if (userType !== USER_TYPE.PROFESSOR) {
+        return;
+      }
+      if (item.student !== userId) {
         return;
       }
       if (window.confirm(item[problemId] + "문제를 재채점 하시겠습니까?")) {
