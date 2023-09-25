@@ -36,9 +36,16 @@ import {
 import { BASE_URL, FILE_URL } from "../../config.js";
 import { maxWidth } from "@mui/system";
 import { USER_TYPE } from "../../type.js";
+import Score from "./Score.js";
 
 const Dash = ({ scores, setScores, requestPractice, userType }) => {
   const [order, setOrder] = useState({ name: "name", by: "asc" });
+  const [open, setOpen] = useState(false);
+  const [problemId, setProblemId] = useState("");
+  const [userId, setUserId] = useState("");
+  const handleClose = () => {
+    setOpen(false);
+  };
   console.log(scores);
   // code, 결과, 재채점
   if (Object.keys(scores).length !== 0) {
@@ -330,230 +337,244 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
         );
       });
       return (
-        <TableContainer style={{ maxHeight: "80vh" }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  button
-                  style={{
-                    position: "sticky",
-                    top: 0,
-                    left: 0,
-                    backgroundColor: "#F0F0F0",
-                    zIndex: 11,
-                  }}
-                  onClick={() => {
-                    setScores({
-                      ...scores,
-                      dashscore: scores.dashscore.sort((a, b) => {
-                        if (a.studentMeta.name < b.studentMeta.name) {
-                          return order.by === "asc" ? 1 : -1;
-                        }
-                        if (a.studentMeta.name > b.studentMeta.name) {
-                          return order.by === "asc" ? -1 : 1;
-                        }
-                        return 0;
-                      }),
-                    });
-                    setOrder({
-                      name: "name",
-                      by: order.by === "asc" ? "desc" : "asc",
-                    });
-                  }}
-                >
-                  이름
-                  {order.name === "name" ? (
-                    order.by === "asc" ? (
-                      <North />
+        <>
+          <TableContainer style={{ maxHeight: "80vh" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    button
+                    style={{
+                      position: "sticky",
+                      top: 0,
+                      left: 0,
+                      backgroundColor: "#F0F0F0",
+                      zIndex: 11,
+                    }}
+                    onClick={() => {
+                      setScores({
+                        ...scores,
+                        dashscore: scores.dashscore.sort((a, b) => {
+                          if (a.studentMeta.name < b.studentMeta.name) {
+                            return order.by === "asc" ? 1 : -1;
+                          }
+                          if (a.studentMeta.name > b.studentMeta.name) {
+                            return order.by === "asc" ? -1 : 1;
+                          }
+                          return 0;
+                        }),
+                      });
+                      setOrder({
+                        name: "name",
+                        by: order.by === "asc" ? "desc" : "asc",
+                      });
+                    }}
+                  >
+                    이름
+                    {order.name === "name" ? (
+                      order.by === "asc" ? (
+                        <North />
+                      ) : (
+                        <South />
+                      )
                     ) : (
-                      <South />
-                    )
-                  ) : (
-                    <></>
-                  )}
-                </TableCell>
-                <TableCell
-                  button
-                  style={{
-                    position: "sticky",
-                    top: 0,
-                    left: 0,
-                    backgroundColor: "#F0F0F0",
-                    zIndex: 11,
-                  }}
-                  onClick={() => {
-                    setScores({
-                      ...scores,
-                      dashscore: scores.dashscore.sort((a, b) => {
-                        if (a.studentMeta.id < b.studentMeta.id) {
-                          return order.by === "asc" ? 1 : -1;
-                        }
-                        if (a.studentMeta.id > b.studentMeta.id) {
-                          return order.by === "asc" ? -1 : 1;
-                        }
-                        return 0;
-                      }),
-                    });
-                    setOrder({
-                      name: "id",
-                      by: order.by === "asc" ? "desc" : "asc",
-                    });
-                  }}
-                >
-                  학번
-                  {order.name === "id" ? (
-                    order.by === "asc" ? (
-                      <North />
+                      <></>
+                    )}
+                  </TableCell>
+                  <TableCell
+                    button
+                    style={{
+                      position: "sticky",
+                      top: 0,
+                      left: 0,
+                      backgroundColor: "#F0F0F0",
+                      zIndex: 11,
+                    }}
+                    onClick={() => {
+                      setScores({
+                        ...scores,
+                        dashscore: scores.dashscore.sort((a, b) => {
+                          if (a.studentMeta.id < b.studentMeta.id) {
+                            return order.by === "asc" ? 1 : -1;
+                          }
+                          if (a.studentMeta.id > b.studentMeta.id) {
+                            return order.by === "asc" ? -1 : 1;
+                          }
+                          return 0;
+                        }),
+                      });
+                      setOrder({
+                        name: "id",
+                        by: order.by === "asc" ? "desc" : "asc",
+                      });
+                    }}
+                  >
+                    학번
+                    {order.name === "id" ? (
+                      order.by === "asc" ? (
+                        <North />
+                      ) : (
+                        <South />
+                      )
                     ) : (
-                      <South />
-                    )
-                  ) : (
-                    <></>
-                  )}
-                </TableCell>
-                <TableCell
-                  style={{
-                    position: "sticky",
-                    top: 0,
-                    left: 45,
-                    backgroundColor: "#F0F0F0",
-                    zIndex: 11,
-                  }}
-                >
-                  총점({total})
-                </TableCell>
-                {head}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {scores.dashscore.map((item) => {
-                let s_total = 0;
-                const r = scores.meta.problems.map((p) => {
-                  if (item[p._id] !== undefined) {
-                    s_total += item[p._id];
-
-                    return (
-                      <TableCell>
-                        <Button
-                          style={{
-                            backgroundColor:
-                              item[p._id] < p.score ? "transparent" : "#aef45b",
-                          }}
-                          variant="outlined"
-                          onClick={() => {
-                            if (userType !== USER_TYPE.PROFESSOR) {
-                              return;
-                            }
-                            if (
-                              window.confirm(
-                                item[p._id] + "문제를 재채점 하시겠습니까?"
-                              )
-                            ) {
-                              fetch(BASE_URL + "/api/resubmission", {
-                                method: "POST",
-                                headers: {
-                                  Authorization:
-                                    "bearer " + localStorage.getItem("token"),
-                                  "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                  submissions: [
-                                    item.submission.filter(
-                                      (it) => it.problem === p._id
-                                    )[0].submission,
-                                  ],
-                                }),
-                              })
-                                .then((res) => {
-                                  return res.json();
-                                })
-                                .then((data) => {
-                                  console.log(data);
-                                  alert(
-                                    "재채점이 완료되었습니다." +
-                                      item[p._id] +
-                                      "=>" +
-                                      data.data.score
-                                  );
-                                })
-                                .catch((err) => {
-                                  console.log(err);
-                                });
-                            }
-                          }}
-                        >
-                          {item[p._id] < p.score ? (
-                            <ChangeHistory />
-                          ) : (
-                            <PanoramaFishEye />
-                          )}
-                          ({item[p._id]})
-                        </Button>
-                      </TableCell>
-                    );
-                  } else {
-                    return (
-                      <TableCell>
-                        <Button variant="outlined" disabled>
-                          <Close />
-                          미제출
-                        </Button>
-                      </TableCell>
-                    );
-                  }
-                });
-                return (
-                  <TableRow>
-                    <TableCell
-                      style={{
-                        position: "sticky",
-                        left: 0,
-                        zIndex: 10,
-                        backgroundColor: "white",
-                      }}
-                    >
-                      {scores.meta.students.reduce((acc, cur) => {
-                        if (cur._id === item.student) {
-                          return cur.name;
-                        } else {
-                          return acc + "";
+                      <></>
+                    )}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      position: "sticky",
+                      top: 0,
+                      left: 45,
+                      backgroundColor: "#F0F0F0",
+                      zIndex: 11,
+                    }}
+                  >
+                    총점({total})
+                  </TableCell>
+                  {head}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {scores.dashscore.map((item) => {
+                  let s_total = 0;
+                  const r = scores.meta.problems.map((p) => {
+                    if (item[p._id] !== undefined) {
+                      s_total += item[p._id];
+                      const resubmissionCallback = () => {
+                        if (userType !== USER_TYPE.PROFESSOR) {
+                          return;
                         }
-                      }, "")}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        position: "sticky",
-                        left: 0,
-                        zIndex: 10,
-                        backgroundColor: "white",
-                      }}
-                    >
-                      {scores.meta.students.reduce((acc, cur) => {
-                        if (cur._id === item.student) {
-                          return cur.id;
-                        } else {
-                          return acc + "";
+                        if (
+                          window.confirm(
+                            item[p._id] + "문제를 재채점 하시겠습니까?"
+                          )
+                        ) {
+                          fetch(BASE_URL + "/api/resubmission", {
+                            method: "POST",
+                            headers: {
+                              Authorization:
+                                "bearer " + localStorage.getItem("token"),
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                              submissions: [
+                                item.submission.filter(
+                                  (it) => it.problem === p._id
+                                )[0].submission,
+                              ],
+                            }),
+                          })
+                            .then((res) => {
+                              return res.json();
+                            })
+                            .then((data) => {
+                              console.log(data);
+                              alert(
+                                "재채점이 완료되었습니다." +
+                                  item[p._id] +
+                                  "=>" +
+                                  data.data.score
+                              );
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
                         }
-                      }, "")}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        position: "sticky",
-                        left: 45,
-                        zIndex: 10,
-                        backgroundColor: "white",
-                      }}
-                    >
-                      {s_total}
-                    </TableCell>
-                    {r}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      };
+                      return (
+                        <TableCell>
+                          <Button
+                            style={{
+                              backgroundColor:
+                                item[p._id] < p.score
+                                  ? "transparent"
+                                  : "#aef45b",
+                            }}
+                            variant="outlined"
+                            onClick={() => {
+                              setOpen(true);
+                              setProblemId(p._id);
+                              setUserId(item.student);
+                            }}
+                          >
+                            {item[p._id] < p.score ? (
+                              <ChangeHistory />
+                            ) : (
+                              <PanoramaFishEye />
+                            )}
+                            ({item[p._id]})
+                          </Button>
+                        </TableCell>
+                      );
+                    } else {
+                      return (
+                        <TableCell>
+                          <Button variant="outlined" disabled>
+                            <Close />
+                            미제출
+                          </Button>
+                        </TableCell>
+                      );
+                    }
+                  });
+                  return (
+                    <TableRow>
+                      <TableCell
+                        style={{
+                          position: "sticky",
+                          left: 0,
+                          zIndex: 10,
+                          backgroundColor: "white",
+                        }}
+                      >
+                        {scores.meta.students.reduce((acc, cur) => {
+                          if (cur._id === item.student) {
+                            return cur.name;
+                          } else {
+                            return acc + "";
+                          }
+                        }, "")}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          position: "sticky",
+                          left: 0,
+                          zIndex: 10,
+                          backgroundColor: "white",
+                        }}
+                      >
+                        {scores.meta.students.reduce((acc, cur) => {
+                          if (cur._id === item.student) {
+                            return cur.id;
+                          } else {
+                            return acc + "";
+                          }
+                        }, "")}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          position: "sticky",
+                          left: 45,
+                          zIndex: 10,
+                          backgroundColor: "white",
+                        }}
+                      >
+                        {s_total}
+                      </TableCell>
+                      {r}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Score
+            open={open}
+            handleClose={handleClose}
+            problemId={problemId}
+            userId={userId}
+          />
+        </>
       );
     }
   } else {
