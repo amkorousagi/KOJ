@@ -60,7 +60,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
       }
       if (
         window.confirm(
-          scores.meta.reduce((acc, cur) => {
+          scores.meta.problems.reduce((acc, cur) => {
             if (cur._id === problemId) {
               return cur.title;
             } else {
