@@ -639,7 +639,13 @@ const DashScore = ({ userId, userType }) => {
         //console.log(data);
         setPracticeData(
           data.data.sort((a, b) => {
-            return a.start_date < b.start_date;
+            if (a.start_date < b.start_date) {
+              return -1;
+            }
+            if (a.start_date > b.start_date) {
+              return 1;
+            }
+            return 0;
           })
         );
       })
