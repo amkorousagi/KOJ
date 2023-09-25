@@ -50,7 +50,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
   };
   const handleResubmission = useCallback(() => {
     scores.dashscore.map((item) => {
-      if (item[problemId] !== undefined) {
+      if (item[problemId] === undefined) {
         return;
       }
       if (userType !== USER_TYPE.PROFESSOR) {
