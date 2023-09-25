@@ -29,13 +29,16 @@ import {
   ExpandLess,
   ExpandMore,
   LeakAddOutlined,
+  North,
   PanoramaFishEye,
+  South,
 } from "@mui/icons-material";
 import { BASE_URL, FILE_URL } from "../../config.js";
 import { maxWidth } from "@mui/system";
 import { USER_TYPE } from "../../type.js";
 
-const Dash = ({ scores, requestPractice, userType }) => {
+const Dash = ({ scores, setScores, requestPractice, userType }) => {
+  const [order, setOrder] = useState({ name: "name", by: "asc" });
   console.log(scores);
   // code, 결과, 재채점
   if (Object.keys(scores).length !== 0) {
@@ -72,22 +75,50 @@ const Dash = ({ scores, requestPractice, userType }) => {
         );
       });
       return (
-        <TableContainer style={{ maxHeight: "80vh" }}>
+        <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell
+                  button
                   style={{
                     position: "sticky",
                     top: 0,
                     left: 0,
                     backgroundColor: "#F0F0F0",
                     zIndex: 11,
+                  }}
+                  onClick={() => {
+                    setScores(
+                      scores.sort((a, b) => {
+                        if (a.studentMeta.name < b.studentMeta.name) {
+                          return order.by === "asc" ? 1 : -1;
+                        }
+                        if (a.studentMeta.name > b.studentMeta.name) {
+                          return order.by === "asc" ? -1 : 1;
+                        }
+                        return 0;
+                      })
+                    );
+                    setOrder({
+                      name: "name",
+                      by: order.by === "asc" ? "desc" : "asc",
+                    });
                   }}
                 >
                   이름
+                  {order.name === "name" ? (
+                    order.by === "asc" ? (
+                      <North />
+                    ) : (
+                      <South />
+                    )
+                  ) : (
+                    <></>
+                  )}
                 </TableCell>
                 <TableCell
+                  button
                   style={{
                     position: "sticky",
                     top: 0,
@@ -95,8 +126,34 @@ const Dash = ({ scores, requestPractice, userType }) => {
                     backgroundColor: "#F0F0F0",
                     zIndex: 11,
                   }}
+                  onClick={() => {
+                    setScores(
+                      scores.sort((a, b) => {
+                        if (a.studentMeta.id < b.studentMeta.id) {
+                          return order.by === "asc" ? 1 : -1;
+                        }
+                        if (a.studentMeta.id > b.studentMeta.id) {
+                          return order.by === "asc" ? -1 : 1;
+                        }
+                        return 0;
+                      })
+                    );
+                    setOrder({
+                      name: "id",
+                      by: order.by === "asc" ? "desc" : "asc",
+                    });
+                  }}
                 >
                   학번
+                  {order.name === "id" ? (
+                    order.by === "asc" ? (
+                      <North />
+                    ) : (
+                      <South />
+                    )
+                  ) : (
+                    <></>
+                  )}
                 </TableCell>
                 <TableCell
                   style={{
@@ -112,7 +169,7 @@ const Dash = ({ scores, requestPractice, userType }) => {
                 {head}
               </TableRow>
             </TableHead>
-            <TableBody style={{}}>
+            <TableBody>
               {scores.dashscore.map((item) => {
                 let s_total = 0;
 
@@ -285,6 +342,15 @@ const Dash = ({ scores, requestPractice, userType }) => {
                   }}
                 >
                   이름
+                  {order.name === "name" ? (
+                    order.by === "asc" ? (
+                      <North />
+                    ) : (
+                      <South />
+                    )
+                  ) : (
+                    <></>
+                  )}
                 </TableCell>
                 <TableCell
                   style={{
@@ -296,6 +362,15 @@ const Dash = ({ scores, requestPractice, userType }) => {
                   }}
                 >
                   학번
+                  {order.name === "id" ? (
+                    order.by === "asc" ? (
+                      <North />
+                    ) : (
+                      <South />
+                    )
+                  ) : (
+                    <></>
+                  )}
                 </TableCell>
                 <TableCell
                   style={{
@@ -754,6 +829,7 @@ const DashScore = ({ userId, userType }) => {
                     </Typography>{" "}
                     <Dash
                       scores={scores}
+                      setScores={setScores}
                       requestPractice={requestPractice}
                       userType={userType}
                     />
