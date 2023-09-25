@@ -64,7 +64,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
             if (cur._id === problemId) {
               return cur.title;
             } else {
-              return acc;
+              return acc + "";
             }
           }) + "문제를 재채점 하시겠습니까?"
         )
