@@ -732,6 +732,9 @@ const DashScore = ({ userId, userType }) => {
         console.log(data);
         //console.log(JSON.stringify(data.data));
         if (data.data.dashscore.length !== 0) {
+          data.data.dashscore = data.data.dashscore.filter((item) => {
+            return data.data.meta.students.includes(item.student);
+          });
           data.data.dashscore = data.data.dashscore.map((item) => {
             return {
               ...item,
