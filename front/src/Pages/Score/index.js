@@ -43,7 +43,7 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "blue",
+              color: "green",
             }}
           >
             {r[j]}
@@ -57,10 +57,10 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "green",
+              color: "red",
             }}
           >
-            {"@"}
+            {"□"}
           </span>
         );
         continue;
@@ -285,7 +285,7 @@ const Score = () => {
             <span
               style={{
                 backgroundColor: "yellow",
-                color: "blue",
+                color: "green",
               }}
             >
               {"초 과"}
@@ -303,10 +303,10 @@ const Score = () => {
             <span
               style={{
                 backgroundColor: "yellow",
-                color: "green",
+                color: "red",
               }}
             >
-              {"@"}
+              {"□"}
             </span>
           </Typography>
           <Card variant="outlined">
