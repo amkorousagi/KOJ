@@ -43,7 +43,7 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "aqua",
+              color: "blue",
             }}
           >
             {r[j]}
@@ -57,7 +57,7 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "#9370db",
+              color: "green",
             }}
           >
             {"@"}
@@ -279,13 +279,13 @@ const Score = () => {
       style={{ margin: 5 }}
     >
       <Grid item xs={12}>
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box justifyContent="center" alignItems="center">
           <Typography>
             초과된 출력은{" "}
             <span
               style={{
                 backgroundColor: "yellow",
-                color: "aqua",
+                color: "blue",
               }}
             >
               {"초 과"}
@@ -303,10 +303,10 @@ const Score = () => {
             <span
               style={{
                 backgroundColor: "yellow",
-                color: "#9370db",
+                color: "green",
               }}
             >
-              {"부 족"}
+              {"@"}
             </span>
           </Typography>
           <Card variant="outlined">
