@@ -43,7 +43,7 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "red",
+              color: "blue",
             }}
           >
             {r[j]}
@@ -57,7 +57,7 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "red",
+              color: "purple",
             }}
           >
             {"@"}
@@ -272,6 +272,35 @@ const Score = () => {
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
+      <Typography>
+        초과된 출력은{" "}
+        <span
+          style={{
+            backgroundColor: "yellow",
+            color: "blue",
+          }}
+        >
+          {"초 과"}
+        </span>
+        ,오답인 출력은{" "}
+        <span
+          style={{
+            backgroundColor: "yellow",
+            color: "red",
+          }}
+        >
+          {"오 답"}
+        </span>
+        , 부족한 출력은{" "}
+        <span
+          style={{
+            backgroundColor: "yellow",
+            color: "purple",
+          }}
+        >
+          {"부 족"}
+        </span>
+      </Typography>
       <Card variant="outlined">
         <CardContent style={{ minWidth: "80vw" }}>
           <Content submission={submission} testcases={testcases} />
