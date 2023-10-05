@@ -34,8 +34,9 @@ const HighlightDiff = ({ answer, result }) => {
     }
     const a = answerLine[i];
     const r = resultLine[i];
+    const l = a.length > r.length ? a.length : r.length;
     const lineDifferences = [];
-    for (let j = 0; j < r.length; j++) {
+    for (let j = 0; j < l; j++) {
       if (a.length <= j) {
         lineDifferences.push(
           <span
@@ -46,6 +47,20 @@ const HighlightDiff = ({ answer, result }) => {
             }}
           >
             {r[j]}
+          </span>
+        );
+        continue;
+      }
+      if (r.length <= j) {
+        lineDifferences.push(
+          <span
+            key={j}
+            style={{
+              backgroundColor: "yellow",
+              color: "red",
+            }}
+          >
+            {" "}
           </span>
         );
         continue;
