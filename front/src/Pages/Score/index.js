@@ -43,7 +43,7 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "blue",
+              color: "aqua",
             }}
           >
             {r[j]}
@@ -57,7 +57,7 @@ const HighlightDiff = ({ answer, result }) => {
             key={j}
             style={{
               backgroundColor: "yellow",
-              color: "purple",
+              color: "#9370db",
             }}
           >
             {"@"}
@@ -271,42 +271,52 @@ const Score = () => {
   }, [submissionId]);
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-      <Typography>
-        초과된 출력은{" "}
-        <span
-          style={{
-            backgroundColor: "yellow",
-            color: "blue",
-          }}
-        >
-          {"초 과"}
-        </span>
-        ,오답인 출력은{" "}
-        <span
-          style={{
-            backgroundColor: "yellow",
-            color: "red",
-          }}
-        >
-          {"오 답"}
-        </span>
-        , 부족한 출력은{" "}
-        <span
-          style={{
-            backgroundColor: "yellow",
-            color: "purple",
-          }}
-        >
-          {"부 족"}
-        </span>
-      </Typography>
-      <Card variant="outlined">
-        <CardContent style={{ minWidth: "80vw" }}>
-          <Content submission={submission} testcases={testcases} />
-        </CardContent>
-      </Card>
-    </Box>
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      style={{ margin: 5 }}
+    >
+      <Grid item xs={12}>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Typography>
+            초과된 출력은{" "}
+            <span
+              style={{
+                backgroundColor: "yellow",
+                color: "aqua",
+              }}
+            >
+              {"초 과"}
+            </span>
+            ,오답인 출력은{" "}
+            <span
+              style={{
+                backgroundColor: "yellow",
+                color: "red",
+              }}
+            >
+              {"오 답"}
+            </span>
+            , 부족한 출력은{" "}
+            <span
+              style={{
+                backgroundColor: "yellow",
+                color: "#9370db",
+              }}
+            >
+              {"부 족"}
+            </span>
+          </Typography>
+          <Card variant="outlined">
+            <CardContent style={{ minWidth: "80vw" }}>
+              <Content submission={submission} testcases={testcases} />
+            </CardContent>
+          </Card>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 export default Score;
