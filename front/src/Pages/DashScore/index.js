@@ -392,7 +392,7 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
       });
       return (
         <>
-          <TableContainer style={{ maxHeight: "80vh" }}>
+          <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
