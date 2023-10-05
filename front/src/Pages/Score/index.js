@@ -60,7 +60,7 @@ const HighlightDiff = ({ answer, result }) => {
               color: "red",
             }}
           >
-            {" "}
+            {"@"}
           </span>
         );
         continue;
