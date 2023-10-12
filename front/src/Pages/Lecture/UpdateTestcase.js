@@ -539,7 +539,9 @@ const UpdateTestcase = ({
               key={curTestcase.output_text}
               variant="outlined"
               label="표준 출력"
-              InputProps={{ className: "coding" }}
+              InputProps={{
+                style: { fontFamily: '"Nanum Gothic Coding", monospace' },
+              }}
               style={{ width: "100%" }}
               defaultValue={curTestcase.output_text}
               multiline
