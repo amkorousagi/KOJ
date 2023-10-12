@@ -29,7 +29,17 @@ const HighlightDiff = ({ answer, result }) => {
 
   for (let i = 0; i < resultLine.length; i++) {
     if (answerLine.length <= i) {
-      differences.push(<div key={i}>{resultLine[i]}</div>);
+      differences.push(
+        <div
+          key={i}
+          style={{
+            backgroundColor: "yellow",
+            color: "green",
+          }}
+        >
+          {resultLine[i]}
+        </div>
+      );
       continue;
     }
     const a = answerLine[i];
@@ -81,7 +91,7 @@ const HighlightDiff = ({ answer, result }) => {
         lineDifferences.push(r[j]);
       }
     }
-
+    console.log(lineDifferences);
     differences.push(<div key={i}>{lineDifferences}</div>);
   }
 
