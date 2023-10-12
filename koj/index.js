@@ -914,8 +914,8 @@ app.get(
                     .split("\r\n")
                     .map((line) => line.trim())
                     .join("\r\n")
-                : result.stdout.replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
-                  t.output_text.replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                : result.stdout.replace(/(?:\r\n|\r|\n)/g, "\r\n").trimEnd() ==
+                  t.output_text.replace(/(?:\r\n|\r|\n)/g, "\r\n").trimEnd()
             ) {
               success.push(true);
               feedback.push("good");
