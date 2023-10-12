@@ -99,7 +99,6 @@ const HighlightDiff = ({ answer, result }) => {
     <div
       className="coding"
       style={{
-        fontFamily: `"Nanum Gothic Coding", monospace !important`,
         color: "black",
         whiteSpace: "pre",
       }}
@@ -158,7 +157,6 @@ const Content = ({ submission, testcases }) => {
               </div>
               <br />
               <TextField
-                className="coding"
                 InputLabelProps={{ style: { color: "black" }, shrink: true }}
                 disabled
                 variant="outlined"
@@ -166,7 +164,9 @@ const Content = ({ submission, testcases }) => {
                 multiline
                 fullWidth
                 InputProps={{
-                  className: "coding",
+                  style: {
+                    fontFamily: '"Nanum Gothic Coding", monospace',
+                  },
                   inputComponent: () => (
                     <HighlightDiff
                       answer={testcases[i].output_text}
