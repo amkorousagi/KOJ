@@ -180,6 +180,8 @@ app.get(
     try {
       const submission = await Submission.findById(req.params.submission_id);
       const entry = submission.entry;
+      const problem = await Problem.findById(submission.problem);
+      const trim = problem.trim === "false" ? false : true;
       await Submission.findByIdAndUpdate(req.params.submission_id, {
         state: "doing (0%)",
       });
@@ -212,7 +214,6 @@ app.get(
           })
           .catch((err) => console.log(err));
       }
-      const problem = await Problem.findById(submission.problem);
 
       if (problem.problem_type === "result") {
         console.log(submission.result.trim());
@@ -900,18 +901,21 @@ app.get(
                 .join("\r\n"),
             });
             if (
-              result.stdout
-                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
-                .trim()
-                .split("\r\n")
-                .map((line) => line.trim())
-                .join("\r\n") ==
-              t.output_text
-                .replace(/(?:\r\n|\r|\n)/g, "\r\n")
-                .trim()
-                .split("\r\n")
-                .map((line) => line.trim())
-                .join("\r\n")
+              trim
+                ? result.stdout
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                    .trim()
+                    .split("\r\n")
+                    .map((line) => line.trim())
+                    .join("\r\n") ==
+                  t.output_text
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                    .trim()
+                    .split("\r\n")
+                    .map((line) => line.trim())
+                    .join("\r\n")
+                : result.stdout.replace(/(?:\r\n|\r|\n)/g, "\r\n") ==
+                  t.output_text.replace(/(?:\r\n|\r|\n)/g, "\r\n")
             ) {
               success.push(true);
               feedback.push("good");

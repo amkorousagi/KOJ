@@ -11,6 +11,7 @@ const problemSchema = mongoose.Schema({
   execution_time_limit: Number,
   blank: String,
   blank_language: String,
+  trim: String,
 });
 
 const Problem = mongoose.model("Problem", problemSchema);

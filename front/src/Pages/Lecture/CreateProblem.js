@@ -42,6 +42,8 @@ const CreateProblem = ({
   const [execution_time_limit, setExecution_time_limit] = React.useState(1000);
   const [blank, setBlank] = React.useState("#BLANK#");
   const [blank_language, setBlank_language] = React.useState("c");
+  const [trim, setTrim] = React.useState("true");
+
   useEffect(() => {
     setScore(0);
   }, [problem_type]);
@@ -92,6 +94,7 @@ const CreateProblem = ({
             execution_time_limit,
             blank,
             blank_language,
+            trim,
           }),
         })
           .then((res) => {
@@ -364,6 +367,37 @@ const CreateProblem = ({
               <FormControlLabel
                 value="solve"
                 label="문제 해결"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+            </RadioGroup>
+            <br />
+            <br />
+            <RadioGroup
+              row
+              defaultValue={trim}
+              onChange={(e) => {
+                e.preventDefault();
+                setTrim(e.target.value);
+              }}
+            >
+              <FormLabel
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                트림&nbsp;&nbsp;
+              </FormLabel>
+              <FormControlLabel
+                value="true"
+                label="한다"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="false"
+                label="안한다"
                 labelPlacement="end"
                 control={<Radio color="primary" />}
               />

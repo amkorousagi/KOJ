@@ -18,6 +18,7 @@ updateProblemRoute.post(
       blank = null,
       blank_language = null,
       execution_time_limit = null,
+      trim = null,
     } = req.body;
 
     // 유효성 검증 , id.. problem_type
@@ -33,6 +34,7 @@ updateProblemRoute.post(
       blank,
       blank_language,
       execution_time_limit,
+      trim,
     });
   })
 );

@@ -54,6 +54,7 @@ const UpdateProblem = ({
   const [at, setAt] = React.useState([]);
   const [blank, setBlank] = React.useState(null);
   const [blank_language, setBlank_language] = React.useState(null);
+  const [trim, setTrim] = React.useState(null);
 
   const updateProblem = () => {
     if (execution_time_limit > 10000) {
@@ -114,6 +115,9 @@ const UpdateProblem = ({
         }
         if (blank_language !== null) {
           update.blank_language = blank_language;
+        }
+        if (trim !== null) {
+          update.trim = trim;
         }
 
         fetch(BASE_URL + "/api/updateProblem", {
@@ -555,6 +559,37 @@ const UpdateProblem = ({
               <FormControlLabel
                 value="solve"
                 label="문제 해결"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+            </RadioGroup>
+            <br />
+            <br />
+            <RadioGroup
+              row
+              defaultValue={trim}
+              onChange={(e) => {
+                e.preventDefault();
+                setTrim(e.target.value);
+              }}
+            >
+              <FormLabel
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                트림&nbsp;&nbsp;
+              </FormLabel>
+              <FormControlLabel
+                value="true"
+                label="한다"
+                labelPlacement="end"
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                value="false"
+                label="안한다"
                 labelPlacement="end"
                 control={<Radio color="primary" />}
               />
