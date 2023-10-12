@@ -159,15 +159,6 @@ const Content = ({ submission, testcases }) => {
               />
               <br />
               <br />
-              <div
-                className="coding"
-                style={{
-                  color: "black",
-                  whiteSpace: "pre",
-                }}
-              >
-                나눔고딕코딩
-              </div>
               <br />
               <TextField
                 InputLabelProps={{ style: { color: "black" }, shrink: true }}
