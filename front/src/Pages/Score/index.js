@@ -157,6 +157,7 @@ const Content = ({ submission, testcases }) => {
               </div>
               <br />
               <TextField
+                className="coding"
                 InputLabelProps={{ style: { color: "black" }, shrink: true }}
                 disabled
                 variant="outlined"
