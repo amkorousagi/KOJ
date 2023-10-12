@@ -94,7 +94,6 @@ const HighlightDiff = ({ answer, result }) => {
       } else {
         lineDifferences.push(
           <span className="coding" key={j}>
-            {" "}
             {r[j]}
           </span>
         );
