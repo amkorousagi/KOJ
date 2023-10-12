@@ -31,6 +31,7 @@ const HighlightDiff = ({ answer, result }) => {
     if (answerLine.length <= i) {
       differences.push(
         <div
+          className="coding"
           key={i}
           style={{
             backgroundColor: "yellow",
@@ -50,6 +51,7 @@ const HighlightDiff = ({ answer, result }) => {
       if (a.length <= j) {
         lineDifferences.push(
           <span
+            className="coding"
             key={j}
             style={{
               backgroundColor: "yellow",
@@ -64,6 +66,7 @@ const HighlightDiff = ({ answer, result }) => {
       if (r.length <= j) {
         lineDifferences.push(
           <span
+            className="coding"
             key={j}
             style={{
               backgroundColor: "yellow",
@@ -78,6 +81,7 @@ const HighlightDiff = ({ answer, result }) => {
       if (a[j] !== r[j]) {
         lineDifferences.push(
           <span
+            className="coding"
             key={j}
             style={{
               backgroundColor: "yellow",
@@ -88,11 +92,20 @@ const HighlightDiff = ({ answer, result }) => {
           </span>
         );
       } else {
-        lineDifferences.push(<span key={j}> {r[j]}</span>);
+        lineDifferences.push(
+          <span className="coding" key={j}>
+            {" "}
+            {r[j]}
+          </span>
+        );
       }
     }
     console.log(lineDifferences);
-    differences.push(<div key={i}>{lineDifferences}</div>);
+    differences.push(
+      <div className="coding" key={i}>
+        {lineDifferences}
+      </div>
+    );
   }
 
   return (
@@ -164,9 +177,6 @@ const Content = ({ submission, testcases }) => {
                 multiline
                 fullWidth
                 InputProps={{
-                  style: {
-                    fontFamily: '"Nanum Gothic Coding", monospace',
-                  },
                   inputComponent: () => (
                     <HighlightDiff
                       answer={testcases[i].output_text}
