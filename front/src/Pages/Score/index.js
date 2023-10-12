@@ -88,14 +88,14 @@ const HighlightDiff = ({ answer, result }) => {
           </span>
         );
       } else {
-        lineDifferences.push(<span key={j}>{r[j]}</span>);
+        lineDifferences.push(<span key={j}> {r[j]}</span>);
       }
     }
     console.log(lineDifferences);
     differences.push(<div key={i}>{lineDifferences}</div>);
   }
 
-  return <div style={{ color: "black" }}>{differences}</div>;
+  return <div style={{ color: "black", whiteSpace: "pre" }}>{differences}</div>;
 };
 
 const Content = ({ submission, testcases }) => {
