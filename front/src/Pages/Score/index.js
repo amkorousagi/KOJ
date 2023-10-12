@@ -165,6 +165,7 @@ const Content = ({ submission, testcases }) => {
                 multiline
                 fullWidth
                 InputProps={{
+                  className: "coding",
                   inputComponent: () => (
                     <HighlightDiff
                       answer={testcases[i].output_text}
