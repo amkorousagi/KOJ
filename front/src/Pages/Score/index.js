@@ -95,7 +95,11 @@ const HighlightDiff = ({ answer, result }) => {
     differences.push(<div key={i}>{lineDifferences}</div>);
   }
 
-  return <div style={{ color: "black", whiteSpace: "pre" }}>{differences}</div>;
+  return (
+    <div style={{ color: "black", whiteSpace: "pre", fontFamily: "monospace" }}>
+      {differences}
+    </div>
+  );
 };
 
 const Content = ({ submission, testcases }) => {
