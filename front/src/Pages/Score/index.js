@@ -97,8 +97,8 @@ const HighlightDiff = ({ answer, result }) => {
 
   return (
     <div
+      className="coding"
       style={{
-        fontFamily: "'Nanum Gothic Coding', monospace",
         color: "black",
         whiteSpace: "pre",
       }}
