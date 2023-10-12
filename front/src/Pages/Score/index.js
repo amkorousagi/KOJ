@@ -88,7 +88,7 @@ const HighlightDiff = ({ answer, result }) => {
           </span>
         );
       } else {
-        lineDifferences.push(<span>{r[j]}</span>);
+        lineDifferences.push(<span key={j}>{r[j]}</span>);
       }
     }
     console.log(lineDifferences);
