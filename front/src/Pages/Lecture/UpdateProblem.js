@@ -567,7 +567,7 @@ const UpdateProblem = ({
             <br />
             <RadioGroup
               row
-              defaultValue={trim}
+              defaultValue={curProblem.trim === "false" ? "false" : "true"}
               onChange={(e) => {
                 e.preventDefault();
                 setTrim(e.target.value);

@@ -366,6 +366,7 @@ const CreateTestcase = ({
               variant="outlined"
               label="표준 출력"
               style={{ width: "100%" }}
+              InputProps={{ className: "coding" }}
               defaultValue={output_text}
               multiline
               onChange={(e) => {
