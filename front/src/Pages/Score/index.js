@@ -73,7 +73,7 @@ const HighlightDiff = ({ answer, result }) => {
               color: "red",
             }}
           >
-            □
+            나
           </span>
         );
         continue;
