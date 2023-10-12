@@ -338,7 +338,7 @@ const Score = () => {
                 color: "red",
               }}
             >
-              {"□"}
+              {"▯"}
             </span>
           </Typography>
           <Card variant="outlined">
