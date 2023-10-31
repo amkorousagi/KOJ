@@ -78,6 +78,7 @@ reSubmissionRoute.post(
         feedback,
         error,
       });
+      console.log(updated_submission.success);
       const score = await calcScore({
         problem: updated_submission.problem,
         success: updated_submission.success,
