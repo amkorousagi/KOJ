@@ -349,7 +349,22 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                       "문제를 재채점 하시겠습니까?(문제를 푼 모든 학생을 재채점 합니다.)"
                   )
                 ) {
-                  console.log(scores);
+                  console.log(
+                    scores.dashscore.map((it) => {
+                      let result = undefined;
+                      if (it.submission !== undefined) {
+                        it.submission.map((i) => {
+                          if (i !== undefined) {
+                            if (i.problem === item._id) {
+                              result = i.submission;
+                            }
+                          }
+                          return;
+                        });
+                      }
+                      return result;
+                    })
+                  );
                   fetch(BASE_URL + "/api/resubmission", {
                     method: "POST",
                     headers: {
