@@ -43,6 +43,9 @@ export async function calcScore({ problem, success }) {
   }
 
   const testcases = await Testcase.find({ problem });
+  if (success.length !== testcases.length) {
+    return 0;
+  }
   const scores = testcases.map((item) => item.score);
   let score = 0;
   scores.map((item, index) => {
