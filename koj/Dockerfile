@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:18.17.1
 
 RUN apt-get update
 RUN apt-get install -y git
