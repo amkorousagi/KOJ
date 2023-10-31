@@ -372,20 +372,22 @@ const Dash = ({ scores, setScores, requestPractice, userType }) => {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                      submissions: scores.dashscore.map((it) => {
-                        let result = undefined;
-                        if (it.submission !== undefined) {
-                          it.submission.map((i) => {
-                            if (i !== undefined) {
-                              if (i.problem === item._id) {
-                                result = i.submission;
+                      submissions: scores.dashscore
+                        .map((it) => {
+                          let result = undefined;
+                          if (it.submission !== undefined) {
+                            it.submission.map((i) => {
+                              if (i !== undefined) {
+                                if (i.problem === item._id) {
+                                  result = i.submission;
+                                }
                               }
-                            }
-                            return;
-                          });
-                        }
-                        return result;
-                      }),
+                              return;
+                            });
+                          }
+                          return result;
+                        })
+                        .filter((r_id) => r_id !== undefined),
                     }),
                   })
                     .then((res) => {
