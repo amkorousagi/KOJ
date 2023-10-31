@@ -17,7 +17,7 @@ reSubmissionRoute.post(
   responseHandler(async (req) => {
     const { submissions } = req.body;
     const updateScoreResult = [];
-    for (const submission of submissions) {
+    for await (const submission of submissions) {
       console.log(submission);
       if (submission === undefined) {
         throw new Error("no submission id");
