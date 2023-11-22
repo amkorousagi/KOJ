@@ -65,7 +65,7 @@ createSubmissionRoute.post(
         stdout = data.stdout;
         stderr = data.stderr;
         actual_file = data.actual_file;
-        expected_file = data.actual_file;
+        expected_file = data.expected_file;
         exit_code = data.exit_code;
         error_type = data.error_type;
         cpu_usage = data.cpu_usage;
