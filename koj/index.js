@@ -886,12 +886,16 @@ app.get(
                 if (answer.equals(makedFile)) {
                   if (
                     result.stdout
+                      .replace(/\r/g, "")
+                      .replace(/\r\t/g, "\t")
                       .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                       .trim()
                       .split("\r\n")
                       .map((line) => line.trim())
                       .join("\r\n") ==
                     t.output_text
+                      .replace(/\r/g, "")
+                      .replace(/\r\t/g, "\t")
                       .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                       .trim()
                       .split("\r\n")
@@ -933,12 +937,16 @@ app.get(
             if (
               trim
                 ? result.stdout
+                    .replace(/\r/g, "")
+                    .replace(/\r\t/g, "\t")
                     .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                     .trim()
                     .split("\r\n")
                     .map((line) => line.trim())
                     .join("\r\n") ==
                   t.output_text
+                    .replace(/\r/g, "")
+                    .replace(/\r\t/g, "\t")
                     .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                     .trim()
                     .split("\r\n")
