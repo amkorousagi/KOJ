@@ -11,6 +11,8 @@ const submissionSchema = mongoose.Schema({
   stdin: [String],
   stdout: [String],
   stderr: [String],
+  actual_file: [String],
+  expected_file: [String],
   exit_code: [Number],
   error_type: [String],
   cpu_usage: [Number],

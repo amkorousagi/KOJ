@@ -179,6 +179,37 @@ const Content = ({ submission, testcases }) => {
               <br />
               <br />
               <TextField
+                InputLabelProps={{ style: { color: "black" }, shrink: true }}
+                disabled
+                variant="outlined"
+                label="실제 파일출력"
+                multiline
+                fullWidth
+                InputProps={{
+                  inputComponent: () => (
+                    <HighlightDiff
+                      answer={
+                        item.expected_file === undefined
+                          ? ""
+                          : item.expected_file.length === 0
+                          ? ""
+                          : item.expected_file[i]
+                      }
+                      result={
+                        item.actual_file === undefined
+                          ? ""
+                          : item.actual_file.length === 0
+                          ? ""
+                          : item.actual_file[i]
+                      }
+                    />
+                  ),
+                }}
+              />
+              <br />
+              <br />
+              <br />
+              <TextField
                 InputLabelProps={{ style: { color: "black" } }}
                 inputProps={{ style: { color: "black" } }}
                 disabled

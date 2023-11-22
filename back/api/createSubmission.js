@@ -40,6 +40,8 @@ createSubmissionRoute.post(
       stdin,
       stdout,
       stderr,
+      actual_file,
+      expected_file,
       exit_code,
       error_type,
       cpu_usage,
@@ -62,6 +64,8 @@ createSubmissionRoute.post(
         stdin = data.stdin;
         stdout = data.stdout;
         stderr = data.stderr;
+        actual_file = data.actual_file;
+        expected_file = data.actual_file;
         exit_code = data.exit_code;
         error_type = data.error_type;
         cpu_usage = data.cpu_usage;
@@ -83,6 +87,8 @@ createSubmissionRoute.post(
       stdin,
       stdout,
       stderr,
+      actual_file,
+      expected_file,
       exit_code,
       error_type,
       cpu_usage,

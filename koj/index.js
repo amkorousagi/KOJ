@@ -158,6 +158,8 @@ app.get(
       stdin = [],
       stdout = [],
       stderr = [],
+      actual_file = [],
+      expected_file = [],
       exit_code = [],
       error_type = [],
       cpu_usage = [],
@@ -782,7 +784,22 @@ app.get(
                   ),
                   { encoding: "utf8" }
                 );
-
+                actual_file.push(
+                  makedFile
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                    .trim()
+                    .split("\r\n")
+                    .map((line) => line.trim())
+                    .join("\r\n")
+                );
+                expected_file.push(
+                  answer
+                    .replace(/(?:\r\n|\r|\n)/g, "\r\n")
+                    .trim()
+                    .split("\r\n")
+                    .map((line) => line.trim())
+                    .join("\r\n")
+                );
                 console.log(typeof answer);
                 console.log({
                   answer: answer.trim().replace(/(?:\r\n|\r|\n)/g, "\r\n"),
@@ -847,7 +864,8 @@ app.get(
                       output_file.name
                   )
                 );
-
+                actual_file.push(makedFile.toString("utf-8"));
+                expected_file.push(answer.toString("utf-8"));
                 console.log(typeof answer);
                 console.log({
                   answer,
@@ -976,6 +994,8 @@ app.get(
       stdin,
       stdout,
       stderr,
+      actual_file,
+      expected_file,
       exit_code,
       error_type,
       cpu_usage,
@@ -989,6 +1009,8 @@ app.get(
       stdin,
       stdout,
       stderr,
+      actual_file,
+      expected_file,
       exit_code,
       error_type,
       cpu_usage,
