@@ -787,6 +787,7 @@ app.get(
                 actual_file.push(
                   makedFile
                     .replace(/\r/g, "")
+                    .replace(/\r\t/g, "\t")
                     .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                     .trim()
                     .split("\r\n")
@@ -796,6 +797,7 @@ app.get(
                 expected_file.push(
                   answer
                     .replace(/\r/g, "")
+                    .replace(/\r\t/g, "\t")
                     .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                     .trim()
                     .split("\r\n")
@@ -812,6 +814,7 @@ app.get(
                 if (
                   answer
                     .replace(/\r/g, "")
+                    .replace(/\r\t/g, "\t")
                     .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                     .trim()
                     .split("\r\n")
@@ -819,6 +822,7 @@ app.get(
                     .join("\r\n") ==
                   makedFile
                     .replace(/\r/g, "")
+                    .replace(/\r\t/g, "\t")
                     .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                     .trim()
                     .split("\r\n")
@@ -828,6 +832,7 @@ app.get(
                   if (
                     result.stdout
                       .replace(/\r/g, "")
+                      .replace(/\r\t/g, "\t")
                       .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                       .trim()
                       .split("\r\n")
@@ -835,6 +840,7 @@ app.get(
                       .join("\r\n") ==
                     t.output_text
                       .replace(/\r/g, "")
+                      .replace(/\r\t/g, "\t")
                       .replace(/(?:\r\n|\r|\n)/g, "\r\n")
                       .trim()
                       .split("\r\n")
