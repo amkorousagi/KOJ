@@ -22,6 +22,9 @@ import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../config.js";
 
 const HighlightDiff = ({ answer, result }) => {
+  if (answer === undefined || result === undefined) {
+    return <></>;
+  }
   const differences = [];
 
   const answerLine = answer.split("\n");
