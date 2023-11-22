@@ -17,6 +17,7 @@ reSubmissionRoute.post(
   responseHandler(async (req) => {
     const { submissions } = req.body;
     const updateScoreResult = [];
+    let last_score;
     for await (const submission of submissions) {
       console.log(submission);
       if (submission === undefined) {
@@ -83,6 +84,7 @@ reSubmissionRoute.post(
         problem: updated_submission.problem,
         success: updated_submission.success,
       });
+      last_score = score;
       const problem_score = await createScore({
         problem: updated_submission.problem,
         student: updated_submission.student,
@@ -94,7 +96,7 @@ reSubmissionRoute.post(
       });
       updateScoreResult.push(tempResult);
     }
-    return updateScoreResult;
+    return { result: updateScoreResult, score: last_score };
   })
 );
 
