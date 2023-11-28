@@ -629,12 +629,14 @@ app.get(
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
+              execArgv: "--max-old-space-size=1024",
             });
           } else if (language == "cpp") {
             cod = spawn("./code", [...args], {
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
+              execArgv: "--max-old-space-size=1024",
             });
           } else if (language == "java") {
             const entry_str =
@@ -645,6 +647,7 @@ app.get(
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
+              execArgv: "--max-old-space-size=1024",
             });
           } else if (language == "python") {
             const entry_str = code_names.length > 1 ? entry : code_names[0];
@@ -652,6 +655,7 @@ app.get(
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
+              execArgv: "--max-old-space-size=1024",
             });
           } else if (language == "node") {
             const entry_str = code_names.length > 1 ? entry : code_names[0];
@@ -659,6 +663,7 @@ app.get(
               cwd: path.join(
                 __dirname + "/submission/" + req.params.submission_id
               ),
+              execArgv: "--max-old-space-size=1024",
             });
           }
           setTimeout(
@@ -759,7 +764,18 @@ app.get(
                     "/" +
                     output_file.name
                 )
-              )
+              ) &&
+              fs.statSync(
+                path.join(
+                  __dirname +
+                    "/submission/" +
+                    req.params.submission_id +
+                    "/" +
+                    output_file.name
+                )
+              ).size /
+                (1024 * 1024) <
+                5
             ) {
               let answer;
               let makedFile;
