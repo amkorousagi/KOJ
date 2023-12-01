@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import { USER_TYPE } from "../type";
 import Enrollment from "../model/enrollment";
+import { adminPassword } from "../secret";
 
 export async function initAdmin() {
   // MUST REMOVE WHEN PRODUCTION
@@ -11,7 +12,7 @@ export async function initAdmin() {
   if (!existing) {
     const a = new User({
       id: "admin",
-      password: bcrypt.hashSync("eselab", 10),
+      password: bcrypt.hashSync(adminPassword, 10),
       name: "박세찬",
       user_type: USER_TYPE.ADMIN,
     });
