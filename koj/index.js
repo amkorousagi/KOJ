@@ -178,6 +178,9 @@ app.get(
       "sleep",
       "sys",
       "reboot",
+      "eval",
+      "sleep",
+      "sh",
     ];
     try {
       const submission = await Submission.findById(req.params.submission_id);
