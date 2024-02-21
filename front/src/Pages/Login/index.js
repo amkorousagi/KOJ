@@ -112,7 +112,7 @@ const Login = () => {
             <br />
             관리자
             <Typography style={{ fontWeight: 800, display: "inline" }}>
-              (hasmi5452@gmail)
+              (mikeds0222@gmail.com@gmail)
             </Typography>
             에게 문의하세요.
           </Typography>
